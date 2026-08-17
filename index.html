@@ -6,19 +6,173 @@
 
     <title>Sistem Aduan JMG Sabah</title>
 
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f3f7f4, #e1ebe5);
+            color: #1f2937;
+        }
+
+        header {
+            background: #ffffff;
+            padding: 22px 8%;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .logo {
+            width: 65px;
+            height: 65px;
+            background: #176b3a;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #64748b;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 75px 20px 45px;
+        }
+
+        .hero h2 {
+            font-size: 38px;
+            color: #14532d;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 17px;
+            color: #64748b;
+            max-width: 650px;
+            margin: auto;
+            line-height: 1.6;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            max-width: 850px;
+            margin: 0 auto 70px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            width: 360px;
+            padding: 35px 30px;
+            text-align: center;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.13);
+        }
+
+        .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 25px;
+            margin-bottom: 12px;
+            color: #14532d;
+        }
+
+        .card p {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        button {
+            border: none;
+            background: #176b3a;
+            color: white;
+            padding: 13px 35px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0f4d29;
+        }
+
+        footer {
+            text-align: center;
+            background: #14532d;
+            color: white;
+            padding: 25px;
+            font-size: 14px;
+        }
+
+        footer p {
+            margin: 5px;
+        }
+
+        @media (max-width: 750px) {
+            .cards {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 90%;
+            }
+
+            .hero h2 {
+                font-size: 30px;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
     <header>
-        <div class="container header-content">
+        <div class="header">
 
-            <div class="logo-placeholder">
+            <div class="logo">
                 JMG
             </div>
 
-            <div class="header-text">
+            <div>
                 <h1>Jabatan Mineral dan Geosains Malaysia</h1>
                 <p>Sabah</p>
             </div>
@@ -27,75 +181,63 @@
     </header>
 
 
-    <main>
+    <section class="hero">
 
-        <section class="hero">
+        <h2>Sistem Aduan Kerosakan Fasiliti</h2>
 
-            <h2>Sistem Aduan Kerosakan Fasiliti</h2>
+        <p>
+            Selamat datang ke Sistem Aduan Kerosakan Fasiliti
+            Jabatan Mineral dan Geosains Malaysia, Sabah.
+        </p>
+
+    </section>
+
+
+    <section class="cards">
+
+        <div class="card">
+
+            <div class="icon">👤</div>
+
+            <h3>Pelapor</h3>
 
             <p>
-                Sistem pengurusan aduan kerosakan fasiliti
-                Jabatan Mineral dan Geosains Malaysia, Sabah.
+                Membuat laporan berkaitan kerosakan
+                fasiliti di JMG Sabah.
             </p>
 
-        </section>
+            <button onclick="location.href='pelapor.html'">
+                Buat Aduan
+            </button>
+
+        </div>
 
 
-        <section class="user-selection container">
+        <div class="card">
 
-            <div class="user-card">
+            <div class="icon">🛠️</div>
 
-                <div class="card-icon">
-                    👤
-                </div>
+            <h3>PPT</h3>
 
-                <h3>Pelapor</h3>
+            <p>
+                Menyemak, mengurus dan memantau
+                aduan kerosakan fasiliti.
+            </p>
 
-                <p>
-                    Untuk membuat laporan berkaitan
-                    kerosakan fasiliti di JMG Sabah.
-                </p>
+            <button onclick="location.href='ppt.html'">
+                Log Masuk
+            </button>
 
-                <button onclick="location.href='pelapor.html'">
-                    Buat Aduan
-                </button>
+        </div>
 
-            </div>
-
-
-            <div class="user-card">
-
-                <div class="card-icon">
-                    🛠️
-                </div>
-
-                <h3>PPT</h3>
-
-                <p>
-                    Untuk menyemak, mengurus dan memantau
-                    aduan kerosakan fasiliti.
-                </p>
-
-                <button onclick="location.href='ppt.html'">
-                    Log Masuk
-                </button>
-
-            </div>
-
-        </section>
-
-    </main>
+    </section>
 
 
     <footer>
 
-        <p>
-            © 2026 Jabatan Mineral dan Geosains Malaysia, Sabah
-        </p>
+        <p>© 2026 Jabatan Mineral dan Geosains Malaysia, Sabah</p>
 
-        <p>
-            Sistem Aduan Kerosakan Fasiliti
-        </p>
+        <p>Sistem Aduan Kerosakan Fasiliti</p>
 
     </footer>
 
