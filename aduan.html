@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Buat Aduan - JMG Sabah</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f3f7f4, #e1ebe5);
+            color: #333;
+        }
+
+        header {
+            background: white;
+            padding: 20px 8%;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .jmg-logo {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+        }
+
+        h1 {
+            color: #1f2937;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #1f5d3a;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 30px;
+            padding: 14px;
+            background: #1f5d3a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #17472d;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #174f2c;
+            color: white;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <img src="Logo%20JMG.jpeg" alt="Logo JMG" class="jmg-logo">
+
+    <div>
+        <h1>Jabatan Mineral dan Geosains Malaysia</h1>
+        <p class="subtitle">Sabah</p>
+    </div>
+</header>
+
+<div class="container">
+
+    <h2>📝 Borang Aduan Kerosakan Fasiliti</h2>
+
+    <p class="description">
+        Sila lengkapkan maklumat di bawah untuk membuat aduan kerosakan fasiliti.
+    </p>
+
+    <form>
+
+        <label>Nama Pelapor</label>
+        <input type="text" placeholder="Masukkan nama anda" required>
+
+        <label>Bahagian / Unit</label>
+        <input type="text" placeholder="Contoh: Unit Pengurusan Maklumat" required>
+
+        <label>Lokasi Kerosakan</label>
+        <input type="text" placeholder="Contoh: Bilik Mesyuarat" required>
+
+        <label>Jenis Kerosakan</label>
+        <select required>
+            <option value="">-- Pilih Jenis Kerosakan --</option>
+            <option>Elektrik</option>
+            <option>Perabot</option>
+            <option>Komputer / Peralatan ICT</option>
+            <option>Penyaman Udara</option>
+            <option>Paip / Tandas</option>
+            <option>Lain-lain</option>
+        </select>
+
+        <label>Penerangan Kerosakan</label>
+        <textarea placeholder="Terangkan kerosakan yang berlaku..." required></textarea>
+
+        <label>Tarikh Aduan</label>
+        <input type="date" required>
+
+        <label>Muat Naik Gambar Kerosakan</label>
+        <input type="file" accept="image/*">
+
+        <button type="submit">📤 Hantar Aduan</button>
+
+    </form>
+
+</div>
+
+<footer>
+    © 2026 Jabatan Mineral dan Geosains Malaysia, Sabah
+</footer>
+
+</body>
+</html>
