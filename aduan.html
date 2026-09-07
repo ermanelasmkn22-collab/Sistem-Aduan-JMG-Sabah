@@ -295,7 +295,6 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
     };
 
 
-    // Simpan gambar jika ada
     if (gambarInput.files.length > 0) {
 
         const reader = new FileReader();
@@ -332,9 +331,104 @@ function simpanAduan(aduan) {
     );
 
 
-    alert("✅ Aduan berjaya dihantar!");
+    // Paparkan pemberitahuan berjaya
+    document.querySelector(".container").innerHTML = `
 
-    document.getElementById("aduanForm").reset();
+        <div style="
+            text-align:center;
+            padding:40px 20px;
+        ">
+
+            <div style="
+                font-size:60px;
+                margin-bottom:20px;
+            ">
+                ✅
+            </div>
+
+            <h2 style="
+                color:#1f5d3a;
+                margin-bottom:15px;
+            ">
+                Aduan Berjaya Dihantar
+            </h2>
+
+            <p style="
+                color:#666;
+                line-height:1.6;
+                margin-bottom:30px;
+            ">
+                Aduan kerosakan anda telah berjaya dihantar
+                dan direkodkan dalam sistem.
+            </p>
+
+            <div style="
+                background:#f3f7f4;
+                padding:18px;
+                border-radius:10px;
+                margin-bottom:30px;
+                text-align:left;
+            ">
+
+                <strong>Maklumat Aduan</strong>
+
+                <p style="margin-top:10px;">
+                    Nama Pelapor: ${nama}
+                </p>
+
+                <p style="margin-top:6px;">
+                    Lokasi: ${lokasi}
+                </p>
+
+                <p style="margin-top:6px;">
+                    Jenis Kerosakan: ${jenis}
+                </p>
+
+                <p style="margin-top:6px;">
+                    Status: <strong>Baharu</strong>
+                </p>
+
+            </div>
+
+
+            <div style="
+                display:flex;
+                gap:12px;
+                justify-content:center;
+                flex-wrap:wrap;
+            ">
+
+                <button
+                    type="button"
+                    onclick="window.location.href='index.html'"
+                    style="
+                        width:auto;
+                        margin-top:0;
+                        padding:13px 25px;
+                    "
+                >
+                    🏠 Kembali ke Halaman Utama
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="window.location.href='aduan.html'"
+                    style="
+                        width:auto;
+                        margin-top:0;
+                        padding:13px 25px;
+                        background:#64748b;
+                    "
+                >
+                    ↩️ Buat Aduan Baharu
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
 
 }
 
