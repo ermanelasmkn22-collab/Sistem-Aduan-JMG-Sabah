@@ -114,11 +114,13 @@
 
 <header>
     <img src="logo-jmg.jpeg" alt="Logo JMG" class="jmg-logo">
+
     <div>
         <h1>Jabatan Mineral dan Geosains Malaysia</h1>
         <p class="subtitle">Sabah</p>
     </div>
 </header>
+
 
 <div class="container">
 
@@ -128,55 +130,215 @@
         Sila lengkapkan maklumat di bawah untuk membuat aduan kerosakan fasiliti.
     </p>
 
-    <form>
+
+    <form id="aduanForm">
 
         <label>Nama Pelapor</label>
-        <input type="text" placeholder="Masukkan nama anda" required>
+        <input
+            type="text"
+            id="nama"
+            placeholder="Masukkan nama anda"
+            required
+        >
+
+
         <label>Jawatan</label>
-<input type="text" name="jawatan" placeholder="Contoh: Pegawai Geosains">
+        <input
+            type="text"
+            id="jawatan"
+            placeholder="Contoh: Pegawai Geosains"
+            required
+        >
 
-<label>Bahagian / Unit</label>
-<input type="text" name="bahagian" placeholder="Contoh: Unit Pengurusan Maklumat">
+
+        <label>Bahagian / Unit</label>
+        <input
+            type="text"
+            id="bahagian"
+            placeholder="Contoh: Unit Pengurusan Maklumat"
+            required
+        >
+
+
         <label>Blok / Lantai</label>
-<input type="text" name="blok_lantai" placeholder="Contoh: Wisma Takada">
+        <input
+            type="text"
+            id="blok"
+            placeholder="Contoh: Wisma Takada"
+            required
+        >
 
-<label>Tingkat / Aras</label>
-<input type="text" name="tingkat_aras" placeholder="Contoh: Tingkat 3">
+
+        <label>Tingkat / Aras</label>
+        <input
+            type="text"
+            id="tingkat"
+            placeholder="Contoh: Tingkat 3"
+            required
+        >
+
 
         <label>Lokasi Kerosakan</label>
-        <input type="text" placeholder="Contoh: Bilik Mesyuarat" required>
+        <input
+            type="text"
+            id="lokasi"
+            placeholder="Contoh: Bilik Mesyuarat"
+            required
+        >
+
 
         <label>Jenis Kerosakan</label>
-        <select required>
-            <option value="">-- Pilih Jenis Kerosakan --</option>
+
+        <select id="jenis" required>
+
+            <option value="">
+                -- Pilih Jenis Kerosakan --
+            </option>
+
             <option>Elektrik</option>
+
             <option>Perabot</option>
+
             <option>Komputer / Peralatan ICT</option>
+
             <option>Penyaman Udara</option>
+
             <option>Paip / Tandas</option>
+
             <option>Lain-lain</option>
+
         </select>
 
+
         <label>Penerangan Kerosakan</label>
-        <textarea placeholder="Terangkan kerosakan yang berlaku..." required></textarea>
+
+        <textarea
+            id="penerangan"
+            placeholder="Terangkan kerosakan yang berlaku..."
+            required
+        ></textarea>
+
+
         <label>Cadangan Penambahbaikan</label>
-<textarea name="cadangan" placeholder="Masukkan cadangan penambahbaikan..."></textarea>
+
+        <textarea
+            id="cadangan"
+            placeholder="Masukkan cadangan penambahbaikan..."
+        ></textarea>
+
 
         <label>Tarikh Aduan</label>
-        <input type="date" required>
+
+        <input
+            type="date"
+            id="tarikh"
+            required
+        >
+
 
         <label>Muat Naik Gambar Kerosakan</label>
-        <input type="file" accept="image/*">
 
-        <button type="submit">📤 Hantar Aduan</button>
+        <input
+            type="file"
+            id="gambar"
+            accept="image/*"
+        >
+
+
+        <button type="submit">
+            📤 Hantar Aduan
+        </button>
 
     </form>
 
 </div>
 
+
 <footer>
     © 2026 Jabatan Mineral dan Geosains Malaysia, Sabah
 </footer>
+
+
+<script>
+
+document.getElementById("aduanForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const nama = document.getElementById("nama").value;
+    const jawatan = document.getElementById("jawatan").value;
+    const bahagian = document.getElementById("bahagian").value;
+    const blok = document.getElementById("blok").value;
+    const tingkat = document.getElementById("tingkat").value;
+    const lokasi = document.getElementById("lokasi").value;
+    const jenis = document.getElementById("jenis").value;
+    const penerangan = document.getElementById("penerangan").value;
+    const cadangan = document.getElementById("cadangan").value;
+    const tarikh = document.getElementById("tarikh").value;
+    const gambarInput = document.getElementById("gambar");
+
+    const aduan = {
+        id: Date.now(),
+        nama: nama,
+        jawatan: jawatan,
+        bahagian: bahagian,
+        blok: blok,
+        tingkat: tingkat,
+        lokasi: lokasi,
+        jenis: jenis,
+        penerangan: penerangan,
+        cadangan: cadangan,
+        tarikh: tarikh,
+        status: "Baharu",
+        ulasan: "",
+        gambar: ""
+    };
+
+
+    // Simpan gambar jika ada
+    if (gambarInput.files.length > 0) {
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+
+            aduan.gambar = e.target.result;
+
+            simpanAduan(aduan);
+
+        };
+
+        reader.readAsDataURL(gambarInput.files[0]);
+
+    } else {
+
+        simpanAduan(aduan);
+
+    }
+
+});
+
+
+function simpanAduan(aduan) {
+
+    let senaraiAduan =
+        JSON.parse(localStorage.getItem("senaraiAduan")) || [];
+
+    senaraiAduan.push(aduan);
+
+    localStorage.setItem(
+        "senaraiAduan",
+        JSON.stringify(senaraiAduan)
+    );
+
+
+    alert("✅ Aduan berjaya dihantar!");
+
+    document.getElementById("aduanForm").reset();
+
+}
+
+</script>
 
 </body>
 </html>
