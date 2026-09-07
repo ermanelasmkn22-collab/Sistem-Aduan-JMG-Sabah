@@ -70,7 +70,9 @@
             font-weight: bold;
         }
 
-        input, select, textarea {
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 12px;
             border: 1px solid #ccc;
@@ -100,6 +102,20 @@
             background: #17472d;
         }
 
+        .success-button {
+            width: auto;
+            margin-top: 0;
+            padding: 13px 25px;
+        }
+
+        .new-button {
+            background: #64748b;
+        }
+
+        .new-button:hover {
+            background: #475569;
+        }
+
         footer {
             text-align: center;
             padding: 25px;
@@ -113,12 +129,14 @@
 <body>
 
 <header>
+
     <img src="logo-jmg.jpeg" alt="Logo JMG" class="jmg-logo">
 
     <div>
         <h1>Jabatan Mineral dan Geosains Malaysia</h1>
         <p class="subtitle">Sabah</p>
     </div>
+
 </header>
 
 
@@ -134,6 +152,7 @@
     <form id="aduanForm">
 
         <label>Nama Pelapor</label>
+
         <input
             type="text"
             id="nama"
@@ -143,6 +162,7 @@
 
 
         <label>Jawatan</label>
+
         <input
             type="text"
             id="jawatan"
@@ -152,6 +172,7 @@
 
 
         <label>Bahagian / Unit</label>
+
         <input
             type="text"
             id="bahagian"
@@ -161,6 +182,7 @@
 
 
         <label>Blok / Lantai</label>
+
         <input
             type="text"
             id="blok"
@@ -170,6 +192,7 @@
 
 
         <label>Tingkat / Aras</label>
+
         <input
             type="text"
             id="tingkat"
@@ -179,6 +202,7 @@
 
 
         <label>Lokasi Kerosakan</label>
+
         <input
             type="text"
             id="lokasi"
@@ -195,17 +219,29 @@
                 -- Pilih Jenis Kerosakan --
             </option>
 
-            <option>Elektrik</option>
+            <option value="Elektrik">
+                Elektrik
+            </option>
 
-            <option>Perabot</option>
+            <option value="Perabot">
+                Perabot
+            </option>
 
-            <option>Komputer / Peralatan ICT</option>
+            <option value="Komputer / Peralatan ICT">
+                Komputer / Peralatan ICT
+            </option>
 
-            <option>Penyaman Udara</option>
+            <option value="Penyaman Udara">
+                Penyaman Udara
+            </option>
 
-            <option>Paip / Tandas</option>
+            <option value="Paip / Tandas">
+                Paip / Tandas
+            </option>
 
-            <option>Lain-lain</option>
+            <option value="Lain-lain">
+                Lain-lain
+            </option>
 
         </select>
 
@@ -255,7 +291,9 @@
 
 
 <footer>
+
     © 2026 Jabatan Mineral dan Geosains Malaysia, Sabah
+
 </footer>
 
 
@@ -265,39 +303,78 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
 
     event.preventDefault();
 
-    const nama = document.getElementById("nama").value;
-    const jawatan = document.getElementById("jawatan").value;
-    const bahagian = document.getElementById("bahagian").value;
-    const blok = document.getElementById("blok").value;
-    const tingkat = document.getElementById("tingkat").value;
-    const lokasi = document.getElementById("lokasi").value;
-    const jenis = document.getElementById("jenis").value;
-    const penerangan = document.getElementById("penerangan").value;
-    const cadangan = document.getElementById("cadangan").value;
-    const tarikh = document.getElementById("tarikh").value;
-    const gambarInput = document.getElementById("gambar");
+
+    const nama =
+        document.getElementById("nama").value.trim();
+
+    const jawatan =
+        document.getElementById("jawatan").value.trim();
+
+    const bahagian =
+        document.getElementById("bahagian").value.trim();
+
+    const blok =
+        document.getElementById("blok").value.trim();
+
+    const tingkat =
+        document.getElementById("tingkat").value.trim();
+
+    const lokasi =
+        document.getElementById("lokasi").value.trim();
+
+    const jenis =
+        document.getElementById("jenis").value;
+
+    const penerangan =
+        document.getElementById("penerangan").value.trim();
+
+    const cadangan =
+        document.getElementById("cadangan").value.trim();
+
+    const tarikh =
+        document.getElementById("tarikh").value;
+
+    const gambarInput =
+        document.getElementById("gambar");
+
 
     const aduan = {
+
         id: Date.now(),
+
         nama: nama,
+
         jawatan: jawatan,
+
         bahagian: bahagian,
+
         blok: blok,
+
         tingkat: tingkat,
+
         lokasi: lokasi,
+
         jenis: jenis,
+
         penerangan: penerangan,
+
         cadangan: cadangan,
+
         tarikh: tarikh,
+
         status: "Baharu",
+
         ulasan: "",
+
         gambar: ""
+
     };
 
 
     if (gambarInput.files.length > 0) {
 
         const reader = new FileReader();
+
 
         reader.onload = function(e) {
 
@@ -307,9 +384,12 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
 
         };
 
+
         reader.readAsDataURL(gambarInput.files[0]);
 
-    } else {
+    }
+
+    else {
 
         simpanAduan(aduan);
 
@@ -321,9 +401,13 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
 function simpanAduan(aduan) {
 
     let senaraiAduan =
-        JSON.parse(localStorage.getItem("senaraiAduan")) || [];
+        JSON.parse(
+            localStorage.getItem("senaraiAduan")
+        ) || [];
+
 
     senaraiAduan.push(aduan);
+
 
     localStorage.setItem(
         "senaraiAduan",
@@ -331,81 +415,77 @@ function simpanAduan(aduan) {
     );
 
 
-    // Paparkan pemberitahuan berjaya
-   document.querySelector(".container").innerHTML = `
+    // Paparan selepas aduan berjaya dihantar
 
-    <div style="
-        text-align:center;
-        padding:50px 20px;
-    ">
+    document.querySelector(".container").innerHTML = `
 
         <div style="
-            font-size:65px;
-            margin-bottom:20px;
+            text-align:center;
+            padding:50px 20px;
         ">
-            ✅
+
+            <div style="
+                font-size:65px;
+                margin-bottom:20px;
+            ">
+                ✅
+            </div>
+
+
+            <h2 style="
+                color:#1f5d3a;
+                margin-bottom:15px;
+            ">
+                Aduan Berjaya Dihantar
+            </h2>
+
+
+            <p style="
+                color:#666;
+                line-height:1.6;
+                margin-bottom:35px;
+            ">
+                Aduan kerosakan anda telah berjaya dihantar
+                dan direkodkan dalam sistem.
+            </p>
+
+
+            <div style="
+                display:flex;
+                gap:12px;
+                justify-content:center;
+                flex-wrap:wrap;
+            ">
+
+
+                <button
+                    type="button"
+                    class="success-button"
+                    onclick="window.location.href='index.html'"
+                >
+                    🏠 Kembali ke Halaman Utama
+                </button>
+
+
+                <button
+                    type="button"
+                    class="success-button new-button"
+                    onclick="window.location.href='aduan.html'"
+                >
+                    ↩️ Buat Aduan Baharu
+                </button>
+
+
+            </div>
+
         </div>
 
-        <h2 style="
-            color:#1f5d3a;
-            margin-bottom:15px;
-        ">
-            Aduan Berjaya Dihantar
-        </h2>
-
-        <p style="
-            color:#666;
-            line-height:1.6;
-            margin-bottom:35px;
-        ">
-            Aduan kerosakan anda telah berjaya dihantar
-            dan direkodkan dalam sistem.
-        </p>
-
-
-        <div style="
-            display:flex;
-            gap:12px;
-            justify-content:center;
-            flex-wrap:wrap;
-        ">
-
-            <button
-                type="button"
-                onclick="window.location.href='index.html'"
-                style="
-                    width:auto;
-                    margin-top:0;
-                    padding:13px 25px;
-                "
-            >
-                🏠 Kembali ke Halaman Utama
-            </button>
-
-
-            <button
-                type="button"
-                onclick="window.location.href='aduan.html'"
-                style="
-                    width:auto;
-                    margin-top:0;
-                    padding:13px 25px;
-                    background:#64748b;
-                "
-            >
-                ↩️ Buat Aduan Baharu
-            </button>
-
-        </div>
-
-    </div>
-
-`;
-    
+    `;
 
 }
 
 </script>
+
 
 </body>
 </html>
