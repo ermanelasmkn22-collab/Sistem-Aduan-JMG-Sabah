@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="ms">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>PPT - Sistem Aduan JMG Sabah</title>
 
-    <style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
+    <style>
         * {
             box-sizing: border-box;
             margin: 0;
@@ -39,8 +38,8 @@
         }
 
         h1 {
-            color: #1f2937;
             font-size: 24px;
+            color: #1f2937;
         }
 
         .subtitle {
@@ -90,7 +89,7 @@
             margin-bottom: 10px;
         }
 
-        .summary-card .number {
+        .number {
             font-size: 32px;
             font-weight: bold;
             color: #1f5d3a;
@@ -103,7 +102,29 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
 
-        .aduan-section h3 {
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            background: #e8eee9;
+            color: #1f5d3a;
+        }
+
+        .tab-btn.active {
+            background: #1f5d3a;
+            color: white;
+        }
+
+        .section-title {
             color: #1f5d3a;
             margin-bottom: 20px;
             font-size: 22px;
@@ -201,8 +222,6 @@
             font-weight: bold;
         }
 
-        /* MODAL */
-
         .modal {
             display: none;
             position: fixed;
@@ -225,7 +244,6 @@
             overflow-y: auto;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .modal-header {
@@ -254,8 +272,8 @@
 
         .detail strong {
             display: block;
-            margin-bottom: 5px;
             color: #1f5d3a;
+            margin-bottom: 5px;
         }
 
         .detail-image {
@@ -263,7 +281,6 @@
             max-height: 300px;
             object-fit: contain;
             margin-top: 10px;
-            border-radius: 8px;
         }
 
         .status-box {
@@ -283,26 +300,35 @@
         .status-box select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
             border-radius: 8px;
-            font-size: 15px;
+            border: 1px solid #ccc;
         }
 
-        .save-status {
+        .full-btn {
             width: 100%;
             margin-top: 12px;
             padding: 12px;
             border: none;
             border-radius: 8px;
-            background: #1f5d3a;
             color: white;
-            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
         }
 
-        .save-status:hover {
-            background: #17472d;
+        .save-btn {
+            background: #1f5d3a;
+        }
+
+        .pdf-btn {
+            background: #64748b;
+        }
+
+        .history-note {
+            background: #f3f7f4;
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: #555;
+            margin-bottom: 20px;
         }
 
         footer {
@@ -314,7 +340,6 @@
         }
 
         @media (max-width: 750px) {
-
             .dashboard {
                 grid-template-columns: 1fr;
             }
@@ -331,127 +356,78 @@
                 flex-direction: column;
                 text-align: center;
             }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
 <header>
-
-    <img
-        src="logo-jmg.jpeg"
-        alt="Logo JMG"
-        class="jmg-logo"
-    >
+    <img src="logo-jmg.jpeg" alt="Logo JMG" class="jmg-logo">
 
     <div>
-
-        <h1>
-            Jabatan Mineral dan Geosains Malaysia
-        </h1>
-
-        <p class="subtitle">
-            Sabah
-        </p>
-
+        <h1>Jabatan Mineral dan Geosains Malaysia</h1>
+        <p class="subtitle">Sabah</p>
     </div>
-
 </header>
-
-
 
 <div class="container">
 
-
     <div class="title-section">
-
-        <h2>
-            📋 Sistem Pengurusan Aduan
-        </h2>
-
-        <p>
-            Bahagian Pengurusan dan Pentadbiran (PPT)
-        </p>
-
+        <h2>📋 Sistem Pengurusan Aduan</h2>
+        <p>Bahagian Pengurusan dan Pentadbiran (PPT)</p>
     </div>
-
-
-
-    <!-- DASHBOARD -->
 
     <div class="dashboard">
 
-
         <div class="summary-card">
-
-            <h3>
-                Jumlah Aduan
-            </h3>
-
-            <div
-                class="number"
-                id="jumlahAduan"
-            >
-                0
-            </div>
-
+            <h3>Jumlah Aduan</h3>
+            <div class="number" id="jumlahAduan">0</div>
         </div>
 
-
         <div class="summary-card">
-
-            <h3>
-                Dalam Tindakan
-            </h3>
-
-            <div
-                class="number"
-                id="dalamTindakan"
-            >
-                0
-            </div>
-
+            <h3>Dalam Tindakan</h3>
+            <div class="number" id="dalamTindakan">0</div>
         </div>
 
-
         <div class="summary-card">
-
-            <h3>
-                Aduan Selesai
-            </h3>
-
-            <div
-                class="number"
-                id="aduanSelesai"
-            >
-                0
-            </div>
-
+            <h3>Aduan Selesai</h3>
+            <div class="number" id="aduanSelesai">0</div>
         </div>
-
 
     </div>
 
-
-
-    <!-- SENARAI ADUAN -->
-
     <div class="aduan-section">
 
+        <div class="tab-buttons">
 
-        <h3>
+            <button
+                class="tab-btn active"
+                id="tabAktif"
+                onclick="tukarTab('aktif')"
+            >
+                📋 Senarai Aduan
+            </button>
+
+            <button
+                class="tab-btn"
+                id="tabSelesai"
+                onclick="tukarTab('selesai')"
+            >
+                🗃️ Rekod Aduan Lepas
+            </button>
+
+        </div>
+
+        <h3 class="section-title" id="tajukSenarai">
             Senarai Aduan Kerosakan
         </h3>
 
+        <div id="notaSejarah" class="history-note" style="display:none;">
+            Rekod di bawah ialah aduan yang telah selesai. Rekod ini masih disimpan dan boleh dilihat semula.
+        </div>
 
         <div class="search-box">
-
 
             <input
                 type="text"
@@ -459,391 +435,265 @@
                 placeholder="🔎 Cari nama pelapor atau lokasi..."
             >
 
-
             <select id="statusFilter">
-
-                <option value="Semua Status">
-                    Semua Status
-                </option>
-
-                <option value="Baharu">
-                    Baharu
-                </option>
-
-                <option value="Dalam Tindakan">
-                    Dalam Tindakan
-                </option>
-
+                <option value="Semua">Semua Status</option>
+                <option value="Baharu">Baharu</option>
+                <option value="Dalam Tindakan">Dalam Tindakan</option>
             </select>
 
-
         </div>
-
-
 
         <div class="table-container">
 
             <table>
 
                 <thead>
-
                     <tr>
-
                         <th>Bil.</th>
-
                         <th>Nama Pelapor</th>
-
                         <th>Lokasi</th>
-
                         <th>Jenis Kerosakan</th>
-
                         <th>Tarikh</th>
-
                         <th>Status</th>
-
                         <th>Tindakan</th>
-
                     </tr>
-
                 </thead>
 
-
-                <tbody id="aduanTable">
-
-                </tbody>
+                <tbody id="aduanTable"></tbody>
 
             </table>
 
         </div>
 
-
-        <a
-            href="index.html"
-            class="back-btn"
-        >
+        <a href="index.html" class="back-btn">
             ← Kembali ke Halaman Utama
         </a>
 
-
     </div>
 
 </div>
 
-
-
-<!-- MODAL MAKLUMAT ADUAN -->
-
-<div
-    class="modal"
-    id="detailModal"
->
-
+<div class="modal" id="detailModal">
 
     <div class="modal-content">
 
-
         <div class="modal-header">
-
-            <h2>
-                📋 Maklumat Aduan
-            </h2>
-
-            <span
-                class="close"
-                onclick="tutupModal()"
-            >
-                ×
-            </span>
-
+            <h2>📋 Maklumat Aduan</h2>
+            <span class="close" onclick="tutupModal()">×</span>
         </div>
 
-
-        <div id="detailContent">
-
-        </div>
-
+        <div id="detailContent"></div>
 
     </div>
 
 </div>
 
-
-
 <footer>
-
     © 2026 Jabatan Mineral dan Geosains Malaysia, Sabah
-
 </footer>
-
-
 
 <script>
 
-
-/* =========================
-   AMBIL DATA
-========================= */
+let tabSemasa = "aktif";
 
 function dapatkanAduan() {
-
     return JSON.parse(
         localStorage.getItem("senaraiAduan")
     ) || [];
-
 }
 
-
-
-/* =========================
-   SIMPAN DATA
-========================= */
-
-function simpanSemulaAduan(senaraiAduan) {
-
+function simpanAduan(data) {
     localStorage.setItem(
         "senaraiAduan",
-        JSON.stringify(senaraiAduan)
+        JSON.stringify(data)
     );
-
 }
-
-
-
-/* =========================
-   DASHBOARD
-========================= */
 
 function kemaskiniDashboard() {
 
+    const data = dapatkanAduan();
 
-    const senaraiAduan =
-        dapatkanAduan();
+    const aktif = data.filter(
+        aduan => aduan.status !== "Selesai"
+    ).length;
 
+    const tindakan = data.filter(
+        aduan => aduan.status === "Dalam Tindakan"
+    ).length;
 
-    const jumlahAktif =
-        senaraiAduan.filter(
-            aduan => aduan.status !== "Selesai"
-        ).length;
+    const selesai = data.filter(
+        aduan => aduan.status === "Selesai"
+    ).length;
 
-
-    const dalamTindakan =
-        senaraiAduan.filter(
-            aduan => aduan.status === "Dalam Tindakan"
-        ).length;
-
-
-    const selesai =
-        senaraiAduan.filter(
-            aduan => aduan.status === "Selesai"
-        ).length;
-
-
-    document.getElementById("jumlahAduan")
-        .textContent = jumlahAktif;
-
-
-    document.getElementById("dalamTindakan")
-        .textContent = dalamTindakan;
-
-
-    document.getElementById("aduanSelesai")
-        .textContent = selesai;
-
+    document.getElementById("jumlahAduan").textContent = aktif;
+    document.getElementById("dalamTindakan").textContent = tindakan;
+    document.getElementById("aduanSelesai").textContent = selesai;
 }
 
+function tukarTab(tab) {
 
+    tabSemasa = tab;
 
-/* =========================
-   PAPAR SENARAI
-========================= */
+    document.getElementById("tabAktif").classList.remove("active");
+    document.getElementById("tabSelesai").classList.remove("active");
+
+    if (tab === "aktif") {
+
+        document.getElementById("tabAktif").classList.add("active");
+
+        document.getElementById("tajukSenarai").textContent =
+            "Senarai Aduan Kerosakan";
+
+        document.getElementById("notaSejarah").style.display =
+            "none";
+
+        document.getElementById("statusFilter").innerHTML = `
+            <option value="Semua">Semua Status</option>
+            <option value="Baharu">Baharu</option>
+            <option value="Dalam Tindakan">Dalam Tindakan</option>
+        `;
+
+    } else {
+
+        document.getElementById("tabSelesai").classList.add("active");
+
+        document.getElementById("tajukSenarai").textContent =
+            "Rekod Aduan Lepas / Selesai";
+
+        document.getElementById("notaSejarah").style.display =
+            "block";
+
+        document.getElementById("statusFilter").innerHTML = `
+            <option value="Selesai">Selesai</option>
+        `;
+    }
+
+    paparAduan();
+}
 
 function paparAduan() {
 
-
-    const senaraiAduan =
-        dapatkanAduan();
-
+    const data = dapatkanAduan();
 
     const search =
         document.getElementById("searchInput")
-        .value
-        .toLowerCase()
-        .trim();
-
+        .value.toLowerCase().trim();
 
     const statusFilter =
-        document.getElementById("statusFilter")
-        .value;
-
+        document.getElementById("statusFilter").value;
 
     const table =
         document.getElementById("aduanTable");
 
-
     table.innerHTML = "";
 
+    let ditapis = data.filter(function(aduan) {
 
-    const aduanDitapis =
-        senaraiAduan.filter(function(aduan) {
-
-
-            /* Sembunyikan aduan yang sudah selesai */
+        if (tabSemasa === "aktif") {
 
             if (aduan.status === "Selesai") {
-
                 return false;
-
             }
 
+        } else {
 
-            const nama =
-                (aduan.nama || "")
-                .toLowerCase();
+            if (aduan.status !== "Selesai") {
+                return false;
+            }
+        }
 
+        const nama =
+            (aduan.nama || "").toLowerCase();
 
-            const lokasi =
-                (aduan.lokasi || "")
-                .toLowerCase();
+        const lokasi =
+            (aduan.lokasi || "").toLowerCase();
 
+        const padanCarian =
+            nama.includes(search) ||
+            lokasi.includes(search);
 
-            const padananSearch =
-                nama.includes(search) ||
-                lokasi.includes(search);
+        let padanStatus = true;
 
-
-            const padananStatus =
-
-                statusFilter === "Semua Status" ||
+        if (
+            tabSemasa === "aktif" &&
+            statusFilter !== "Semua"
+        ) {
+            padanStatus =
                 aduan.status === statusFilter;
+        }
 
+        return padanCarian && padanStatus;
+    });
 
-            return (
-                padananSearch &&
-                padananStatus
-            );
-
-        });
-
-
-
-    if (aduanDitapis.length === 0) {
-
+    if (ditapis.length === 0) {
 
         table.innerHTML = `
-
             <tr>
-
-                <td
-                    colspan="7"
-                    style="
-                        text-align:center;
-                        color:#777;
-                        padding:25px;
-                    "
-                >
-                    Tiada aduan diterima.
+                <td colspan="7"
+                    style="text-align:center;color:#777;padding:25px;">
+                    ${
+                        tabSemasa === "aktif"
+                        ? "Tiada aduan aktif."
+                        : "Tiada rekod aduan selesai."
+                    }
                 </td>
-
             </tr>
-
         `;
 
-
         return;
-
     }
 
-
-
-    aduanDitapis.forEach(function(aduan, index) {
-
+    ditapis.forEach(function(aduan, index) {
 
         let statusClass = "baru";
 
-
-        if (
-            aduan.status === "Dalam Tindakan"
-        ) {
-
+        if (aduan.status === "Dalam Tindakan") {
             statusClass = "tindakan";
-
         }
 
+        if (aduan.status === "Selesai") {
+            statusClass = "selesai";
+        }
 
-
-        const row =
-            document.createElement("tr");
-
+        const row = document.createElement("tr");
 
         row.innerHTML = `
 
-            <td>
-                ${index + 1}
-            </td>
+            <td>${index + 1}</td>
+
+            <td>${aduan.nama || "-"}</td>
+
+            <td>${aduan.lokasi || "-"}</td>
+
+            <td>${aduan.jenis || "-"}</td>
+
+            <td>${formatTarikh(aduan.tarikh)}</td>
 
             <td>
-                ${aduan.nama || "-"}
-            </td>
-
-            <td>
-                ${aduan.lokasi || "-"}
-            </td>
-
-            <td>
-                ${aduan.jenis || "-"}
-            </td>
-
-            <td>
-                ${formatTarikh(aduan.tarikh)}
-            </td>
-
-            <td>
-
                 <span class="status ${statusClass}">
                     ${aduan.status || "Baharu"}
                 </span>
-
             </td>
 
             <td>
-
                 <button
                     class="btn"
                     onclick="lihatAduan(${aduan.id})"
                 >
                     Lihat
                 </button>
-
             </td>
-
         `;
 
-
         table.appendChild(row);
-
     });
-
 }
-
-
-
-/* =========================
-   TARIKH
-========================= */
 
 function formatTarikh(tarikh) {
 
+    if (!tarikh) return "-";
 
-    if (!tarikh) {
-
-        return "-";
-
-    }
-
-
-    const date =
-        new Date(tarikh);
-
+    const date = new Date(tarikh);
 
     return date.toLocaleDateString(
         "ms-MY",
@@ -853,396 +703,341 @@ function formatTarikh(tarikh) {
             year: "numeric"
         }
     );
-
 }
-
-
-
-/* =========================
-   LIHAT ADUAN
-========================= */
 
 function lihatAduan(id) {
 
-
-    const senaraiAduan =
-        dapatkanAduan();
-
+    const data = dapatkanAduan();
 
     const aduan =
-        senaraiAduan.find(
-            item => item.id === id
-        );
-
+        data.find(item => item.id === id);
 
     if (!aduan) {
-
         alert("Aduan tidak dijumpai.");
-
         return;
-
     }
 
+    let kawalanStatus = "";
 
+    if (aduan.status !== "Selesai") {
 
-    document.getElementById(
-        "detailContent"
-    ).innerHTML = `
+        kawalanStatus = `
 
+            <div class="status-box">
+
+                <label>Status Aduan</label>
+
+                <select id="statusAduan">
+
+                    <option
+                        value="Baharu"
+                        ${aduan.status === "Baharu" ? "selected" : ""}
+                    >
+                        Baharu
+                    </option>
+
+                    <option
+                        value="Dalam Tindakan"
+                        ${aduan.status === "Dalam Tindakan" ? "selected" : ""}
+                    >
+                        Dalam Tindakan
+                    </option>
+
+                    <option
+                        value="Selesai"
+                    >
+                        Selesai
+                    </option>
+
+                </select>
+
+                <button
+                    class="full-btn save-btn"
+                    onclick="kemaskiniStatus(${aduan.id})"
+                >
+                    💾 Simpan Status
+                </button>
+
+            </div>
+
+        `;
+    }
+
+    document.getElementById("detailContent").innerHTML = `
 
         <div class="detail">
-
-            <strong>
-                Nama Pelapor
-            </strong>
-
+            <strong>Nama Pelapor</strong>
             ${aduan.nama || "-"}
-
         </div>
 
-
         <div class="detail">
-
-            <strong>
-                Jawatan
-            </strong>
-
+            <strong>Jawatan</strong>
             ${aduan.jawatan || "-"}
-
         </div>
 
-
         <div class="detail">
-
-            <strong>
-                Bahagian / Unit
-            </strong>
-
+            <strong>Bahagian / Unit</strong>
             ${aduan.bahagian || "-"}
-
         </div>
 
-
         <div class="detail">
-
-            <strong>
-                Blok / Lantai
-            </strong>
-
+            <strong>Blok / Lantai</strong>
             ${aduan.blok || "-"}
-
         </div>
 
-
         <div class="detail">
-
-            <strong>
-                Tingkat / Aras
-            </strong>
-
+            <strong>Tingkat / Aras</strong>
             ${aduan.tingkat || "-"}
-
         </div>
 
-
         <div class="detail">
-
-            <strong>
-                Lokasi Kerosakan
-            </strong>
-
+            <strong>Lokasi Kerosakan</strong>
             ${aduan.lokasi || "-"}
-
         </div>
 
-
         <div class="detail">
-
-            <strong>
-                Jenis Kerosakan
-            </strong>
-
+            <strong>Jenis Kerosakan</strong>
             ${aduan.jenis || "-"}
-
         </div>
 
-
         <div class="detail">
-
-            <strong>
-                Penerangan Kerosakan
-            </strong>
-
+            <strong>Penerangan Kerosakan</strong>
             ${aduan.penerangan || "-"}
-
         </div>
 
-
         <div class="detail">
-
-            <strong>
-                Cadangan Penambahbaikan
-            </strong>
-
+            <strong>Cadangan Penambahbaikan</strong>
             ${aduan.cadangan || "-"}
-
         </div>
-
 
         <div class="detail">
-
-            <strong>
-                Tarikh Aduan
-            </strong>
-
+            <strong>Tarikh Aduan</strong>
             ${formatTarikh(aduan.tarikh)}
-
         </div>
 
+        <div class="detail">
+            <strong>Status</strong>
+            ${aduan.status || "Baharu"}
+        </div>
 
         ${
             aduan.gambar
             ?
             `
                 <div class="detail">
-
-                    <strong>
-                        Gambar Kerosakan
-                    </strong>
+                    <strong>Gambar Kerosakan</strong>
 
                     <img
                         src="${aduan.gambar}"
                         class="detail-image"
                         alt="Gambar Kerosakan"
                     >
-
                 </div>
             `
             :
             ""
         }
 
+        ${kawalanStatus}
 
-        <!-- STATUS -->
-
-        <div class="status-box">
-
-            <label>
-                Status Aduan
-            </label>
-
-
-            <select id="statusAduan">
-
-                <option
-                    value="Baharu"
-                    ${aduan.status === "Baharu" ? "selected" : ""}
-                >
-                    Baharu
-                </option>
-
-
-                <option
-                    value="Dalam Tindakan"
-                    ${aduan.status === "Dalam Tindakan" ? "selected" : ""}
-                >
-                    Dalam Tindakan
-                </option>
-
-
-                <option
-                    value="Selesai"
-                    ${aduan.status === "Selesai" ? "selected" : ""}
-                >
-                    Selesai
-                </option>
-
-            </select>
-
-
-            <button
-                class="save-status"
-                onclick="kemaskiniStatus(${aduan.id})"
-            >
-                💾 Simpan Status
-            </button>
-
-        </div>
-
+        <button
+            class="full-btn pdf-btn"
+            onclick="janaPDF(${aduan.id})"
+        >
+            📄 Jana PDF Aduan
+        </button>
     `;
 
-
-    document.getElementById(
-        "detailModal"
-    ).style.display = "flex";
-
+    document.getElementById("detailModal").style.display =
+        "flex";
 }
-
-
-
-/* =========================
-   KEMASKINI STATUS
-========================= */
 
 function kemaskiniStatus(id) {
 
-
     const statusBaru =
-        document.getElementById(
-            "statusAduan"
-        ).value;
+        document.getElementById("statusAduan").value;
 
-
-    let senaraiAduan =
-        dapatkanAduan();
-
+    let data = dapatkanAduan();
 
     const index =
-        senaraiAduan.findIndex(
+        data.findIndex(
             aduan => aduan.id === id
         );
 
-
     if (index === -1) {
-
-        alert("Aduan tidak dijumpai.");
-
         return;
-
     }
 
+    data[index].status = statusBaru;
 
-    senaraiAduan[index].status =
-        statusBaru;
+    if (statusBaru === "Selesai") {
+        data[index].tarikhSelesai =
+            new Date().toISOString();
+    }
 
-
-    simpanSemulaAduan(
-        senaraiAduan
-    );
-
+    simpanAduan(data);
 
     tutupModal();
 
-
     kemaskiniDashboard();
-
     paparAduan();
 
-
-    alert(
-        "Status aduan berjaya dikemaskini."
-    );
-
+    alert("Status aduan berjaya dikemaskini.");
 }
-
-
-
-/* =========================
-   TUTUP MODAL
-========================= */
 
 function tutupModal() {
 
-    document.getElementById(
-        "detailModal"
-    ).style.display = "none";
-
+    document.getElementById("detailModal").style.display =
+        "none";
 }
 
+function janaPDF(id) {
 
+    const data = dapatkanAduan();
 
-/* =========================
-   KLIK LUAR MODAL
-========================= */
+    const aduan =
+        data.find(item => item.id === id);
 
-window.addEventListener(
-    "click",
-    function(event) {
+    if (!aduan) {
+        alert("Aduan tidak dijumpai.");
+        return;
+    }
 
-        const modal =
-            document.getElementById(
-                "detailModal"
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF();
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(17);
+
+    doc.text(
+        "JABATAN MINERAL DAN GEOSAINS MALAYSIA",
+        20,
+        20
+    );
+
+    doc.setFontSize(13);
+    doc.text("SABAH", 20, 28);
+
+    doc.line(20, 34, 190, 34);
+
+    doc.setFontSize(15);
+
+    doc.text(
+        "BORANG ADUAN KEROSAKAN FASILITI",
+        20,
+        46
+    );
+
+    let y = 60;
+
+    function tambah(label, value) {
+
+        doc.setFontSize(10);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(label, 20, y);
+
+        doc.setFont("helvetica", "normal");
+
+        const lines =
+            doc.splitTextToSize(
+                String(value || "-"),
+                125
             );
 
+        doc.text(lines, 65, y);
 
-        if (event.target === modal) {
+        y += Math.max(
+            8,
+            lines.length * 6
+        );
 
-            tutupModal();
+        if (y > 270) {
+            doc.addPage();
+            y = 20;
+        }
+    }
 
+    tambah("Nama Pelapor:", aduan.nama);
+    tambah("Jawatan:", aduan.jawatan);
+    tambah("Bahagian / Unit:", aduan.bahagian);
+    tambah("Blok / Lantai:", aduan.blok);
+    tambah("Tingkat / Aras:", aduan.tingkat);
+    tambah("Lokasi:", aduan.lokasi);
+    tambah("Jenis Kerosakan:", aduan.jenis);
+    tambah("Penerangan:", aduan.penerangan);
+    tambah("Cadangan:", aduan.cadangan);
+    tambah("Tarikh Aduan:", formatTarikh(aduan.tarikh));
+    tambah("Status:", aduan.status);
+
+    if (aduan.gambar) {
+
+        if (y > 190) {
+            doc.addPage();
+            y = 20;
         }
 
+        doc.setFont("helvetica", "bold");
+        doc.text("Gambar Kerosakan:", 20, y);
+
+        y += 8;
+
+        try {
+            doc.addImage(
+                aduan.gambar,
+                "JPEG",
+                20,
+                y,
+                100,
+                75
+            );
+        } catch (e) {
+            console.log(e);
+        }
     }
-);
 
+    doc.save(
+        "Aduan-" +
+        (aduan.nama || "JMG") +
+        "-" +
+        aduan.id +
+        ".pdf"
+    );
+}
 
-
-/* =========================
-   SEARCH
-========================= */
-
-document.getElementById(
-    "searchInput"
-).addEventListener(
+document.getElementById("searchInput")
+.addEventListener(
     "input",
     paparAduan
 );
 
-
-
-/* =========================
-   FILTER
-========================= */
-
-document.getElementById(
-    "statusFilter"
-).addEventListener(
+document.getElementById("statusFilter")
+.addEventListener(
     "change",
     paparAduan
 );
 
-
-
-/* =========================
-   REFRESH
-========================= */
+window.addEventListener(
+    "pageshow",
+    function() {
+        kemaskiniDashboard();
+        paparAduan();
+    }
+);
 
 window.addEventListener(
     "focus",
     function() {
-
         kemaskiniDashboard();
-
         paparAduan();
-
     }
 );
-
-
-window.addEventListener(
-    "pageshow",
-    function() {
-
-        kemaskiniDashboard();
-
-        paparAduan();
-
-    }
-);
-
-
-
-/* =========================
-   MULA
-========================= */
 
 kemaskiniDashboard();
-
 paparAduan();
-
 
 </script>
 
-
 </body>
-
 </html>
