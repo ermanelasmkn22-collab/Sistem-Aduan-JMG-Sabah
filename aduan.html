@@ -299,10 +299,13 @@
 
 <script>
 
+const GOOGLE_APPS_SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbxw022kEz834IL8nD9Gsbct_IKzgRAAdSwSfla_uW2ndYN3Bx0OqgQG33Kftb-uzBkI/exec";
+
+
 document.getElementById("aduanForm").addEventListener("submit", function(event) {
 
     event.preventDefault();
-
 
     const nama =
         document.getElementById("nama").value.trim();
@@ -337,85 +340,70 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
     const gambarInput =
         document.getElementById("gambar");
 
+    const lokasiLengkap =
+        blok +
+        " / " +
+        tingkat +
+        " - " +
+        lokasi;
 
-    const aduan = {
-
-        id: Date.now(),
-
+    const data = {
         nama: nama,
-
         jawatan: jawatan,
-
         bahagian: bahagian,
-
-        blok: blok,
-
-        tingkat: tingkat,
-
-        lokasi: lokasi,
-
-        jenis: jenis,
-
+        lokasi: lokasiLengkap,
+        jenisKerosakan: jenis,
         penerangan: penerangan,
-
+        gambar: gambarInput.files.length > 0
+            ? "Ada gambar"
+            : "",
         cadangan: cadangan,
-
-        tarikh: tarikh,
-
-        status: "Baharu",
-
-        ulasan: "",
-
-        gambar: ""
-
+        tarikhAduan: tarikh
     };
 
+    const button =
+        document.querySelector("#aduanForm button");
 
-    if (gambarInput.files.length > 0) {
+    button.disabled = true;
+    button.innerText =
+        "⏳ Menghantar Aduan...";
 
-        const reader = new FileReader();
+    fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+    .then(function(response) {
+        return response.text();
+    })
+    .then(function(result) {
 
+        console.log(
+            "Response Apps Script:",
+            result
+        );
 
-        reader.onload = function(e) {
+        paparBerjaya();
 
-            aduan.gambar = e.target.result;
+    })
+    .catch(function(error) {
 
-            simpanAduan(aduan);
+        console.error(error);
 
-        };
+        alert(
+            "❌ Aduan gagal dihantar. Sila cuba lagi."
+        );
 
+        button.disabled = false;
 
-        reader.readAsDataURL(gambarInput.files[0]);
+        button.innerText =
+            "📤 Hantar Aduan";
 
-    }
-
-    else {
-
-        simpanAduan(aduan);
-
-    }
+    });
 
 });
 
 
-function simpanAduan(aduan) {
-
-    let senaraiAduan =
-        JSON.parse(
-            localStorage.getItem("senaraiAduan")
-        ) || [];
-
-
-    senaraiAduan.push(aduan);
-
-
-    localStorage.setItem(
-        "senaraiAduan",
-        JSON.stringify(senaraiAduan)
-    );
-
-
-    // Paparan selepas aduan berjaya dihantar
+function paparBerjaya() {
 
     document.querySelector(".container").innerHTML = `
 
@@ -431,7 +419,6 @@ function simpanAduan(aduan) {
                 ✅
             </div>
 
-
             <h2 style="
                 color:#1f5d3a;
                 margin-bottom:15px;
@@ -439,16 +426,14 @@ function simpanAduan(aduan) {
                 Aduan Berjaya Dihantar
             </h2>
 
-
             <p style="
                 color:#666;
                 line-height:1.6;
                 margin-bottom:35px;
             ">
-                Aduan kerosakan anda telah berjaya dihantar
-                dan direkodkan dalam sistem.
+                Aduan kerosakan anda telah berjaya
+                dihantar dan direkodkan dalam sistem.
             </p>
-
 
             <div style="
                 display:flex;
@@ -456,7 +441,6 @@ function simpanAduan(aduan) {
                 justify-content:center;
                 flex-wrap:wrap;
             ">
-
 
                 <button
                     type="button"
@@ -466,7 +450,6 @@ function simpanAduan(aduan) {
                     🏠 Kembali ke Halaman Utama
                 </button>
 
-
                 <button
                     type="button"
                     class="success-button new-button"
@@ -474,7 +457,6 @@ function simpanAduan(aduan) {
                 >
                     ↩️ Buat Aduan Baharu
                 </button>
-
 
             </div>
 
