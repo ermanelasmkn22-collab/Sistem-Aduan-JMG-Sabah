@@ -7,6 +7,7 @@
     <title>Sistem Aduan JMG Sabah</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -32,21 +33,22 @@
             gap: 18px;
         }
 
-      .logo {
-    width: 75px;
-    height: 75px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .logo {
+            width: 75px;
+            height: 75px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.logo img {
-    width: 75px;
-    height: 75px;
-    object-fit: contain;
-    display: block;
-}
+        .logo img {
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
+            display: block;
+        }
+
         .header h1 {
             font-size: 24px;
             margin-bottom: 5px;
@@ -131,6 +133,42 @@
             background: #0f4d29;
         }
 
+        .login-box {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-bottom: 10px;
+            outline: none;
+        }
+
+        .login-box input:focus {
+            border-color: #176b3a;
+        }
+
+        .login-btn {
+            width: 100%;
+        }
+
+        .error {
+            color: #dc2626;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .cancel-btn {
+            margin-top: 8px;
+            background: #64748b;
+            width: 100%;
+        }
+
         footer {
             text-align: center;
             background: #14532d;
@@ -144,6 +182,7 @@
         }
 
         @media (max-width: 750px) {
+
             .cards {
                 flex-direction: column;
                 align-items: center;
@@ -161,93 +200,301 @@
                 flex-direction: column;
                 text-align: center;
             }
+
             .jmg-logo {
-    width: 75px;
-    height: 75px;
-    object-fit: contain;
-    flex-shrink: 0;
-}
+                width: 75px;
+                height: 75px;
+                object-fit: contain;
+                flex-shrink: 0;
+            }
+
         }
+
     </style>
 </head>
 
 <body>
 
-    <header>
-        <div class="header">
+<header>
 
-          <div class="logo">
-  <img class="jmg-logo" src="logo-jmg.jpeg" alt="Logo JMG">
-</div>
+    <div class="header">
 
-            <div>
-                <h1>Jabatan Mineral dan Geosains Malaysia</h1>
-                <p>Sabah</p>
+        <div class="logo">
+
+            <img
+                class="jmg-logo"
+                src="logo-jmg.jpeg"
+                alt="Logo JMG">
+
+        </div>
+
+        <div>
+
+            <h1>
+                Jabatan Mineral dan Geosains Malaysia
+            </h1>
+
+            <p>
+                Sabah
+            </p>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<section class="hero">
+
+    <h2>
+        Sistem Aduan Kerosakan Fasiliti
+    </h2>
+
+    <p>
+        Selamat datang ke Sistem Aduan Kerosakan Fasiliti
+        Jabatan Mineral dan Geosains Malaysia, Sabah.
+    </p>
+
+</section>
+
+
+<section class="cards">
+
+
+    <!-- ========================================= -->
+    <!-- PELAPOR -->
+    <!-- ========================================= -->
+
+    <div class="card">
+
+        <div class="icon">
+            👤
+        </div>
+
+        <h3>
+            Pelapor
+        </h3>
+
+        <p>
+            Membuat laporan berkaitan kerosakan
+            fasiliti di JMG Sabah.
+        </p>
+
+        <button onclick="location.href='aduan.html'">
+
+            Buat Aduan
+
+        </button>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- PPT -->
+    <!-- ========================================= -->
+
+    <div class="card">
+
+        <div class="icon">
+            🛠️
+        </div>
+
+        <h3>
+            PPT
+        </h3>
+
+        <p>
+            Menyemak, mengurus dan memantau
+            aduan kerosakan fasiliti.
+        </p>
+
+
+        <button
+            id="loginButton"
+            onclick="paparLogin()">
+
+            Log Masuk
+
+        </button>
+
+
+        <div
+            class="login-box"
+            id="loginBox">
+
+            <input
+                type="password"
+                id="passwordPPT"
+                placeholder="Masukkan kata laluan PPT"
+                onkeydown="tekanEnter(event)">
+
+
+            <button
+                class="login-btn"
+                onclick="loginPPT()">
+
+                🔐 Log Masuk
+
+            </button>
+
+
+            <button
+                class="cancel-btn"
+                onclick="batalLogin()">
+
+                Batal
+
+            </button>
+
+
+            <div
+                class="error"
+                id="loginError">
+
+                ❌ Kata laluan tidak betul.
+
             </div>
 
         </div>
-    </header>
+
+    </div>
+
+</section>
 
 
-    <section class="hero">
+<footer>
 
-        <h2>Sistem Aduan Kerosakan Fasiliti</h2>
+    <p>
+        © 2026 Jabatan Mineral dan Geosains Malaysia, Sabah
+    </p>
 
-        <p>
-            Selamat datang ke Sistem Aduan Kerosakan Fasiliti
-            Jabatan Mineral dan Geosains Malaysia, Sabah.
-        </p>
+    <p>
+        Sistem Aduan Kerosakan Fasiliti
+    </p>
 
-    </section>
-
-
-    <section class="cards">
-
-        <div class="card">
-
-            <div class="icon">👤</div>
-
-            <h3>Pelapor</h3>
-
-            <p>
-                Membuat laporan berkaitan kerosakan
-                fasiliti di JMG Sabah.
-            </p>
-
-            <button onclick="location.href='aduan.html'">
-    Buat Aduan
-</button>
-
-        </div>
+</footer>
 
 
-        <div class="card">
-
-            <div class="icon">🛠️</div>
-
-            <h3>PPT</h3>
-
-            <p>
-                Menyemak, mengurus dan memantau
-                aduan kerosakan fasiliti.
-            </p>
-
-            <button onclick="location.href='ppt.html'">
-                Log Masuk
-            </button>
-
-        </div>
-
-    </section>
+<script>
 
 
-    <footer>
+// =====================================================
+// KATA LALUAN PPT
+// =====================================================
 
-        <p>© 2026 Jabatan Mineral dan Geosains Malaysia, Sabah</p>
+const PASSWORD_PPT = "JMG@2026";
 
-        <p>Sistem Aduan Kerosakan Fasiliti</p>
 
-    </footer>
+// =====================================================
+// PAPAR LOGIN
+// =====================================================
+
+function paparLogin() {
+
+    const box =
+        document.getElementById("loginBox");
+
+    const button =
+        document.getElementById("loginButton");
+
+    box.style.display = "block";
+
+    button.style.display = "none";
+
+    document
+        .getElementById("passwordPPT")
+        .focus();
+
+}
+
+
+// =====================================================
+// BATAL LOGIN
+// =====================================================
+
+function batalLogin() {
+
+    document
+        .getElementById("loginBox")
+        .style.display = "none";
+
+    document
+        .getElementById("loginButton")
+        .style.display = "inline-block";
+
+    document
+        .getElementById("passwordPPT")
+        .value = "";
+
+    document
+        .getElementById("loginError")
+        .style.display = "none";
+
+}
+
+
+// =====================================================
+// LOGIN PPT
+// =====================================================
+
+function loginPPT() {
+
+    const password =
+        document
+        .getElementById("passwordPPT")
+        .value;
+
+    const error =
+        document
+        .getElementById("loginError");
+
+
+    if (password === PASSWORD_PPT) {
+
+        // Simpan sesi login untuk tab ini sahaja
+        sessionStorage.setItem(
+            "pptLogin",
+            "true"
+        );
+
+        // Masuk dashboard
+        window.location.href =
+            "ppt.html";
+
+    } else {
+
+        error.style.display =
+            "block";
+
+        document
+            .getElementById("passwordPPT")
+            .value = "";
+
+        document
+            .getElementById("passwordPPT")
+            .focus();
+
+    }
+
+}
+
+
+// =====================================================
+// ENTER UNTUK LOGIN
+// =====================================================
+
+function tekanEnter(event) {
+
+    if (event.key === "Enter") {
+
+        loginPPT();
+
+    }
+
+}
+
+</script>
 
 </body>
 </html>
