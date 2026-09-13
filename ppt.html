@@ -356,6 +356,12 @@ tr:hover{
     color:#b91c1c;
 }
 
+.success{
+    text-align:center;
+    padding:30px;
+    color:#166534;
+}
+
 footer{
     text-align:center;
     padding:25px;
@@ -645,6 +651,7 @@ onclick="tutupModal()">
 </footer>
 
 
+
 <script>
 
 
@@ -667,79 +674,56 @@ let tabSemasa = "aktif";
 
 // =====================================================
 // AMBIL DATA GOOGLE SHEET
+// GUNA JSONP - SATU KAEDAH SAHAJA
 // =====================================================
 
-function dapatkanAduan() {
+function dapatkanAduan(){
 
     console.log("Mula ambil data aduan...");
 
     paparLoading();
 
-    fetch(
-        GOOGLE_APPS_SCRIPT_URL + "?t=" + Date.now()
-    )
-    .then(function(response) {
+    const callbackName =
+        "callbackAduan_" + Date.now();
 
-        if (!response.ok) {
-            throw new Error(
-                "HTTP Error " + response.status
-            );
-        }
+    let selesai = false;
 
-        return response.json();
+    const script =
+        document.createElement("script");
 
-    })
-    .then(function(response) {
+    function cleanup(){
 
-        console.log(
-            "DATA DITERIMA:",
-            response
-        );
+        try{
 
-        if (
-            !response ||
-            response.success !== true
-        ) {
+            if(script && script.parentNode){
+                script.parentNode.removeChild(script);
+            }
 
-            throw new Error(
-                "Response database tidak sah."
+        }catch(e){
+
+            console.warn(
+                "Cleanup script:",
+                e
             );
 
         }
 
-        semuaAduan =
-            Array.isArray(response.data)
-            ? response.data
-            : [];
+        try{
 
-        console.log(
-            "JUMLAH ADUAN:",
-            semuaAduan.length
-        );
+            delete window[callbackName];
 
-        kemaskiniDashboard();
+        }catch(e){
 
-        paparAduan();
+            window[callbackName] = undefined;
 
-    })
-    .catch(function(error) {
+        }
 
-        console.error(
-            "RALAT DATABASE:",
-            error
-        );
+    }
 
-        paparError(
-            "❌ Gagal menyambung ke sistem database."
-        );
 
-    });
-
-}
-
-    // -------------------------------------------------
-    // TERIMA DATA DARIPADA GOOGLE APPS SCRIPT
-    // -------------------------------------------------
+    // =================================================
+    // CALLBACK
+    // =================================================
 
     window[callbackName] =
         function(response){
@@ -747,14 +731,10 @@ function dapatkanAduan() {
             selesai = true;
 
             console.log(
-                "DATA DARIPADA APPS SCRIPT:",
+                "DATA DITERIMA:",
                 response
             );
 
-
-            // -----------------------------------------
-            // SEMAK RESPONSE
-            // -----------------------------------------
 
             if(
                 !response ||
@@ -772,10 +752,6 @@ function dapatkanAduan() {
             }
 
 
-            // -----------------------------------------
-            // SIMPAN DATA
-            // -----------------------------------------
-
             semuaAduan =
                 Array.isArray(response.data)
                 ? response.data
@@ -788,32 +764,18 @@ function dapatkanAduan() {
             );
 
 
-            // -----------------------------------------
-            // KEMASKINI DASHBOARD
-            // -----------------------------------------
-
             kemaskiniDashboard();
 
-
-            // -----------------------------------------
-            // PAPAR SENARAI ADUAN
-            // -----------------------------------------
-
             paparAduan();
-
-
-            // -----------------------------------------
-            // BUANG SCRIPT
-            // -----------------------------------------
 
             cleanup();
 
         };
 
 
-    // -------------------------------------------------
-    // JIKA GAGAL SAMBUNG
-    // -------------------------------------------------
+    // =================================================
+    // ERROR SCRIPT
+    // =================================================
 
     script.onerror =
         function(){
@@ -821,7 +783,7 @@ function dapatkanAduan() {
             selesai = true;
 
             console.error(
-                "Gagal memanggil Google Apps Script."
+                "Gagal menyambung Google Apps Script."
             );
 
             paparError(
@@ -833,144 +795,9 @@ function dapatkanAduan() {
         };
 
 
-    // -------------------------------------------------
-    // URL GOOGLE APPS SCRIPT
-    // -------------------------------------------------
-
-    script.src =
-        GOOGLE_APPS_SCRIPT_URL +
-        "?prefix=" +
-        encodeURIComponent(callbackName) +
-        "&t=" +
-        Date.now();
-
-
-    console.log(
-        "URL JSONP:",
-        script.src
-    );
-
-
-    // -------------------------------------------------
-    // JALANKAN SCRIPT
-    // -------------------------------------------------
-
-    document.body.appendChild(script);
-
-
-    // -------------------------------------------------
-    // TIMEOUT 15 SAAT
-    // -------------------------------------------------
-
-    setTimeout(
-        function(){
-
-            if(!selesai){
-
-                console.error(
-                    "Google Apps Script tidak memberi respons."
-                );
-
-                paparError(
-                    "❌ Database tidak memberi respons."
-                );
-
-                cleanup();
-
-            }
-
-        },
-        15000
-    );
-
-}
-
-    // -------------------------------------------------
-    // CALLBACK
-    // -------------------------------------------------
-
-    window[callbackName] =
-        function(response){
-
-            selesai = true;
-
-
-            console.log(
-                "DATA DITERIMA:",
-                response
-            );
-
-
-            if(
-                !response ||
-                response.success !== true
-            ){
-
-                paparError(
-                    "Data aduan tidak dapat dibaca."
-                );
-
-                cleanup();
-
-                return;
-
-            }
-
-
-            if(
-                Array.isArray(response.data)
-            ){
-
-                semuaAduan =
-                    response.data;
-
-            }else{
-
-                semuaAduan = [];
-
-            }
-
-
-            console.log(
-                "JUMLAH ADUAN:",
-                semuaAduan.length
-            );
-
-
-            kemaskiniDashboard();
-
-            paparAduan();
-
-            cleanup();
-
-        };
-
-
-    // -------------------------------------------------
-    // ERROR
-    // -------------------------------------------------
-
-    script.onerror =
-        function(){
-
-            selesai = true;
-
-            console.error(
-                "Gagal menyambung Google Apps Script"
-            );
-
-            paparError(
-                "❌ Gagal menyambung ke sistem database."
-            );
-
-            cleanup();
-
-        };
-
-
-    // -------------------------------------------------
+    // =================================================
     // URL JSONP
-    // -------------------------------------------------
+    // =================================================
 
     script.src =
         GOOGLE_APPS_SCRIPT_URL +
@@ -986,30 +813,66 @@ function dapatkanAduan() {
     );
 
 
+    // =================================================
+    // MASUKKAN SCRIPT KE PAGE
+    // =================================================
+
     document.body.appendChild(script);
 
 
-    // -------------------------------------------------
+    // =================================================
     // TIMEOUT
-    // -------------------------------------------------
+    // =================================================
 
-    setTimeout(function(){
+    setTimeout(
+        function(){
 
-        if(!selesai){
+            if(!selesai){
 
-            console.error(
-                "Database timeout."
-            );
+                console.error(
+                    "Database timeout."
+                );
 
-            paparError(
-                "❌ Database tidak memberi respons. Sila refresh halaman."
-            );
+                paparError(
+                    "❌ Database tidak memberi respons. Sila refresh halaman."
+                );
 
-            cleanup();
+                cleanup();
 
-        }
+            }
 
-    },15000);
+        },
+        15000
+    );
+
+}
+
+
+// =====================================================
+// LOADING
+// =====================================================
+
+function paparLoading(){
+
+    document.getElementById(
+        "aduanTable"
+    ).innerHTML = `
+
+    <tr>
+
+        <td colspan="8">
+
+            <div class="loading">
+
+                ⏳ Memuatkan aduan...
+
+            </div>
+
+        </td>
+
+    </tr>
+
+    `;
 
 }
 
@@ -1026,15 +889,15 @@ function paparError(message){
 
     <tr>
 
-    <td colspan="8">
+        <td colspan="8">
 
-    <div class="error">
+            <div class="error">
 
-    ${message}
+                ${message}
 
-    </div>
+            </div>
 
-    </td>
+        </td>
 
     </tr>
 
@@ -1051,31 +914,46 @@ function kemaskiniDashboard(){
 
     const aktif =
         semuaAduan.filter(
-            aduan =>
-            String(aduan.status || "")
-            .trim()
-            .toLowerCase()
-            !== "selesai"
+            function(aduan){
+
+                return String(
+                    aduan.status || ""
+                )
+                .trim()
+                .toLowerCase()
+                !== "selesai";
+
+            }
         ).length;
 
 
     const tindakan =
         semuaAduan.filter(
-            aduan =>
-            String(aduan.status || "")
-            .trim()
-            .toLowerCase()
-            === "dalam tindakan"
+            function(aduan){
+
+                return String(
+                    aduan.status || ""
+                )
+                .trim()
+                .toLowerCase()
+                === "dalam tindakan";
+
+            }
         ).length;
 
 
     const selesai =
         semuaAduan.filter(
-            aduan =>
-            String(aduan.status || "")
-            .trim()
-            .toLowerCase()
-            === "selesai"
+            function(aduan){
+
+                return String(
+                    aduan.status || ""
+                )
+                .trim()
+                .toLowerCase()
+                === "selesai";
+
+            }
         ).length;
 
 
@@ -1106,80 +984,82 @@ function tukarTab(tab){
 
 
     document
-    .getElementById("tabAktif")
-    .classList.remove("active");
+        .getElementById("tabAktif")
+        .classList.remove("active");
 
 
     document
-    .getElementById("tabSelesai")
-    .classList.remove("active");
+        .getElementById("tabSelesai")
+        .classList.remove("active");
 
 
     if(tab === "aktif"){
 
         document
-        .getElementById("tabAktif")
-        .classList.add("active");
+            .getElementById("tabAktif")
+            .classList.add("active");
 
 
         document
-        .getElementById("tajukSenarai")
-        .textContent =
-        "Senarai Aduan Kerosakan";
+            .getElementById("tajukSenarai")
+            .textContent =
+            "Senarai Aduan Kerosakan";
 
 
         document
-        .getElementById("notaSejarah")
-        .style.display =
-        "none";
+            .getElementById("notaSejarah")
+            .style.display =
+            "none";
 
 
         document
-        .getElementById("statusFilter")
-        .innerHTML = `
+            .getElementById("statusFilter")
+            .innerHTML = `
 
-        <option value="Semua">
-        Semua Status
-        </option>
+            <option value="Semua">
+                Semua Status
+            </option>
 
-        <option value="Baharu">
-        Baharu
-        </option>
+            <option value="Baharu">
+                Baharu
+            </option>
 
-        <option value="Dalam Tindakan">
-        Dalam Tindakan
-        </option>
+            <option value="Dalam Tindakan">
+                Dalam Tindakan
+            </option>
 
-        `;
+            `;
 
-    }else{
+    }
 
-        document
-        .getElementById("tabSelesai")
-        .classList.add("active");
-
+    else{
 
         document
-        .getElementById("tajukSenarai")
-        .textContent =
-        "Rekod Aduan Lepas / Selesai";
+            .getElementById("tabSelesai")
+            .classList.add("active");
 
 
         document
-        .getElementById("notaSejarah")
-        .style.display =
-        "block";
+            .getElementById("tajukSenarai")
+            .textContent =
+            "Rekod Aduan Lepas / Selesai";
 
 
         document
-        .getElementById("statusFilter")
-        .innerHTML = `
+            .getElementById("notaSejarah")
+            .style.display =
+            "block";
 
-        <option value="Selesai">
-        Selesai
-        </option>
 
-        `;
+        document
+            .getElementById("statusFilter")
+            .innerHTML = `
+
+            <option value="Selesai">
+                Selesai
+            </option>
+
+            `;
 
     }
 
@@ -1221,7 +1101,6 @@ function paparAduan(){
     let ditapis =
         semuaAduan.filter(
             function(aduan){
-
 
                 const status =
                     String(
@@ -1300,7 +1179,9 @@ function paparAduan(){
         );
 
 
+    // =================================================
     // TIADA DATA
+    // =================================================
 
     if(ditapis.length === 0){
 
@@ -1308,21 +1189,21 @@ function paparAduan(){
 
         <tr>
 
-        <td
-        colspan="8"
-        style="
-        text-align:center;
-        color:#777;
-        padding:30px;
-        ">
+            <td
+            colspan="8"
+            style="
+            text-align:center;
+            color:#777;
+            padding:30px;
+            ">
 
-        ${
-            tabSemasa === "aktif"
-            ? "Tiada aduan aktif."
-            : "Tiada rekod aduan selesai."
-        }
+            ${
+                tabSemasa === "aktif"
+                ? "Tiada aduan aktif."
+                : "Tiada rekod aduan selesai."
+            }
 
-        </td>
+            </td>
 
         </tr>
 
@@ -1333,11 +1214,12 @@ function paparAduan(){
     }
 
 
+    // =================================================
     // PAPAR DATA
+    // =================================================
 
     ditapis.forEach(
         function(aduan,index){
-
 
             let statusClass =
                 "baru";
@@ -1372,63 +1254,73 @@ function paparAduan(){
             row.innerHTML = `
 
             <td>
-            ${index + 1}
-            </td>
-
-            <td>
-            <strong>
-            ${escapeHTML(
-                aduan.noAduan || "-"
-            )}
-            </strong>
-            </td>
-
-            <td>
-            ${escapeHTML(
-                aduan.nama || "-"
-            )}
-            </td>
-
-            <td>
-            ${escapeHTML(
-                aduan.lokasi || "-"
-            )}
-            </td>
-
-            <td>
-            ${escapeHTML(
-                aduan.jenis || "-"
-            )}
-            </td>
-
-            <td>
-            ${formatTarikh(
-                aduan.tarikh
-            )}
+                ${index + 1}
             </td>
 
             <td>
 
-            <span
-            class="status ${statusClass}">
-
-            ${escapeHTML(
-                aduan.status || "Baharu"
-            )}
-
-            </span>
+                <strong>
+                    ${escapeHTML(
+                        aduan.noAduan || "-"
+                    )}
+                </strong>
 
             </td>
 
             <td>
 
-            <button
-            class="btn"
-            onclick="lihatAduan(${Number(aduan.id)})">
+                ${escapeHTML(
+                    aduan.nama || "-"
+                )}
 
-            Lihat
+            </td>
 
-            </button>
+            <td>
+
+                ${escapeHTML(
+                    aduan.lokasi || "-"
+                )}
+
+            </td>
+
+            <td>
+
+                ${escapeHTML(
+                    aduan.jenis || "-"
+                )}
+
+            </td>
+
+            <td>
+
+                ${formatTarikh(
+                    aduan.tarikh
+                )}
+
+            </td>
+
+            <td>
+
+                <span
+                class="status ${statusClass}">
+
+                    ${escapeHTML(
+                        aduan.status || "Baharu"
+                    )}
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <button
+                class="btn"
+                onclick="lihatAduan(${Number(aduan.id)})">
+
+                    Lihat
+
+                </button>
 
             </td>
 
@@ -1505,9 +1397,12 @@ function lihatAduan(id){
 
     const aduan =
         semuaAduan.find(
-            item =>
-            Number(item.id) ===
-            Number(id)
+            function(item){
+
+                return Number(item.id) ===
+                       Number(id);
+
+            }
         );
 
 
@@ -1533,70 +1428,70 @@ function lihatAduan(id){
 
         <div class="status-box">
 
-        <label>
-        Status Aduan
-        </label>
+            <label>
+                Status Aduan
+            </label>
 
 
-        <select id="statusAduan">
+            <select id="statusAduan">
 
-        <option value="Baharu"
-        ${
-            aduan.status === "Baharu"
-            ? "selected"
-            : ""
-        }>
+                <option value="Baharu"
+                ${
+                    aduan.status === "Baharu"
+                    ? "selected"
+                    : ""
+                }>
 
-        Baharu
+                    Baharu
 
-        </option>
-
-
-        <option value="Dalam Tindakan"
-        ${
-            aduan.status ===
-            "Dalam Tindakan"
-            ? "selected"
-            : ""
-        }>
-
-        Dalam Tindakan
-
-        </option>
+                </option>
 
 
-        <option value="Selesai">
+                <option value="Dalam Tindakan"
+                ${
+                    aduan.status ===
+                    "Dalam Tindakan"
+                    ? "selected"
+                    : ""
+                }>
 
-        Selesai
+                    Dalam Tindakan
 
-        </option>
-
-        </select>
-
-
-        <label
-        style="margin-top:15px;">
-
-        Catatan PPT
-
-        </label>
+                </option>
 
 
-        <textarea
-        id="catatanPPT"
-        placeholder="Masukkan catatan / tindakan yang telah dibuat..."
-        >${escapeHTML(
-            aduan.catatan || ""
-        )}</textarea>
+                <option value="Selesai">
+
+                    Selesai
+
+                </option>
+
+            </select>
 
 
-        <button
-        class="full-btn save-btn"
-        onclick="kemaskiniStatus(${Number(aduan.id)})">
+            <label
+            style="margin-top:15px;">
 
-        💾 Simpan Status & Catatan
+                Catatan PPT
 
-        </button>
+            </label>
+
+
+            <textarea
+            id="catatanPPT"
+            placeholder="Masukkan catatan / tindakan yang telah dibuat..."
+            >${escapeHTML(
+                aduan.catatan || ""
+            )}</textarea>
+
+
+            <button
+            class="full-btn save-btn"
+            onclick="kemaskiniStatus(${Number(aduan.id)})">
+
+                💾 Simpan Status & Catatan
+
+            </button>
 
         </div>
 
@@ -1612,132 +1507,132 @@ function lihatAduan(id){
 
     <div class="detail">
 
-    <strong>No. Aduan</strong>
+        <strong>No. Aduan</strong>
 
-    ${escapeHTML(
-        aduan.noAduan || "-"
-    )}
-
-    </div>
-
-
-    <div class="detail">
-
-    <strong>Nama Pelapor</strong>
-
-    ${escapeHTML(
-        aduan.nama || "-"
-    )}
+        ${escapeHTML(
+            aduan.noAduan || "-"
+        )}
 
     </div>
 
 
     <div class="detail">
 
-    <strong>Jawatan</strong>
+        <strong>Nama Pelapor</strong>
 
-    ${escapeHTML(
-        aduan.jawatan || "-"
-    )}
-
-    </div>
-
-
-    <div class="detail">
-
-    <strong>Bahagian / Unit</strong>
-
-    ${escapeHTML(
-        aduan.bahagian || "-"
-    )}
+        ${escapeHTML(
+            aduan.nama || "-"
+        )}
 
     </div>
 
 
     <div class="detail">
 
-    <strong>Blok / Lantai</strong>
+        <strong>Jawatan</strong>
 
-    ${escapeHTML(
-        aduan.blok || "-"
-    )}
-
-    </div>
-
-
-    <div class="detail">
-
-    <strong>Tingkat / Aras</strong>
-
-    ${escapeHTML(
-        aduan.tingkat || "-"
-    )}
+        ${escapeHTML(
+            aduan.jawatan || "-"
+        )}
 
     </div>
 
 
     <div class="detail">
 
-    <strong>Lokasi Kerosakan</strong>
+        <strong>Bahagian / Unit</strong>
 
-    ${escapeHTML(
-        aduan.lokasi || "-"
-    )}
-
-    </div>
-
-
-    <div class="detail">
-
-    <strong>Jenis Kerosakan</strong>
-
-    ${escapeHTML(
-        aduan.jenis || "-"
-    )}
+        ${escapeHTML(
+            aduan.bahagian || "-"
+        )}
 
     </div>
 
 
     <div class="detail">
 
-    <strong>Penerangan Kerosakan</strong>
+        <strong>Blok / Lantai</strong>
 
-    ${escapeHTML(
-        aduan.penerangan || "-"
-    )}
-
-    </div>
-
-
-    <div class="detail">
-
-    <strong>Cadangan Penambahbaikan</strong>
-
-    ${escapeHTML(
-        aduan.cadangan || "-"
-    )}
+        ${escapeHTML(
+            aduan.blok || "-"
+        )}
 
     </div>
 
 
     <div class="detail">
 
-    <strong>Tarikh Aduan</strong>
+        <strong>Tingkat / Aras</strong>
 
-    ${formatTarikh(
-        aduan.tarikh
-    )}
+        ${escapeHTML(
+            aduan.tingkat || "-"
+        )}
 
     </div>
 
 
     <div class="detail">
 
-    <strong>Status</strong>
+        <strong>Lokasi Kerosakan</strong>
 
-    ${escapeHTML(
-        aduan.status || "Baharu"
-    )}
+        ${escapeHTML(
+            aduan.lokasi || "-"
+        )}
+
+    </div>
+
+
+    <div class="detail">
+
+        <strong>Jenis Kerosakan</strong>
+
+        ${escapeHTML(
+            aduan.jenis || "-"
+        )}
+
+    </div>
+
+
+    <div class="detail">
+
+        <strong>Penerangan Kerosakan</strong>
+
+        ${escapeHTML(
+            aduan.penerangan || "-"
+        )}
+
+    </div>
+
+
+    <div class="detail">
+
+        <strong>Cadangan Penambahbaikan</strong>
+
+        ${escapeHTML(
+            aduan.cadangan || "-"
+        )}
+
+    </div>
+
+
+    <div class="detail">
+
+        <strong>Tarikh Aduan</strong>
+
+        ${formatTarikh(
+            aduan.tarikh
+        )}
+
+    </div>
+
+
+    <div class="detail">
+
+        <strong>Status</strong>
+
+        ${escapeHTML(
+            aduan.status || "Baharu"
+        )}
 
     </div>
 
@@ -1750,25 +1645,25 @@ function lihatAduan(id){
 
         <div class="detail">
 
-        <strong>
-        🖼️ Gambar Kerosakan
-        </strong>
+            <strong>
+                🖼️ Gambar Kerosakan
+            </strong>
 
-        <img
-        src="${escapeHTML(aduan.gambar)}"
-        class="detail-image"
-        alt="Gambar Kerosakan">
+            <img
+            src="${escapeHTML(aduan.gambar)}"
+            class="detail-image"
+            alt="Gambar Kerosakan">
 
-        <br><br>
+            <br><br>
 
-        <a
-        href="${escapeHTML(aduan.gambar)}"
-        target="_blank"
-        class="btn">
+            <a
+            href="${escapeHTML(aduan.gambar)}"
+            target="_blank"
+            class="btn">
 
-        🖼️ Buka Gambar
+                🖼️ Buka Gambar
 
-        </a>
+            </a>
 
         </div>
 
@@ -1780,11 +1675,11 @@ function lihatAduan(id){
 
         <div class="detail">
 
-        <strong>
-        🖼️ Gambar Kerosakan
-        </strong>
+            <strong>
+                🖼️ Gambar Kerosakan
+            </strong>
 
-        Tiada gambar dilampirkan.
+            Tiada gambar dilampirkan.
 
         </div>
 
@@ -1799,7 +1694,7 @@ function lihatAduan(id){
     class="full-btn pdf-btn"
     onclick="janaPDF(${Number(aduan.id)})">
 
-    📄 Jana PDF Aduan
+        📄 Jana PDF Aduan
 
     </button>
 
@@ -1823,9 +1718,12 @@ function kemaskiniStatus(id){
 
     const aduan =
         semuaAduan.find(
-            item =>
-            Number(item.id) ===
-            Number(id)
+            function(item){
+
+                return Number(item.id) ===
+                       Number(id);
+
+            }
         );
 
 
@@ -1911,50 +1809,54 @@ function kemaskiniStatus(id){
 
         }
     )
-    .then(function(){
+    .then(
+        function(){
 
-        aduan.status =
-            statusBaru;
-
-
-        aduan.catatan =
-            catatan;
+            aduan.status =
+                statusBaru;
 
 
-        tutupModal();
+            aduan.catatan =
+                catatan;
 
 
-        kemaskiniDashboard();
+            tutupModal();
 
 
-        paparAduan();
+            kemaskiniDashboard();
 
 
-        alert(
-            "✅ Status dan catatan berjaya disimpan."
-        );
-
-    })
-    .catch(function(error){
-
-        console.error(error);
+            paparAduan();
 
 
-        alert(
-            "❌ Gagal menyimpan perubahan."
-        );
-
-
-        if(button){
-
-            button.disabled = false;
-
-            button.textContent =
-                "💾 Simpan Status & Catatan";
+            alert(
+                "✅ Status dan catatan berjaya disimpan."
+            );
 
         }
+    )
+    .catch(
+        function(error){
 
-    });
+            console.error(error);
+
+
+            alert(
+                "❌ Gagal menyimpan perubahan."
+            );
+
+
+            if(button){
+
+                button.disabled = false;
+
+                button.textContent =
+                    "💾 Simpan Status & Catatan";
+
+            }
+
+        }
+    );
 
 }
 
@@ -2003,9 +1905,12 @@ function janaPDF(id){
 
     const aduan =
         semuaAduan.find(
-            item =>
-            Number(item.id) ===
-            Number(id)
+            function(item){
+
+                return Number(item.id) ===
+                       Number(id);
+
+            }
         );
 
 
