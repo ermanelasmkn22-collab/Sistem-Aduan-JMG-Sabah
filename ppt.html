@@ -2,8 +2,11 @@
 <html lang="ms">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <title>PPT - Sistem Aduan JMG Sabah</title>
 
@@ -383,10 +386,12 @@ footer{
 }
 
 </style>
+
 </head>
 
 
 <body>
+
 
 <header>
 
@@ -407,6 +412,7 @@ footer{
 
 <div class="container">
 
+
 <div class="title-section">
 
 <h2>📋 Sistem Pengurusan Aduan</h2>
@@ -416,13 +422,17 @@ footer{
 </div>
 
 
+<!-- DASHBOARD -->
+
 <div class="dashboard">
+
 
 <div class="summary-card">
 
 <h3>Jumlah Aduan</h3>
 
-<div class="number" id="jumlahAduan">
+<div class="number"
+     id="jumlahAduan">
 0
 </div>
 
@@ -433,7 +443,8 @@ footer{
 
 <h3>Dalam Tindakan</h3>
 
-<div class="number" id="dalamTindakan">
+<div class="number"
+     id="dalamTindakan">
 0
 </div>
 
@@ -444,16 +455,21 @@ footer{
 
 <h3>Aduan Selesai</h3>
 
-<div class="number" id="aduanSelesai">
+<div class="number"
+     id="aduanSelesai">
 0
 </div>
 
 </div>
 
+
 </div>
 
 
+<!-- SENARAI -->
+
 <div class="aduan-section">
+
 
 <div class="tab-buttons">
 
@@ -536,6 +552,8 @@ Dalam Tindakan
 
 <th>Bil.</th>
 
+<th>No. Aduan</th>
+
 <th>Nama Pelapor</th>
 
 <th>Lokasi</th>
@@ -557,10 +575,12 @@ Dalam Tindakan
 
 <tr>
 
-<td colspan="7">
+<td colspan="8">
 
 <div class="loading">
+
 ⏳ Memuatkan aduan...
+
 </div>
 
 </td>
@@ -574,20 +594,26 @@ Dalam Tindakan
 </div>
 
 
-<a href="index.html" class="back-btn">
+<a href="index.html"
+   class="back-btn">
 
 ← Kembali ke Halaman Utama
 
 </a>
 
-</div>
 
 </div>
 
+</div>
 
-<div class="modal" id="detailModal">
+
+<!-- MODAL -->
+
+<div class="modal"
+     id="detailModal">
 
 <div class="modal-content">
+
 
 <div class="modal-header">
 
@@ -598,12 +624,14 @@ class="close"
 onclick="tutupModal()">
 
 ×
+
 </span>
 
 </div>
 
 
 <div id="detailContent"></div>
+
 
 </div>
 
@@ -621,7 +649,7 @@ onclick="tutupModal()">
 
 
 // =====================================================
-// URL GOOGLE APPS SCRIPT
+// GOOGLE APPS SCRIPT
 // =====================================================
 
 const GOOGLE_APPS_SCRIPT_URL =
@@ -638,45 +666,13 @@ let tabSemasa = "aktif";
 
 
 // =====================================================
-// AMBIL DATA DARI GOOGLE SHEET
-// GUNA JSONP
+// AMBIL DATA GOOGLE SHEET
 // =====================================================
 
 function dapatkanAduan(){
 
-    const oldScript =
-        document.getElementById("jsonpScript");
-
-    if(oldScript){
-        oldScript.remove();
-    }
-
-
-    window.terimaDataAduan =
-        function(response){
-
-            if(
-                !response ||
-                !response.success
-            ){
-
-                paparError(
-                    "Data aduan tidak dapat dibaca."
-                );
-
-                return;
-            }
-
-
-            semuaAduan =
-                response.data || [];
-
-
-            kemaskiniDashboard();
-
-            paparAduan();
-
-        };
+    const callbackName =
+        "callbackAduan_" + Date.now();
 
 
     const script =
@@ -687,23 +683,151 @@ function dapatkanAduan(){
         "jsonpScript";
 
 
-    script.src =
-        GOOGLE_APPS_SCRIPT_URL +
-        "?callback=terimaDataAduan&t=" +
-        Date.now();
+    let selesai = false;
 
 
-    script.onerror =
-        function(){
+    // -------------------------------------------------
+    // CLEANUP
+    // -------------------------------------------------
 
-            paparError(
-                "Gagal menyambung ke sistem database."
+    function cleanup(){
+
+        delete window[callbackName];
+
+        if(script.parentNode){
+
+            script.parentNode.removeChild(script);
+
+        }
+
+    }
+
+
+    // -------------------------------------------------
+    // CALLBACK
+    // -------------------------------------------------
+
+    window[callbackName] =
+        function(response){
+
+            selesai = true;
+
+
+            console.log(
+                "DATA DITERIMA:",
+                response
             );
+
+
+            if(
+                !response ||
+                response.success !== true
+            ){
+
+                paparError(
+                    "Data aduan tidak dapat dibaca."
+                );
+
+                cleanup();
+
+                return;
+
+            }
+
+
+            if(
+                Array.isArray(response.data)
+            ){
+
+                semuaAduan =
+                    response.data;
+
+            }else{
+
+                semuaAduan = [];
+
+            }
+
+
+            console.log(
+                "JUMLAH ADUAN:",
+                semuaAduan.length
+            );
+
+
+            kemaskiniDashboard();
+
+            paparAduan();
+
+            cleanup();
 
         };
 
 
+    // -------------------------------------------------
+    // ERROR
+    // -------------------------------------------------
+
+    script.onerror =
+        function(){
+
+            selesai = true;
+
+            console.error(
+                "Gagal menyambung Google Apps Script"
+            );
+
+            paparError(
+                "❌ Gagal menyambung ke sistem database."
+            );
+
+            cleanup();
+
+        };
+
+
+    // -------------------------------------------------
+    // URL JSONP
+    // -------------------------------------------------
+
+    script.src =
+        GOOGLE_APPS_SCRIPT_URL +
+        "?callback=" +
+        encodeURIComponent(callbackName) +
+        "&t=" +
+        Date.now();
+
+
+    console.log(
+        "URL DATA:",
+        script.src
+    );
+
+
     document.body.appendChild(script);
+
+
+    // -------------------------------------------------
+    // TIMEOUT
+    // -------------------------------------------------
+
+    setTimeout(function(){
+
+        if(!selesai){
+
+            console.error(
+                "Database timeout."
+            );
+
+            paparError(
+                "❌ Database tidak memberi respons. Sila refresh halaman."
+            );
+
+            cleanup();
+
+        }
+
+    },15000);
 
 }
 
@@ -720,10 +844,12 @@ function paparError(message){
 
     <tr>
 
-    <td colspan="7">
+    <td colspan="8">
 
     <div class="error">
-    ❌ ${message}
+
+    ${message}
+
     </div>
 
     </td>
@@ -744,21 +870,30 @@ function kemaskiniDashboard(){
     const aktif =
         semuaAduan.filter(
             aduan =>
-            aduan.status !== "Selesai"
+            String(aduan.status || "")
+            .trim()
+            .toLowerCase()
+            !== "selesai"
         ).length;
 
 
     const tindakan =
         semuaAduan.filter(
             aduan =>
-            aduan.status === "Dalam Tindakan"
+            String(aduan.status || "")
+            .trim()
+            .toLowerCase()
+            === "dalam tindakan"
         ).length;
 
 
     const selesai =
         semuaAduan.filter(
             aduan =>
-            aduan.status === "Selesai"
+            String(aduan.status || "")
+            .trim()
+            .toLowerCase()
+            === "selesai"
         ).length;
 
 
@@ -905,35 +1040,59 @@ function paparAduan(){
         semuaAduan.filter(
             function(aduan){
 
+
+                const status =
+                    String(
+                        aduan.status || "Baharu"
+                    ).trim();
+
+
+                // TAB AKTIF
+
                 if(
                     tabSemasa === "aktif" &&
-                    aduan.status === "Selesai"
+                    status === "Selesai"
                 ){
+
                     return false;
+
                 }
 
 
+                // TAB SELESAI
+
                 if(
                     tabSemasa === "selesai" &&
-                    aduan.status !== "Selesai"
+                    status !== "Selesai"
                 ){
+
                     return false;
+
                 }
 
 
                 const nama =
-                    (aduan.nama || "")
-                    .toLowerCase();
+                    String(
+                        aduan.nama || ""
+                    ).toLowerCase();
 
 
                 const lokasi =
-                    (aduan.lokasi || "")
-                    .toLowerCase();
+                    String(
+                        aduan.lokasi || ""
+                    ).toLowerCase();
+
+
+                const noAduan =
+                    String(
+                        aduan.noAduan || ""
+                    ).toLowerCase();
 
 
                 const padanCarian =
                     nama.includes(search) ||
-                    lokasi.includes(search);
+                    lokasi.includes(search) ||
+                    noAduan.includes(search);
 
 
                 let padanStatus = true;
@@ -945,7 +1104,7 @@ function paparAduan(){
                 ){
 
                     padanStatus =
-                        aduan.status === statusFilter;
+                        status === statusFilter;
 
                 }
 
@@ -959,6 +1118,8 @@ function paparAduan(){
         );
 
 
+    // TIADA DATA
+
     if(ditapis.length === 0){
 
         table.innerHTML = `
@@ -966,11 +1127,11 @@ function paparAduan(){
         <tr>
 
         <td
-        colspan="7"
+        colspan="8"
         style="
         text-align:center;
         color:#777;
-        padding:25px;
+        padding:30px;
         ">
 
         ${
@@ -986,11 +1147,15 @@ function paparAduan(){
         `;
 
         return;
+
     }
 
 
+    // PAPAR DATA
+
     ditapis.forEach(
         function(aduan,index){
+
 
             let statusClass =
                 "baru";
@@ -1029,19 +1194,35 @@ function paparAduan(){
             </td>
 
             <td>
-            ${escapeHTML(aduan.nama || "-")}
+            <strong>
+            ${escapeHTML(
+                aduan.noAduan || "-"
+            )}
+            </strong>
             </td>
 
             <td>
-            ${escapeHTML(aduan.lokasi || "-")}
+            ${escapeHTML(
+                aduan.nama || "-"
+            )}
             </td>
 
             <td>
-            ${escapeHTML(aduan.jenis || "-")}
+            ${escapeHTML(
+                aduan.lokasi || "-"
+            )}
             </td>
 
             <td>
-            ${formatTarikh(aduan.tarikh)}
+            ${escapeHTML(
+                aduan.jenis || "-"
+            )}
+            </td>
+
+            <td>
+            ${formatTarikh(
+                aduan.tarikh
+            )}
             </td>
 
             <td>
@@ -1061,7 +1242,7 @@ function paparAduan(){
 
             <button
             class="btn"
-            onclick="lihatAduan(${aduan.id})">
+            onclick="lihatAduan(${Number(aduan.id)})">
 
             Lihat
 
@@ -1086,7 +1267,7 @@ function paparAduan(){
 
 function escapeHTML(value){
 
-    return String(value)
+    return String(value || "")
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
@@ -1097,13 +1278,35 @@ function escapeHTML(value){
 
 
 // =====================================================
-// TARIKH
+// FORMAT TARIKH
 // =====================================================
 
 function formatTarikh(tarikh){
 
     if(!tarikh){
+
         return "-";
+
+    }
+
+
+    const d =
+        new Date(tarikh);
+
+
+    if(
+        !isNaN(d.getTime())
+    ){
+
+        return d.toLocaleDateString(
+            "ms-MY",
+            {
+                day:"2-digit",
+                month:"2-digit",
+                year:"numeric"
+            }
+        );
+
     }
 
 
@@ -1121,7 +1324,8 @@ function lihatAduan(id){
     const aduan =
         semuaAduan.find(
             item =>
-            Number(item.id) === Number(id)
+            Number(item.id) ===
+            Number(id)
         );
 
 
@@ -1132,6 +1336,7 @@ function lihatAduan(id){
         );
 
         return;
+
     }
 
 
@@ -1153,8 +1358,7 @@ function lihatAduan(id){
 
         <select id="statusAduan">
 
-        <option
-        value="Baharu"
+        <option value="Baharu"
         ${
             aduan.status === "Baharu"
             ? "selected"
@@ -1166,8 +1370,7 @@ function lihatAduan(id){
         </option>
 
 
-        <option
-        value="Dalam Tindakan"
+        <option value="Dalam Tindakan"
         ${
             aduan.status ===
             "Dalam Tindakan"
@@ -1180,8 +1383,7 @@ function lihatAduan(id){
         </option>
 
 
-        <option
-        value="Selesai">
+        <option value="Selesai">
 
         Selesai
 
@@ -1190,20 +1392,25 @@ function lihatAduan(id){
         </select>
 
 
-        <label style="margin-top:15px;">
+        <label
+        style="margin-top:15px;">
+
         Catatan PPT
+
         </label>
 
 
         <textarea
         id="catatanPPT"
         placeholder="Masukkan catatan / tindakan yang telah dibuat..."
-        >${escapeHTML(aduan.catatan || "")}</textarea>
+        >${escapeHTML(
+            aduan.catatan || ""
+        )}</textarea>
 
 
         <button
         class="full-btn save-btn"
-        onclick="kemaskiniStatus(${aduan.id})">
+        onclick="kemaskiniStatus(${Number(aduan.id)})">
 
         💾 Simpan Status & Catatan
 
@@ -1219,6 +1426,7 @@ function lihatAduan(id){
     document.getElementById(
         "detailContent"
     ).innerHTML = `
+
 
     <div class="detail">
 
@@ -1334,8 +1542,8 @@ function lihatAduan(id){
 
     <strong>Tarikh Aduan</strong>
 
-    ${escapeHTML(
-        aduan.tarikh || "-"
+    ${formatTarikh(
+        aduan.tarikh
     )}
 
     </div>
@@ -1355,23 +1563,24 @@ function lihatAduan(id){
     ${
         aduan.gambar
         ?
+
         `
 
         <div class="detail">
 
         <strong>
-        Gambar Kerosakan
+        🖼️ Gambar Kerosakan
         </strong>
 
         <img
-        src="${aduan.gambar}"
+        src="${escapeHTML(aduan.gambar)}"
         class="detail-image"
         alt="Gambar Kerosakan">
 
         <br><br>
 
         <a
-        href="${aduan.gambar}"
+        href="${escapeHTML(aduan.gambar)}"
         target="_blank"
         class="btn">
 
@@ -1382,8 +1591,22 @@ function lihatAduan(id){
         </div>
 
         `
+
         :
-        ""
+
+        `
+
+        <div class="detail">
+
+        <strong>
+        🖼️ Gambar Kerosakan
+        </strong>
+
+        Tiada gambar dilampirkan.
+
+        </div>
+
+        `
     }
 
 
@@ -1392,11 +1615,12 @@ function lihatAduan(id){
 
     <button
     class="full-btn pdf-btn"
-    onclick="janaPDF(${aduan.id})">
+    onclick="janaPDF(${Number(aduan.id)})">
 
     📄 Jana PDF Aduan
 
     </button>
+
 
     `;
 
@@ -1418,25 +1642,45 @@ function kemaskiniStatus(id){
     const aduan =
         semuaAduan.find(
             item =>
-            Number(item.id) === Number(id)
+            Number(item.id) ===
+            Number(id)
         );
 
 
     if(!aduan){
+
         return;
+
+    }
+
+
+    const statusElement =
+        document.getElementById(
+            "statusAduan"
+        );
+
+
+    const catatanElement =
+        document.getElementById(
+            "catatanPPT"
+        );
+
+
+    if(!statusElement){
+
+        return;
+
     }
 
 
     const statusBaru =
-        document.getElementById(
-            "statusAduan"
-        ).value;
+        statusElement.value;
 
 
     const catatan =
-        document.getElementById(
-            "catatanPPT"
-        ).value;
+        catatanElement
+        ? catatanElement.value
+        : "";
 
 
     const data = {
@@ -1462,10 +1706,14 @@ function kemaskiniStatus(id){
         );
 
 
-    button.disabled = true;
+    if(button){
 
-    button.textContent =
-        "⏳ Menyimpan...";
+        button.disabled = true;
+
+        button.textContent =
+            "⏳ Menyimpan...";
+
+    }
 
 
     fetch(
@@ -1486,13 +1734,16 @@ function kemaskiniStatus(id){
         aduan.status =
             statusBaru;
 
+
         aduan.catatan =
             catatan;
 
 
         tutupModal();
 
+
         kemaskiniDashboard();
+
 
         paparAduan();
 
@@ -1506,14 +1757,20 @@ function kemaskiniStatus(id){
 
         console.error(error);
 
+
         alert(
             "❌ Gagal menyimpan perubahan."
         );
 
-        button.disabled = false;
 
-        button.textContent =
-            "💾 Simpan Status & Catatan";
+        if(button){
+
+            button.disabled = false;
+
+            button.textContent =
+                "💾 Simpan Status & Catatan";
+
+        }
 
     });
 
@@ -1535,6 +1792,28 @@ function tutupModal(){
 
 
 // =====================================================
+// TUTUP MODAL KLIK LUAR
+// =====================================================
+
+window.onclick =
+function(event){
+
+    const modal =
+        document.getElementById(
+            "detailModal"
+        );
+
+
+    if(event.target === modal){
+
+        tutupModal();
+
+    }
+
+};
+
+
+// =====================================================
 // PDF
 // =====================================================
 
@@ -1543,7 +1822,8 @@ function janaPDF(id){
     const aduan =
         semuaAduan.find(
             item =>
-            Number(item.id) === Number(id)
+            Number(item.id) ===
+            Number(id)
         );
 
 
@@ -1554,6 +1834,7 @@ function janaPDF(id){
         );
 
         return;
+
     }
 
 
@@ -1570,6 +1851,7 @@ function janaPDF(id){
         "bold"
     );
 
+
     doc.setFontSize(17);
 
 
@@ -1581,6 +1863,7 @@ function janaPDF(id){
 
 
     doc.setFontSize(13);
+
 
     doc.text(
         "SABAH",
@@ -1599,6 +1882,7 @@ function janaPDF(id){
 
     doc.setFontSize(15);
 
+
     doc.text(
         "BORANG ADUAN KEROSAKAN FASILITI",
         20,
@@ -1616,10 +1900,12 @@ function janaPDF(id){
 
         doc.setFontSize(10);
 
+
         doc.setFont(
             "helvetica",
             "bold"
         );
+
 
         doc.text(
             label,
@@ -1637,7 +1923,7 @@ function janaPDF(id){
         const lines =
             doc.splitTextToSize(
                 String(value || "-"),
-                125
+                120
             );
 
 
@@ -1671,60 +1957,72 @@ function janaPDF(id){
         aduan.noAduan
     );
 
+
     tambah(
         "Nama Pelapor:",
         aduan.nama
     );
+
 
     tambah(
         "Jawatan:",
         aduan.jawatan
     );
 
+
     tambah(
         "Bahagian / Unit:",
         aduan.bahagian
     );
+
 
     tambah(
         "Blok / Lantai:",
         aduan.blok
     );
 
+
     tambah(
         "Tingkat / Aras:",
         aduan.tingkat
     );
+
 
     tambah(
         "Lokasi:",
         aduan.lokasi
     );
 
+
     tambah(
         "Jenis Kerosakan:",
         aduan.jenis
     );
+
 
     tambah(
         "Penerangan:",
         aduan.penerangan
     );
 
+
     tambah(
         "Cadangan:",
         aduan.cadangan
     );
 
+
     tambah(
         "Tarikh Aduan:",
-        aduan.tarikh
+        formatTarikh(aduan.tarikh)
     );
+
 
     tambah(
         "Status:",
         aduan.status
     );
+
 
     tambah(
         "Catatan PPT:",
@@ -1762,7 +2060,7 @@ document
 
 
 // =====================================================
-// LOAD SISTEM
+// LOAD
 // =====================================================
 
 window.addEventListener(
@@ -1775,8 +2073,9 @@ window.addEventListener(
 );
 
 
-// AUTO REFRESH SETIAP 30 SAAT
-// Supaya aduan baru muncul tanpa refresh manual
+// =====================================================
+// AUTO REFRESH
+// =====================================================
 
 setInterval(
     dapatkanAduan,
@@ -1786,5 +2085,7 @@ setInterval(
 
 </script>
 
+
 </body>
+
 </html>
