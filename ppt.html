@@ -669,36 +669,73 @@ let tabSemasa = "aktif";
 // AMBIL DATA GOOGLE SHEET
 // =====================================================
 
-function dapatkanAduan(){
+function dapatkanAduan() {
 
-    const callbackName =
-        "callbackAduan_" + Date.now();
+    console.log("Mula ambil data aduan...");
 
-    const script =
-        document.createElement("script");
+    paparLoading();
 
-    script.id =
-        "jsonpScript";
+    fetch(
+        GOOGLE_APPS_SCRIPT_URL + "?t=" + Date.now()
+    )
+    .then(function(response) {
 
-    let selesai = false;
+        if (!response.ok) {
+            throw new Error(
+                "HTTP Error " + response.status
+            );
+        }
 
+        return response.json();
 
-    // -------------------------------------------------
-    // CLEANUP
-    // -------------------------------------------------
+    })
+    .then(function(response) {
 
-    function cleanup(){
+        console.log(
+            "DATA DITERIMA:",
+            response
+        );
 
-        delete window[callbackName];
+        if (
+            !response ||
+            response.success !== true
+        ) {
 
-        if(script.parentNode){
-
-            script.parentNode.removeChild(script);
+            throw new Error(
+                "Response database tidak sah."
+            );
 
         }
 
-    }
+        semuaAduan =
+            Array.isArray(response.data)
+            ? response.data
+            : [];
 
+        console.log(
+            "JUMLAH ADUAN:",
+            semuaAduan.length
+        );
+
+        kemaskiniDashboard();
+
+        paparAduan();
+
+    })
+    .catch(function(error) {
+
+        console.error(
+            "RALAT DATABASE:",
+            error
+        );
+
+        paparError(
+            "❌ Gagal menyambung ke sistem database."
+        );
+
+    });
+
+}
 
     // -------------------------------------------------
     // TERIMA DATA DARIPADA GOOGLE APPS SCRIPT
