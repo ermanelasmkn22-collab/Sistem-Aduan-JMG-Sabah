@@ -1,4 +1,462 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Buat Aduan - JMG Sabah</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #f3f7f4, #e1ebe5);
+    color: #333;
+}
+
+header {
+    background: white;
+    padding: 20px 8%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.jmg-logo {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+h1 {
+    color: #1f2937;
+    font-size: 24px;
+}
+
+.subtitle {
+    color: #666;
+    margin-top: 5px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+h2 {
+    color: #1f5d3a;
+    margin-bottom: 10px;
+}
+
+.description {
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #1f5d3a;
+    box-shadow: 0 0 0 2px rgba(31,93,58,0.1);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+input[type="file"] {
+    background: #fafafa;
+    cursor: pointer;
+}
+
+button {
+    width: 100%;
+    margin-top: 30px;
+    padding: 14px;
+    background: #1f5d3a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #17482d;
+}
+
+button:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+
+.required {
+    color: red;
+}
+
+.info-box {
+    background: #f0f7f3;
+    border-left: 4px solid #1f5d3a;
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 6px;
+    color: #555;
+    line-height: 1.5;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #777;
+    font-size: 14px;
+}
+
+.success-button {
+    width: auto;
+    min-width: 220px;
+    margin-top: 0;
+    padding: 13px 20px;
+}
+
+.new-button {
+    background: #555;
+}
+
+.new-button:hover {
+    background: #333;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<header>
+
+    <img
+        src="logo-jmg.jpeg"
+        alt="Logo JMG"
+        class="jmg-logo"
+    >
+
+    <div>
+
+        <h1>
+            Jabatan Mineral dan Geosains Malaysia
+        </h1>
+
+        <p class="subtitle">
+            Sabah
+        </p>
+
+    </div>
+
+</header>
+
+
+
+<div class="container">
+
+    <h2>
+        📋 Borang Aduan Kerosakan Fasiliti
+    </h2>
+
+    <p class="description">
+        Sila lengkapkan maklumat di bawah untuk membuat aduan
+        kerosakan fasiliti di Jabatan Mineral dan Geosains Malaysia,
+        Sabah.
+    </p>
+
+
+    <div class="info-box">
+
+        ℹ️ <strong>Makluman:</strong><br>
+
+        Sila pastikan maklumat yang diberikan adalah tepat.
+        Jika berkaitan, sila sertakan gambar kerosakan untuk
+        memudahkan pihak PPT membuat tindakan susulan.
+
+    </div>
+
+
+
+    <form id="aduanForm">
+
+
+        <!-- NAMA -->
+
+        <label for="nama">
+            Nama Pelapor <span class="required">*</span>
+        </label>
+
+        <input
+            type="text"
+            id="nama"
+            placeholder="Masukkan nama penuh"
+            required
+        >
+
+
+
+        <!-- JAWATAN -->
+
+        <label for="jawatan">
+            Jawatan <span class="required">*</span>
+        </label>
+
+        <input
+            type="text"
+            id="jawatan"
+            placeholder="Contoh: Pegawai Geosains"
+            required
+        >
+
+
+
+        <!-- BAHAGIAN -->
+
+        <label for="bahagian">
+            Bahagian / Unit <span class="required">*</span>
+        </label>
+
+        <input
+            type="text"
+            id="bahagian"
+            placeholder="Masukkan bahagian / unit"
+            required
+        >
+
+
+
+        <!-- BLOK -->
+
+        <label for="blok">
+            Blok
+        </label>
+
+        <input
+            type="text"
+            id="blok"
+            placeholder="Contoh: Blok A"
+        >
+
+
+
+        <!-- TINGKAT -->
+
+        <label for="tingkat">
+            Tingkat / Aras
+        </label>
+
+        <input
+            type="text"
+            id="tingkat"
+            placeholder="Contoh: Tingkat 2"
+        >
+
+
+
+        <!-- LOKASI -->
+
+        <label for="lokasi">
+            Lokasi Kerosakan <span class="required">*</span>
+        </label>
+
+        <input
+            type="text"
+            id="lokasi"
+            placeholder="Contoh: Bilik Mesyuarat"
+            required
+        >
+
+
+
+        <!-- JENIS -->
+
+        <label for="jenis">
+            Jenis Kerosakan <span class="required">*</span>
+        </label>
+
+        <select id="jenis" required>
+
+            <option value="">
+                -- Sila Pilih --
+            </option>
+
+            <option value="Elektrik">
+                Elektrik
+            </option>
+
+            <option value="Lampu">
+                Lampu
+            </option>
+
+            <option value="Penghawa Dingin">
+                Penghawa Dingin
+            </option>
+
+            <option value="Paip / Air">
+                Paip / Air
+            </option>
+
+            <option value="Tandas">
+                Tandas
+            </option>
+
+            <option value="Pintu / Tingkap">
+                Pintu / Tingkap
+            </option>
+
+            <option value="Perabot">
+                Perabot
+            </option>
+
+            <option value="Bumbung">
+                Bumbung
+            </option>
+
+            <option value="Lantai">
+                Lantai
+            </option>
+
+            <option value="Dinding">
+                Dinding
+            </option>
+
+            <option value="Lain-lain">
+                Lain-lain
+            </option>
+
+        </select>
+
+
+
+        <!-- PENERANGAN -->
+
+        <label for="penerangan">
+            Penerangan Kerosakan <span class="required">*</span>
+        </label>
+
+        <textarea
+            id="penerangan"
+            placeholder="Terangkan kerosakan yang berlaku..."
+            required
+        ></textarea>
+
+
+
+        <!-- CADANGAN -->
+
+        <label for="cadangan">
+            Cadangan / Keperluan Tindakan
+        </label>
+
+        <textarea
+            id="cadangan"
+            placeholder="Masukkan cadangan jika ada..."
+        ></textarea>
+
+
+
+        <!-- TARIKH -->
+
+        <label for="tarikh">
+            Tarikh Aduan <span class="required">*</span>
+        </label>
+
+        <input
+            type="date"
+            id="tarikh"
+            required
+        >
+
+
+
+        <!-- GAMBAR -->
+
+        <label for="gambar">
+            Gambar Kerosakan
+        </label>
+
+        <input
+            type="file"
+            id="gambar"
+            accept="image/*"
+        >
+
+
+        <small
+            style="
+                display:block;
+                margin-top:8px;
+                color:#777;
+            "
+        >
+            Format gambar: JPG, JPEG, PNG. Maksimum 10MB.
+        </small>
+
+
+
+        <!-- BUTTON -->
+
+        <button type="submit">
+
+            📤 Hantar Aduan
+
+        </button>
+
+
+    </form>
+
+</div>
+
+
+
+<footer>
+
+    © 2026 Jabatan Mineral dan Geosains Malaysia, Sabah
+
+</footer>
+
+
+
 <script>
+
 /* =====================================================
    SISTEM ADUAN JMG SABAH
    VERSI SEMENTARA - TANPA GOOGLE SHEET
@@ -9,101 +467,171 @@ const STORAGE_KEY = "JMG_ADUAN_SABAH";
 
 
 /* =====================================================
+   TARIKH AUTOMATIK
+   ===================================================== */
+
+document.getElementById("tarikh").value =
+    new Date().toISOString().split("T")[0];
+
+
+
+/* =====================================================
    BORANG HANTAR ADUAN
    ===================================================== */
 
-document.getElementById("aduanForm").addEventListener("submit", function(event) {
+document
+.getElementById("aduanForm")
+.addEventListener("submit", function(event) {
 
     event.preventDefault();
+
 
     const button =
         document.querySelector("#aduanForm button");
 
+
     const nama =
-        document.getElementById("nama").value.trim();
+        document.getElementById("nama")
+        .value
+        .trim();
+
 
     const jawatan =
-        document.getElementById("jawatan").value.trim();
+        document.getElementById("jawatan")
+        .value
+        .trim();
+
 
     const bahagian =
-        document.getElementById("bahagian").value.trim();
+        document.getElementById("bahagian")
+        .value
+        .trim();
+
 
     const blok =
-        document.getElementById("blok").value.trim();
+        document.getElementById("blok")
+        .value
+        .trim();
+
 
     const tingkat =
-        document.getElementById("tingkat").value.trim();
+        document.getElementById("tingkat")
+        .value
+        .trim();
+
 
     const lokasi =
-        document.getElementById("lokasi").value.trim();
+        document.getElementById("lokasi")
+        .value
+        .trim();
+
 
     const jenis =
-        document.getElementById("jenis").value;
+        document.getElementById("jenis")
+        .value;
+
 
     const penerangan =
-        document.getElementById("penerangan").value.trim();
+        document.getElementById("penerangan")
+        .value
+        .trim();
+
 
     const cadangan =
-        document.getElementById("cadangan").value.trim();
+        document.getElementById("cadangan")
+        .value
+        .trim();
+
 
     const tarikh =
-        document.getElementById("tarikh").value;
+        document.getElementById("tarikh")
+        .value;
+
 
     const gambarInput =
         document.getElementById("gambar");
 
 
+
     button.disabled = true;
-    button.innerText = "⏳ Menyimpan Aduan...";
+
+    button.innerText =
+        "⏳ Menyimpan Aduan...";
+
 
 
     /* =================================================
-       SIMPAN ADUAN
+       FUNGSI SIMPAN
        ================================================= */
 
     function simpanAduan(gambarBase64) {
 
         try {
 
+
             let semuaAduan =
                 JSON.parse(
-                    localStorage.getItem(STORAGE_KEY) || "[]"
+                    localStorage.getItem(
+                        STORAGE_KEY
+                    ) || "[]"
                 );
 
 
-            /* -----------------------------------------
+            if (!Array.isArray(semuaAduan)) {
+
+                semuaAduan = [];
+
+            }
+
+
+
+            /* =========================================
                JANA NO ADUAN
-               ----------------------------------------- */
+               ========================================= */
 
             let nombor = 1;
+
 
             semuaAduan.forEach(function(item) {
 
                 const match =
-                    String(item.noAduan || "")
+                    String(
+                        item.noAduan || ""
+                    )
                     .match(/(\d+)$/);
+
 
                 if (match) {
 
                     const n =
-                        parseInt(match[1], 10);
+                        parseInt(
+                            match[1],
+                            10
+                        );
+
 
                     if (n >= nombor) {
+
                         nombor = n + 1;
+
                     }
+
                 }
 
             });
 
 
+
             const noAduan =
                 "FAC-" +
-                String(nombor).padStart(4, "0");
+                String(nombor)
+                .padStart(4, "0");
 
 
-            /* -----------------------------------------
-               TARIKH & MASA
-               ----------------------------------------- */
+
+            /* =========================================
+               TARIKH DAN MASA
+               ========================================= */
 
             const sekarang =
                 new Date();
@@ -119,67 +647,93 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
                 );
 
 
-            /* -----------------------------------------
+
+            /* =========================================
                DATA ADUAN
-               ----------------------------------------- */
+               ========================================= */
 
             const aduan = {
 
-                id: Date.now(),
+                id:
+                    Date.now(),
 
-                noAduan: noAduan,
+                noAduan:
+                    noAduan,
 
-                tarikh: tarikh,
+                tarikh:
+                    tarikh,
 
-                masa: masa,
+                masa:
+                    masa,
 
-                nama: nama,
+                nama:
+                    nama,
 
-                jawatan: jawatan,
+                jawatan:
+                    jawatan,
 
-                bahagian: bahagian,
+                bahagian:
+                    bahagian,
 
-                blok: blok,
+                blok:
+                    blok,
 
-                tingkat: tingkat,
+                tingkat:
+                    tingkat,
 
-                lokasi: lokasi,
+                lokasi:
+                    lokasi,
 
-                jenis: jenis,
+                jenis:
+                    jenis,
 
-                jenisKerosakan: jenis,
+                jenisKerosakan:
+                    jenis,
 
-                penerangan: penerangan,
+                penerangan:
+                    penerangan,
 
-                cadangan: cadangan,
+                cadangan:
+                    cadangan,
 
-                gambar: gambarBase64 || "",
+                gambar:
+                    gambarBase64 || "",
 
-                status: "Baharu",
+                status:
+                    "Baharu",
 
-                catatan: "",
+                catatan:
+                    "",
 
-                catatanPPT: "",
+                catatanPPT:
+                    "",
 
-                timestamp: Date.now()
+                timestamp:
+                    Date.now()
+
             };
 
 
-            /* -----------------------------------------
-               MASUKKAN KE SENARAI
-               ----------------------------------------- */
+
+            /* =========================================
+               MASUKKAN ADUAN
+               ========================================= */
 
             semuaAduan.push(aduan);
 
 
-            /* -----------------------------------------
-               SIMPAN
-               ----------------------------------------- */
+
+            /* =========================================
+               SIMPAN LOCAL STORAGE
+               ========================================= */
 
             localStorage.setItem(
                 STORAGE_KEY,
-                JSON.stringify(semuaAduan)
+                JSON.stringify(
+                    semuaAduan
+                )
             );
+
 
 
             console.log(
@@ -188,17 +742,21 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
             );
 
 
+
             console.log(
                 "JUMLAH ADUAN:",
                 semuaAduan.length
             );
 
 
-            /* -----------------------------------------
-               PAPAR BERJAYA
-               ----------------------------------------- */
 
-            paparBerjaya(noAduan);
+            /* =========================================
+               PAPAR BERJAYA
+               ========================================= */
+
+            paparBerjaya(
+                noAduan
+            );
 
         }
 
@@ -209,21 +767,27 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
                 error
             );
 
+
             alert(
                 "❌ Aduan gagal disimpan.\n\n" +
                 "Jika ada gambar, cuba gambar yang lebih kecil."
             );
 
+
             button.disabled = false;
+
 
             button.innerText =
                 "📤 Hantar Aduan";
+
         }
+
     }
 
 
+
     /* =================================================
-       GAMBAR
+       JIKA ADA GAMBAR
        ================================================= */
 
     if (
@@ -231,11 +795,13 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
         gambarInput.files.length > 0
     ) {
 
+
         const file =
             gambarInput.files[0];
 
 
-        /* maksimum 10MB */
+
+        /* Maksimum 10MB */
 
         if (
             file.size >
@@ -243,44 +809,53 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
         ) {
 
             alert(
-                "❌ Saiz gambar terlalu besar.\n" +
+                "❌ Saiz gambar terlalu besar.\n\n" +
                 "Sila pilih gambar kurang daripada 10MB."
             );
 
+
             button.disabled = false;
+
 
             button.innerText =
                 "📤 Hantar Aduan";
 
+
             return;
+
         }
+
 
 
         compressImage(file)
 
-            .then(function(gambarBase64) {
+        .then(function(gambarBase64) {
 
-                simpanAduan(
-                    gambarBase64
-                );
+            simpanAduan(
+                gambarBase64
+            );
 
-            })
+        })
 
-            .catch(function(error) {
+        .catch(function(error) {
 
-                console.error(
-                    error
-                );
+            console.error(
+                error
+            );
 
-                alert(
-                    "❌ Gambar tidak dapat diproses."
-                );
 
-                button.disabled = false;
+            alert(
+                "❌ Gambar tidak dapat diproses."
+            );
 
-                button.innerText =
-                    "📤 Hantar Aduan";
-            });
+
+            button.disabled = false;
+
+
+            button.innerText =
+                "📤 Hantar Aduan";
+
+        });
 
     }
 
@@ -289,9 +864,11 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
         /* TIADA GAMBAR */
 
         simpanAduan("");
+
     }
 
 });
+
 
 
 /* =====================================================
@@ -300,131 +877,163 @@ document.getElementById("aduanForm").addEventListener("submit", function(event) 
 
 function compressImage(file) {
 
-    return new Promise(function(resolve, reject) {
-
-        const reader =
-            new FileReader();
+    return new Promise(
+        function(resolve, reject) {
 
 
-        reader.onload =
-            function(event) {
-
-                const img =
-                    new Image();
+            const reader =
+                new FileReader();
 
 
-                img.onload =
-                    function() {
 
-                        const maxWidth =
-                            900;
-
-                        const maxHeight =
-                            900;
+            reader.onload =
+                function(event) {
 
 
-                        let width =
-                            img.width;
-
-                        let height =
-                            img.height;
+                    const img =
+                        new Image();
 
 
-                        if (
-                            width > maxWidth ||
-                            height > maxHeight
-                        ) {
 
-                            const ratio =
-                                Math.min(
-                                    maxWidth / width,
-                                    maxHeight / height
+                    img.onload =
+                        function() {
+
+
+                            const maxWidth =
+                                900;
+
+
+                            const maxHeight =
+                                900;
+
+
+                            let width =
+                                img.width;
+
+
+                            let height =
+                                img.height;
+
+
+
+                            if (
+                                width > maxWidth ||
+                                height > maxHeight
+                            ) {
+
+
+                                const ratio =
+                                    Math.min(
+                                        maxWidth / width,
+                                        maxHeight / height
+                                    );
+
+
+                                width =
+                                    Math.round(
+                                        width * ratio
+                                    );
+
+
+                                height =
+                                    Math.round(
+                                        height * ratio
+                                    );
+
+                            }
+
+
+
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
                                 );
 
 
-                            width =
-                                Math.round(
-                                    width * ratio
+                            canvas.width =
+                                width;
+
+
+                            canvas.height =
+                                height;
+
+
+
+                            const ctx =
+                                canvas.getContext(
+                                    "2d"
                                 );
 
 
-                            height =
-                                Math.round(
-                                    height * ratio
+
+                            ctx.drawImage(
+                                img,
+                                0,
+                                0,
+                                width,
+                                height
+                            );
+
+
+
+                            const gambar =
+                                canvas.toDataURL(
+                                    "image/jpeg",
+                                    0.65
                                 );
-                        }
 
 
-                        const canvas =
-                            document.createElement(
-                                "canvas"
+
+                            resolve(
+                                gambar
                             );
 
-
-                        canvas.width =
-                            width;
-
-                        canvas.height =
-                            height;
+                        };
 
 
-                        const ctx =
-                            canvas.getContext(
-                                "2d"
+
+                    img.onerror =
+                        function() {
+
+                            reject(
+                                new Error(
+                                    "Gambar tidak dapat dibaca."
+                                )
                             );
 
-
-                        ctx.drawImage(
-                            img,
-                            0,
-                            0,
-                            width,
-                            height
-                        );
+                        };
 
 
-                        const gambar =
-                            canvas.toDataURL(
-                                "image/jpeg",
-                                0.65
-                            );
+
+                    img.src =
+                        event.target.result;
+
+                };
 
 
-                        resolve(gambar);
-                    };
+
+            reader.onerror =
+                function() {
+
+                    reject(
+                        new Error(
+                            "Gagal membaca gambar."
+                        )
+                    );
+
+                };
 
 
-                img.onerror =
-                    function() {
 
-                        reject(
-                            new Error(
-                                "Gambar tidak dapat dibaca."
-                            )
-                        );
-                    };
+            reader.readAsDataURL(
+                file
+            );
 
+        }
+    );
 
-                img.src =
-                    event.target.result;
-            };
-
-
-        reader.onerror =
-            function() {
-
-                reject(
-                    new Error(
-                        "Gagal membaca gambar."
-                    )
-                );
-            };
-
-
-        reader.readAsDataURL(file);
-
-    });
 }
+
 
 
 /* =====================================================
@@ -433,86 +1042,111 @@ function compressImage(file) {
 
 function paparBerjaya(noAduan) {
 
+
     document
-        .querySelector(".container")
-        .innerHTML = `
+    .querySelector(".container")
+    .innerHTML = `
 
-        <div style="
-            text-align:center;
-            padding:50px 20px;
-        ">
+        <div
+            style="
+                text-align:center;
+                padding:50px 20px;
+            "
+        >
 
-            <div style="
-                font-size:65px;
-                margin-bottom:20px;
-            ">
+
+            <div
+                style="
+                    font-size:65px;
+                    margin-bottom:20px;
+                "
+            >
                 ✅
             </div>
 
 
-            <h2 style="
-                color:#1f5d3a;
-                margin-bottom:15px;
-            ">
+
+            <h2
+                style="
+                    color:#1f5d3a;
+                    margin-bottom:15px;
+                "
+            >
                 Aduan Berjaya Dihantar
             </h2>
 
 
-            <p style="
-                color:#666;
-                line-height:1.6;
-                margin-bottom:15px;
-            ">
+
+            <p
+                style="
+                    color:#666;
+                    line-height:1.6;
+                    margin-bottom:15px;
+                "
+            >
                 Aduan kerosakan anda telah berjaya
                 direkodkan dalam sistem.
             </p>
 
 
-            <div style="
-                background:#f0f7f3;
-                border-radius:10px;
-                padding:20px;
-                margin:20px auto 30px;
-                max-width:400px;
-            ">
 
-                <div style="
-                    color:#666;
-                    font-size:14px;
-                    margin-bottom:5px;
-                ">
+            <div
+                style="
+                    background:#f0f7f3;
+                    border-radius:10px;
+                    padding:20px;
+                    margin:20px auto 30px;
+                    max-width:400px;
+                "
+            >
+
+                <div
+                    style="
+                        color:#666;
+                        font-size:14px;
+                        margin-bottom:5px;
+                    "
+                >
                     NO. ADUAN
                 </div>
 
 
-                <div style="
-                    color:#1f5d3a;
-                    font-size:30px;
-                    font-weight:bold;
-                ">
+                <div
+                    style="
+                        color:#1f5d3a;
+                        font-size:30px;
+                        font-weight:bold;
+                    "
+                >
                     ${noAduan}
                 </div>
 
             </div>
 
 
-            <p style="
-                color:#777;
-                font-size:14px;
-                line-height:1.6;
-                margin-bottom:30px;
-            ">
+
+            <p
+                style="
+                    color:#777;
+                    font-size:14px;
+                    line-height:1.6;
+                    margin-bottom:30px;
+                "
+            >
                 Aduan telah disimpan dan boleh
                 dilihat oleh pihak PPT.
             </p>
 
 
-            <div style="
-                display:flex;
-                gap:12px;
-                justify-content:center;
-                flex-wrap:wrap;
-            ">
+
+            <div
+                style="
+                    display:flex;
+                    gap:12px;
+                    justify-content:center;
+                    flex-wrap:wrap;
+                "
+            >
 
 
                 <button
@@ -524,6 +1158,7 @@ function paparBerjaya(noAduan) {
                 >
                     🏠 Kembali ke Halaman Utama
                 </button>
+
 
 
                 <button
@@ -539,8 +1174,14 @@ function paparBerjaya(noAduan) {
 
             </div>
 
+
         </div>
 
     `;
+
 }
+
 </script>
+
+</body>
+</html>
