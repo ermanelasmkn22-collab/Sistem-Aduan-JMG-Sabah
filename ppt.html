@@ -674,14 +674,11 @@ function dapatkanAduan(){
     const callbackName =
         "callbackAduan_" + Date.now();
 
-
     const script =
         document.createElement("script");
 
-
     script.id =
         "jsonpScript";
-
 
     let selesai = false;
 
@@ -702,6 +699,154 @@ function dapatkanAduan(){
 
     }
 
+
+    // -------------------------------------------------
+    // TERIMA DATA DARIPADA GOOGLE APPS SCRIPT
+    // -------------------------------------------------
+
+    window[callbackName] =
+        function(response){
+
+            selesai = true;
+
+            console.log(
+                "DATA DARIPADA APPS SCRIPT:",
+                response
+            );
+
+
+            // -----------------------------------------
+            // SEMAK RESPONSE
+            // -----------------------------------------
+
+            if(
+                !response ||
+                response.success !== true
+            ){
+
+                paparError(
+                    "❌ Data aduan tidak dapat dibaca."
+                );
+
+                cleanup();
+
+                return;
+
+            }
+
+
+            // -----------------------------------------
+            // SIMPAN DATA
+            // -----------------------------------------
+
+            semuaAduan =
+                Array.isArray(response.data)
+                ? response.data
+                : [];
+
+
+            console.log(
+                "JUMLAH ADUAN:",
+                semuaAduan.length
+            );
+
+
+            // -----------------------------------------
+            // KEMASKINI DASHBOARD
+            // -----------------------------------------
+
+            kemaskiniDashboard();
+
+
+            // -----------------------------------------
+            // PAPAR SENARAI ADUAN
+            // -----------------------------------------
+
+            paparAduan();
+
+
+            // -----------------------------------------
+            // BUANG SCRIPT
+            // -----------------------------------------
+
+            cleanup();
+
+        };
+
+
+    // -------------------------------------------------
+    // JIKA GAGAL SAMBUNG
+    // -------------------------------------------------
+
+    script.onerror =
+        function(){
+
+            selesai = true;
+
+            console.error(
+                "Gagal memanggil Google Apps Script."
+            );
+
+            paparError(
+                "❌ Gagal menyambung ke sistem database."
+            );
+
+            cleanup();
+
+        };
+
+
+    // -------------------------------------------------
+    // URL GOOGLE APPS SCRIPT
+    // -------------------------------------------------
+
+    script.src =
+        GOOGLE_APPS_SCRIPT_URL +
+        "?prefix=" +
+        encodeURIComponent(callbackName) +
+        "&t=" +
+        Date.now();
+
+
+    console.log(
+        "URL JSONP:",
+        script.src
+    );
+
+
+    // -------------------------------------------------
+    // JALANKAN SCRIPT
+    // -------------------------------------------------
+
+    document.body.appendChild(script);
+
+
+    // -------------------------------------------------
+    // TIMEOUT 15 SAAT
+    // -------------------------------------------------
+
+    setTimeout(
+        function(){
+
+            if(!selesai){
+
+                console.error(
+                    "Google Apps Script tidak memberi respons."
+                );
+
+                paparError(
+                    "❌ Database tidak memberi respons."
+                );
+
+                cleanup();
+
+            }
+
+        },
+        15000
+    );
+
+}
 
     // -------------------------------------------------
     // CALLBACK
