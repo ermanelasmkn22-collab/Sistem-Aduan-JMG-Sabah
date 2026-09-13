@@ -683,94 +683,125 @@ function dapatkanAduan(){
 
     paparLoading();
 
-    const callbackName =
-        "callbackAduan_" + Date.now();
+    const scriptId = "jsonp-aduan-jmg";
 
-    let selesai = false;
+    // Buang script lama jika ada
+    const scriptLama = document.getElementById(scriptId);
 
-    const script =
-        document.createElement("script");
-
-    function cleanup(){
-
-        try{
-
-            if(script && script.parentNode){
-                script.parentNode.removeChild(script);
-            }
-
-        }catch(e){
-
-            console.warn(
-                "Cleanup script:",
-                e
-            );
-
-        }
-
-        try{
-
-            delete window[callbackName];
-
-        }catch(e){
-
-            window[callbackName] = undefined;
-
-        }
-
+    if(scriptLama){
+        scriptLama.remove();
     }
 
 
     // =================================================
-    // CALLBACK
+    // CALLBACK TETAP JSONP
     // =================================================
 
-    window[callbackName] =
-        function(response){
+    window.callbackAduanJMG = function(response){
 
-            selesai = true;
+        console.log("DATA DITERIMA:", response);
 
-            console.log(
-                "DATA DITERIMA:",
+
+        // Semak response
+        if(
+            !response ||
+            response.success !== true
+        ){
+
+            console.error(
+                "Response Google Apps Script tidak sah:",
                 response
             );
 
-
-            if(
-                !response ||
-                response.success !== true
-            ){
-
-                paparError(
-                    "❌ Data aduan tidak dapat dibaca."
-                );
-
-                cleanup();
-
-                return;
-
-            }
-
-
-            semuaAduan =
-                Array.isArray(response.data)
-                ? response.data
-                : [];
-
-
-            console.log(
-                "JUMLAH ADUAN:",
-                semuaAduan.length
+            paparError(
+                "❌ Data aduan tidak dapat dibaca."
             );
 
+            return;
+        }
 
-            kemaskiniDashboard();
 
-            paparAduan();
+        // Ambil data
+        semuaAduan =
+            Array.isArray(response.data)
+            ? response.data
+            : [];
 
-            cleanup();
 
-        };
+        console.log(
+            "JUMLAH ADUAN:",
+            semuaAduan.length
+        );
+
+
+        // Kemaskini dashboard
+        kemaskiniDashboard();
+
+
+        // Paparkan senarai aduan
+        paparAduan();
+
+
+        // Buang script JSONP
+        const script =
+            document.getElementById(scriptId);
+
+        if(script){
+            script.remove();
+        }
+
+    };
+
+
+    // =================================================
+    // CIPTA SCRIPT JSONP
+    // =================================================
+
+    const script =
+        document.createElement("script");
+
+    script.id = scriptId;
+
+
+    // URL Apps Script yang SUDAH DISAHKAN BERFUNGSI
+    script.src =
+        GOOGLE_APPS_SCRIPT_URL +
+        "?callback=callbackAduanJMG&t=" +
+        Date.now();
+
+
+    console.log(
+        "URL DATA:",
+        script.src
+    );
+
+
+    // =================================================
+    // JIKA GAGAL LOAD
+    // =================================================
+
+    script.onerror = function(){
+
+        console.error(
+            "Gagal menyambung Google Apps Script."
+        );
+
+        paparError(
+            "❌ Gagal menyambung ke sistem database."
+        );
+
+        script.remove();
+
+    };
+
+
+    // =================================================
+    // MASUKKAN SCRIPT KE PAGE
+    // =================================================
+
+    document.body.appendChild(script);
+
+}
 
 
     // =================================================
