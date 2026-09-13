@@ -651,7 +651,6 @@ onclick="tutupModal()">
 </footer>
 
 
-
 <script>
 
 
@@ -674,7 +673,7 @@ let tabSemasa = "aktif";
 
 // =====================================================
 // AMBIL DATA GOOGLE SHEET
-// GUNA JSONP - SATU KAEDAH SAHAJA
+// JSONP - SATU KAEDAH SAHAJA
 // =====================================================
 
 function dapatkanAduan(){
@@ -683,74 +682,86 @@ function dapatkanAduan(){
 
     paparLoading();
 
-    const scriptId = "jsonp-aduan-jmg";
+
+    const scriptId =
+        "jsonp-aduan-jmg";
+
 
     // Buang script lama jika ada
-    const scriptLama = document.getElementById(scriptId);
+
+    const scriptLama =
+        document.getElementById(scriptId);
+
 
     if(scriptLama){
+
         scriptLama.remove();
+
     }
 
 
     // =================================================
-    // CALLBACK TETAP JSONP
+    // CALLBACK TETAP
     // =================================================
 
-    window.callbackAduanJMG = function(response){
+    window.callbackAduanJMG =
+        function(response){
 
-        console.log("DATA DITERIMA:", response);
-
-
-        // Semak response
-        if(
-            !response ||
-            response.success !== true
-        ){
-
-            console.error(
-                "Response Google Apps Script tidak sah:",
+            console.log(
+                "DATA DITERIMA:",
                 response
             );
 
-            paparError(
-                "❌ Data aduan tidak dapat dibaca."
+
+            if(
+                !response ||
+                response.success !== true
+            ){
+
+                console.error(
+                    "Response tidak sah:",
+                    response
+                );
+
+                paparError(
+                    "❌ Data aduan tidak dapat dibaca."
+                );
+
+                return;
+
+            }
+
+
+            semuaAduan =
+                Array.isArray(response.data)
+                ? response.data
+                : [];
+
+
+            console.log(
+                "JUMLAH ADUAN:",
+                semuaAduan.length
             );
 
-            return;
-        }
+
+            kemaskiniDashboard();
+
+            paparAduan();
 
 
-        // Ambil data
-        semuaAduan =
-            Array.isArray(response.data)
-            ? response.data
-            : [];
+            const script =
+                document.getElementById(
+                    scriptId
+                );
 
 
-        console.log(
-            "JUMLAH ADUAN:",
-            semuaAduan.length
-        );
+            if(script){
 
+                script.remove();
 
-        // Kemaskini dashboard
-        kemaskiniDashboard();
+            }
 
-
-        // Paparkan senarai aduan
-        paparAduan();
-
-
-        // Buang script JSONP
-        const script =
-            document.getElementById(scriptId);
-
-        if(script){
-            script.remove();
-        }
-
-    };
+        };
 
 
     // =================================================
@@ -760,10 +771,11 @@ function dapatkanAduan(){
     const script =
         document.createElement("script");
 
-    script.id = scriptId;
+
+    script.id =
+        scriptId;
 
 
-    // URL Apps Script yang SUDAH DISAHKAN BERFUNGSI
     script.src =
         GOOGLE_APPS_SCRIPT_URL +
         "?callback=callbackAduanJMG&t=" +
@@ -777,104 +789,32 @@ function dapatkanAduan(){
 
 
     // =================================================
-    // JIKA GAGAL LOAD
-    // =================================================
-
-    script.onerror = function(){
-
-        console.error(
-            "Gagal menyambung Google Apps Script."
-        );
-
-        paparError(
-            "❌ Gagal menyambung ke sistem database."
-        );
-
-        script.remove();
-
-    };
-
-
-    // =================================================
-    // MASUKKAN SCRIPT KE PAGE
-    // =================================================
-
-    document.body.appendChild(script);
-
-}
-
-
-    // =================================================
-    // ERROR SCRIPT
+    // ERROR
     // =================================================
 
     script.onerror =
         function(){
 
-            selesai = true;
-
             console.error(
                 "Gagal menyambung Google Apps Script."
             );
+
 
             paparError(
                 "❌ Gagal menyambung ke sistem database."
             );
 
-            cleanup();
+
+            script.remove();
 
         };
 
 
     // =================================================
-    // URL JSONP
-    // =================================================
-
-    script.src =
-        GOOGLE_APPS_SCRIPT_URL +
-        "?callback=" +
-        encodeURIComponent(callbackName) +
-        "&t=" +
-        Date.now();
-
-
-    console.log(
-        "URL DATA:",
-        script.src
-    );
-
-
-    // =================================================
-    // MASUKKAN SCRIPT KE PAGE
+    // MASUKKAN SCRIPT
     // =================================================
 
     document.body.appendChild(script);
-
-
-    // =================================================
-    // TIMEOUT
-    // =================================================
-
-    setTimeout(
-        function(){
-
-            if(!selesai){
-
-                console.error(
-                    "Database timeout."
-                );
-
-                paparError(
-                    "❌ Database tidak memberi respons. Sila refresh halaman."
-                );
-
-                cleanup();
-
-            }
-
-        },
-        15000
-    );
 
 }
 
@@ -990,17 +930,20 @@ function kemaskiniDashboard(){
 
     document.getElementById(
         "jumlahAduan"
-    ).textContent = aktif;
+    ).textContent =
+        aktif;
 
 
     document.getElementById(
         "dalamTindakan"
-    ).textContent = tindakan;
+    ).textContent =
+        tindakan;
 
 
     document.getElementById(
         "aduanSelesai"
-    ).textContent = selesai;
+    ).textContent =
+        selesai;
 
 }
 
@@ -1011,7 +954,8 @@ function kemaskiniDashboard(){
 
 function tukarTab(tab){
 
-    tabSemasa = tab;
+    tabSemasa =
+        tab;
 
 
     document
@@ -1187,7 +1131,8 @@ function paparAduan(){
                     noAduan.includes(search);
 
 
-                let padanStatus = true;
+                let padanStatus =
+                    true;
 
 
                 if(
@@ -1448,7 +1393,8 @@ function lihatAduan(id){
     }
 
 
-    let kawalanStatus = "";
+    let kawalanStatus =
+        "";
 
 
     if(
@@ -1491,7 +1437,13 @@ function lihatAduan(id){
                 </option>
 
 
-                <option value="Selesai">
+                <option value="Selesai"
+                ${
+                    aduan.status ===
+                    "Selesai"
+                    ? "selected"
+                    : ""
+                }>
 
                     Selesai
 
@@ -1819,7 +1771,8 @@ function kemaskiniStatus(id){
 
     if(button){
 
-        button.disabled = true;
+        button.disabled =
+            true;
 
         button.textContent =
             "⏳ Menyimpan...";
@@ -1869,7 +1822,9 @@ function kemaskiniStatus(id){
     .catch(
         function(error){
 
-            console.error(error);
+            console.error(
+                error
+            );
 
 
             alert(
@@ -1879,7 +1834,8 @@ function kemaskiniStatus(id){
 
             if(button){
 
-                button.disabled = false;
+                button.disabled =
+                    false;
 
                 button.textContent =
                     "💾 Simpan Status & Catatan";
@@ -1907,7 +1863,7 @@ function tutupModal(){
 
 
 // =====================================================
-// TUTUP MODAL KLIK LUAR
+// KLIK LUAR MODAL
 // =====================================================
 
 window.onclick =
@@ -2008,7 +1964,8 @@ function janaPDF(id){
     );
 
 
-    let y = 60;
+    let y =
+        60;
 
 
     function tambah(
@@ -2132,7 +2089,9 @@ function janaPDF(id){
 
     tambah(
         "Tarikh Aduan:",
-        formatTarikh(aduan.tarikh)
+        formatTarikh(
+            aduan.tarikh
+        )
     );
 
 
