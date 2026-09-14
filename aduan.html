@@ -472,7 +472,13 @@ const firebaseConfig = {
     "G-4K74PF0M7S"
 
 };
+    
+// =====================================================
+// GOOGLE APPS SCRIPT - EMAIL NOTIFICATION PPT
+// =====================================================
 
+const EMAIL_NOTIFICATION_URL =
+  "https://script.google.com/macros/s/AKfycbxw022kEz834IL8nD9Gsbct_IKzgRAAdSwSfla_uW2ndYN3Bx0OqgQG33Kftb-uzBkI/exec";
 
 /* =====================================================
    INITIALIZE FIREBASE
@@ -623,184 +629,220 @@ document
            SIMPAN
            ================================================= */
 
-        function simpanAduan(
-            gambarBase64
-        ){
+        function simpanAduan(gambarBase64){
 
-            if(!auth.currentUser){
+    if(!auth.currentUser){
 
-                alert(
-                    "❌ Sambungan Firebase belum bersedia.\n\n" +
-                    "Sila cuba sekali lagi."
-                );
+        alert(
+            "❌ Sambungan Firebase belum bersedia.\n\n" +
+            "Sila cuba sekali lagi."
+        );
 
-                button.disabled = false;
+        button.disabled = false;
 
-                button.innerText =
-                    "📤 Hantar Aduan";
+        button.innerText = "📤 Hantar Aduan";
 
-                return;
+        return;
+    }
 
+
+    const sekarang = new Date();
+
+
+    const masa =
+        sekarang.toLocaleTimeString(
+            "ms-MY",
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
             }
+        );
 
 
-            const sekarang =
-                new Date();
+    /*
+     * NO ADUAN
+     */
+
+    const noAduan =
+        "FAC-" +
+        sekarang.getFullYear() +
+        String(sekarang.getMonth()+1).padStart(2,"0") +
+        String(sekarang.getDate()).padStart(2,"0") +
+        "-" +
+        String(sekarang.getHours()).padStart(2,"0") +
+        String(sekarang.getMinutes()).padStart(2,"0") +
+        String(sekarang.getSeconds()).padStart(2,"0");
 
 
-            const masa =
-                sekarang.toLocaleTimeString(
-                    "ms-MY",
-                    {
-                        hour:"2-digit",
-                        minute:"2-digit",
-                        second:"2-digit"
-                    }
-                );
+    /*
+     * DATA ADUAN
+     */
+
+    const aduan = {
+
+        noAduan: noAduan,
+
+        tarikh: tarikh,
+
+        masa: masa,
+
+        nama: nama,
+
+        jawatan: jawatan,
+
+        bahagian: bahagian,
+
+        blok: blok,
+
+        tingkat: tingkat,
+
+        lokasi: lokasi,
+
+        jenis: jenis,
+
+        jenisKerosakan: jenis,
+
+        penerangan: penerangan,
+
+        cadangan: cadangan,
+
+        gambar: gambarBase64 || "",
+
+        status: "Baharu",
+
+        catatan: "",
+
+        catatanPPT: "",
+
+        uid: auth.currentUser.uid,
+
+        timestamp:
+            firebase
+            .firestore
+            .FieldValue
+            .serverTimestamp()
+
+    };
 
 
-            /*
-             * NO ADUAN
-             */
+    /*
+     * SIMPAN KE FIRESTORE
+     */
 
-            const noAduan =
-                "FAC-" +
-                sekarang.getFullYear() +
-                String(
-                    sekarang.getMonth()+1
-                ).padStart(2,"0") +
-                String(
-                    sekarang.getDate()
-                ).padStart(2,"0") +
-                "-" +
-                String(
-                    sekarang.getHours()
-                ).padStart(2,"0") +
-                String(
-                    sekarang.getMinutes()
-                ).padStart(2,"0") +
-                String(
-                    sekarang.getSeconds()
-                ).padStart(2,"0");
+    db
+    .collection("aduan")
+    .add(aduan)
+
+    .then(function(docRef){
+
+        console.log(
+            "Aduan berjaya disimpan:",
+            docRef.id
+        );
 
 
-            /*
-             * DATA ADUAN
-             */
+        /*
+         * ==========================================
+         * HANTAR EMAIL NOTIFICATION KEPADA PPT
+         * ==========================================
+         */
 
-            const aduan = {
+        const emailData = {
 
-                noAduan:
-                    noAduan,
+            noAduan: noAduan,
 
-                tarikh:
-                    tarikh,
+            tarikh: tarikh,
 
-                masa:
-                    masa,
+            masa: masa,
 
-                nama:
-                    nama,
+            nama: nama,
 
-                jawatan:
-                    jawatan,
+            jawatan: jawatan,
 
-                bahagian:
-                    bahagian,
+            bahagian: bahagian,
 
-                blok:
-                    blok,
+            blok: blok,
 
-                tingkat:
-                    tingkat,
+            tingkat: tingkat,
 
-                lokasi:
-                    lokasi,
+            lokasi: lokasi,
 
-                jenis:
-                    jenis,
+            jenis: jenis,
 
-                jenisKerosakan:
-                    jenis,
+            penerangan: penerangan,
 
-                penerangan:
-                    penerangan,
+            cadangan: cadangan
 
-                cadangan:
-                    cadangan,
-
-                gambar:
-                    gambarBase64 || "",
-
-                status:
-                    "Baharu",
-
-                catatan:
-                    "",
-
-                catatanPPT:
-                    "",
-
-                uid:
-                    auth.currentUser.uid,
-
-                timestamp:
-                    firebase
-                    .firestore
-                    .FieldValue
-                    .serverTimestamp()
-
-            };
+        };
 
 
-            /*
-             * SIMPAN KE FIRESTORE
-             */
+        fetch(
+            EMAIL_NOTIFICATION_URL,
+            {
+                method: "POST",
 
-            db
-            .collection("aduan")
-            .add(aduan)
+                mode: "no-cors",
 
-            .then(function(docRef){
+                headers: {
+                    "Content-Type":
+                        "text/plain;charset=UTF-8"
+                },
 
-                console.log(
-                    "Aduan berjaya disimpan:",
-                    docRef.id
-                );
+                body:
+                    JSON.stringify(emailData)
+            }
+        )
+        .then(function(){
 
+            console.log(
+                "Notification email telah dihantar ke Apps Script."
+            );
 
-                paparBerjaya(
-                    noAduan
-                );
+        })
+        .catch(function(error){
 
-            })
+            console.error(
+                "Email notification error:",
+                error
+            );
 
-            .catch(function(error){
-
-                console.error(
-                    "Firestore Error:",
-                    error
-                );
-
-
-                alert(
-                    "❌ Aduan gagal dihantar.\n\n" +
-                    "Ralat: " +
-                    error.message
-                );
+        });
 
 
-                button.disabled =
-                    false;
+        /*
+         * PAPAR HALAMAN BERJAYA
+         */
 
-                button.innerText =
-                    "📤 Hantar Aduan";
+        paparBerjaya(
+            noAduan
+        );
 
-            });
+    })
 
-        }
+    .catch(function(error){
+
+        console.error(
+            "Firestore Error:",
+            error
+        );
 
 
+        alert(
+            "❌ Aduan gagal dihantar.\n\n" +
+            "Ralat: " +
+            error.message
+        );
+
+
+        button.disabled = false;
+
+        button.innerText =
+            "📤 Hantar Aduan";
+
+    });
+
+}
         /* =================================================
            GAMBAR
            ================================================= */
