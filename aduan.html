@@ -7,156 +7,161 @@
 
 <title>Buat Aduan - JMG Sabah</title>
 
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <style>
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #f3f7f4, #e1ebe5);
-    color: #333;
+body{
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#f3f7f4,#e1ebe5);
+    color:#333;
 }
 
-header {
-    background: white;
-    padding: 20px 8%;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+header{
+    background:white;
+    padding:20px 8%;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
 
-.jmg-logo {
-    width: 70px;
-    height: 70px;
-    object-fit: contain;
+.jmg-logo{
+    width:70px;
+    height:70px;
+    object-fit:contain;
 }
 
-h1 {
-    color: #1f2937;
-    font-size: 24px;
+h1{
+    color:#1f2937;
+    font-size:24px;
 }
 
-.subtitle {
-    color: #666;
-    margin-top: 5px;
+.subtitle{
+    color:#666;
+    margin-top:5px;
 }
 
-.container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 30px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+.container{
+    max-width:800px;
+    margin:50px auto;
+    padding:30px;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.1);
 }
 
-h2 {
-    color: #1f5d3a;
-    margin-bottom: 10px;
+h2{
+    color:#1f5d3a;
+    margin-bottom:10px;
 }
 
-.description {
-    color: #666;
-    margin-bottom: 30px;
-    line-height: 1.6;
+.description{
+    color:#666;
+    margin-bottom:30px;
+    line-height:1.6;
 }
 
-label {
-    display: block;
-    margin-top: 18px;
-    margin-bottom: 8px;
-    font-weight: bold;
+label{
+    display:block;
+    margin-top:18px;
+    margin-bottom:8px;
+    font-weight:bold;
 }
 
 input,
 select,
-textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 15px;
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
 }
 
 input:focus,
 select:focus,
-textarea:focus {
-    outline: none;
-    border-color: #1f5d3a;
-    box-shadow: 0 0 0 2px rgba(31,93,58,0.1);
+textarea:focus{
+    outline:none;
+    border-color:#1f5d3a;
+    box-shadow:0 0 0 2px rgba(31,93,58,.1);
 }
 
-textarea {
-    resize: vertical;
-    min-height: 120px;
+textarea{
+    resize:vertical;
+    min-height:120px;
 }
 
-input[type="file"] {
-    background: #fafafa;
-    cursor: pointer;
+input[type=file]{
+    background:#fafafa;
+    cursor:pointer;
 }
 
-button {
-    width: 100%;
-    margin-top: 30px;
-    padding: 14px;
-    background: #1f5d3a;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
+button{
+    width:100%;
+    margin-top:30px;
+    padding:14px;
+    background:#1f5d3a;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-button:hover {
-    background: #17482d;
+button:hover{
+    background:#17482d;
 }
 
-button:disabled {
-    background: #999;
-    cursor: not-allowed;
+button:disabled{
+    background:#999;
+    cursor:not-allowed;
 }
 
-.required {
-    color: red;
+.required{
+    color:red;
 }
 
-.info-box {
-    background: #f0f7f3;
-    border-left: 4px solid #1f5d3a;
-    padding: 15px;
-    margin-bottom: 25px;
-    border-radius: 6px;
-    color: #555;
-    line-height: 1.5;
+.info-box{
+    background:#f0f7f3;
+    border-left:4px solid #1f5d3a;
+    padding:15px;
+    margin-bottom:25px;
+    border-radius:6px;
+    color:#555;
+    line-height:1.5;
 }
 
-footer {
-    text-align: center;
-    padding: 25px;
-    color: #777;
-    font-size: 14px;
+footer{
+    text-align:center;
+    padding:25px;
+    color:#777;
+    font-size:14px;
 }
 
-.success-button {
-    width: auto;
-    min-width: 220px;
-    margin-top: 0;
-    padding: 13px 20px;
+.success-button{
+    width:auto;
+    min-width:220px;
+    margin-top:0;
+    padding:13px 20px;
 }
 
-.new-button {
-    background: #555;
+.new-button{
+    background:#555;
 }
 
-.new-button:hover {
-    background: #333;
+.new-button:hover{
+    background:#333;
 }
 
 </style>
@@ -165,305 +170,321 @@ footer {
 
 <body>
 
-
 <header>
 
-    <img
-        src="logo-jmg.jpeg"
-        alt="Logo JMG"
-        class="jmg-logo"
-    >
+<img
+    src="logo-jmg.jpeg"
+    alt="Logo JMG"
+    class="jmg-logo"
+>
 
-    <div>
+<div>
 
-        <h1>
-            Jabatan Mineral dan Geosains Malaysia
-        </h1>
+<h1>
+Jabatan Mineral dan Geosains Malaysia
+</h1>
 
-        <p class="subtitle">
-            Sabah
-        </p>
+<p class="subtitle">
+Sabah
+</p>
 
-    </div>
+</div>
 
 </header>
 
 
-
 <div class="container">
 
-    <h2>
-        📋 Borang Aduan Kerosakan Fasiliti
-    </h2>
+<h2>
+📋 Borang Aduan Kerosakan Fasiliti
+</h2>
 
-    <p class="description">
-        Sila lengkapkan maklumat di bawah untuk membuat aduan
-        kerosakan fasiliti di Jabatan Mineral dan Geosains Malaysia,
-        Sabah.
-    </p>
+<p class="description">
+Sila lengkapkan maklumat di bawah untuk membuat aduan
+kerosakan fasiliti di Jabatan Mineral dan Geosains Malaysia,
+Sabah.
+</p>
 
 
-    <div class="info-box">
+<div class="info-box">
 
-        ℹ️ <strong>Makluman:</strong><br>
+ℹ️ <strong>Makluman:</strong><br>
 
-        Sila pastikan maklumat yang diberikan adalah tepat.
-        Jika berkaitan, sila sertakan gambar kerosakan untuk
-        memudahkan pihak PPT membuat tindakan susulan.
-
-    </div>
-
-
-
-    <form id="aduanForm">
-
-
-        <!-- NAMA -->
-
-        <label for="nama">
-            Nama Pelapor <span class="required">*</span>
-        </label>
-
-        <input
-            type="text"
-            id="nama"
-            placeholder="Masukkan nama penuh"
-            required
-        >
-
-
-
-        <!-- JAWATAN -->
-
-        <label for="jawatan">
-            Jawatan <span class="required">*</span>
-        </label>
-
-        <input
-            type="text"
-            id="jawatan"
-            placeholder="Contoh: Pegawai Geosains"
-            required
-        >
-
-
-
-        <!-- BAHAGIAN -->
-
-        <label for="bahagian">
-            Bahagian / Unit <span class="required">*</span>
-        </label>
-
-        <input
-            type="text"
-            id="bahagian"
-            placeholder="Masukkan bahagian / unit"
-            required
-        >
-
-
-
-        <!-- BLOK -->
-
-        <label for="blok">
-            Blok
-        </label>
-
-        <input
-            type="text"
-            id="blok"
-            placeholder="Contoh: Blok A"
-        >
-
-
-
-        <!-- TINGKAT -->
-
-        <label for="tingkat">
-            Tingkat / Aras
-        </label>
-
-        <input
-            type="text"
-            id="tingkat"
-            placeholder="Contoh: Tingkat 2"
-        >
-
-
-
-        <!-- LOKASI -->
-
-        <label for="lokasi">
-            Lokasi Kerosakan <span class="required">*</span>
-        </label>
-
-        <input
-            type="text"
-            id="lokasi"
-            placeholder="Contoh: Bilik Mesyuarat"
-            required
-        >
-
-
-
-        <!-- JENIS -->
-
-        <label for="jenis">
-            Jenis Kerosakan <span class="required">*</span>
-        </label>
-
-        <select id="jenis" required>
-
-            <option value="">
-                -- Sila Pilih --
-            </option>
-
-            <option value="Elektrik">
-                Elektrik
-            </option>
-
-            <option value="Lampu">
-                Lampu
-            </option>
-
-            <option value="Penghawa Dingin">
-                Penghawa Dingin
-            </option>
-
-            <option value="Paip / Air">
-                Paip / Air
-            </option>
-
-            <option value="Tandas">
-                Tandas
-            </option>
-
-            <option value="Pintu / Tingkap">
-                Pintu / Tingkap
-            </option>
-
-            <option value="Perabot">
-                Perabot
-            </option>
-
-            <option value="Bumbung">
-                Bumbung
-            </option>
-
-            <option value="Lantai">
-                Lantai
-            </option>
-
-            <option value="Dinding">
-                Dinding
-            </option>
-
-            <option value="Lain-lain">
-                Lain-lain
-            </option>
-
-        </select>
-
-
-
-        <!-- PENERANGAN -->
-
-        <label for="penerangan">
-            Penerangan Kerosakan <span class="required">*</span>
-        </label>
-
-        <textarea
-            id="penerangan"
-            placeholder="Terangkan kerosakan yang berlaku..."
-            required
-        ></textarea>
-
-
-
-        <!-- CADANGAN -->
-
-        <label for="cadangan">
-            Cadangan / Keperluan Tindakan
-        </label>
-
-        <textarea
-            id="cadangan"
-            placeholder="Masukkan cadangan jika ada..."
-        ></textarea>
-
-
-
-        <!-- TARIKH -->
-
-        <label for="tarikh">
-            Tarikh Aduan <span class="required">*</span>
-        </label>
-
-        <input
-            type="date"
-            id="tarikh"
-            required
-        >
-
-
-
-        <!-- GAMBAR -->
-
-        <label for="gambar">
-            Gambar Kerosakan
-        </label>
-
-        <input
-            type="file"
-            id="gambar"
-            accept="image/*"
-        >
-
-
-        <small
-            style="
-                display:block;
-                margin-top:8px;
-                color:#777;
-            "
-        >
-            Format gambar: JPG, JPEG, PNG. Maksimum 10MB.
-        </small>
-
-
-
-        <!-- BUTTON -->
-
-        <button type="submit">
-
-            📤 Hantar Aduan
-
-        </button>
-
-
-    </form>
+Sila pastikan maklumat yang diberikan adalah tepat.
+Jika berkaitan, sila sertakan gambar kerosakan untuk
+memudahkan pihak PPT membuat tindakan susulan.
 
 </div>
 
 
+<form id="aduanForm">
+
+
+<!-- NAMA -->
+
+<label for="nama">
+Nama Pelapor <span class="required">*</span>
+</label>
+
+<input
+    type="text"
+    id="nama"
+    placeholder="Masukkan nama penuh"
+    required
+>
+
+
+<!-- JAWATAN -->
+
+<label for="jawatan">
+Jawatan <span class="required">*</span>
+</label>
+
+<input
+    type="text"
+    id="jawatan"
+    placeholder="Contoh: Pegawai Geosains"
+    required
+>
+
+
+<!-- BAHAGIAN -->
+
+<label for="bahagian">
+Bahagian / Unit <span class="required">*</span>
+</label>
+
+<input
+    type="text"
+    id="bahagian"
+    placeholder="Masukkan bahagian / unit"
+    required
+>
+
+
+<!-- BLOK -->
+
+<label for="blok">
+Blok
+</label>
+
+<input
+    type="text"
+    id="blok"
+    placeholder="Contoh: Blok A"
+>
+
+
+<!-- TINGKAT -->
+
+<label for="tingkat">
+Tingkat / Aras
+</label>
+
+<input
+    type="text"
+    id="tingkat"
+    placeholder="Contoh: Tingkat 2"
+>
+
+
+<!-- LOKASI -->
+
+<label for="lokasi">
+Lokasi Kerosakan <span class="required">*</span>
+</label>
+
+<input
+    type="text"
+    id="lokasi"
+    placeholder="Contoh: Bilik Mesyuarat"
+    required
+>
+
+
+<!-- JENIS -->
+
+<label for="jenis">
+Jenis Kerosakan <span class="required">*</span>
+</label>
+
+<select id="jenis" required>
+
+<option value="">
+-- Sila Pilih --
+</option>
+
+<option value="Elektrik">
+Elektrik
+</option>
+
+<option value="Lampu">
+Lampu
+</option>
+
+<option value="Penghawa Dingin">
+Penghawa Dingin
+</option>
+
+<option value="Paip / Air">
+Paip / Air
+</option>
+
+<option value="Tandas">
+Tandas
+</option>
+
+<option value="Pintu / Tingkap">
+Pintu / Tingkap
+</option>
+
+<option value="Perabot">
+Perabot
+</option>
+
+<option value="Bumbung">
+Bumbung
+</option>
+
+<option value="Lantai">
+Lantai
+</option>
+
+<option value="Dinding">
+Dinding
+</option>
+
+<option value="Lain-lain">
+Lain-lain
+</option>
+
+</select>
+
+
+<!-- PENERANGAN -->
+
+<label for="penerangan">
+Penerangan Kerosakan <span class="required">*</span>
+</label>
+
+<textarea
+    id="penerangan"
+    placeholder="Terangkan kerosakan yang berlaku..."
+    required
+></textarea>
+
+
+<!-- CADANGAN -->
+
+<label for="cadangan">
+Cadangan / Keperluan Tindakan
+</label>
+
+<textarea
+    id="cadangan"
+    placeholder="Masukkan cadangan jika ada..."
+></textarea>
+
+
+<!-- TARIKH -->
+
+<label for="tarikh">
+Tarikh Aduan <span class="required">*</span>
+</label>
+
+<input
+    type="date"
+    id="tarikh"
+    required
+>
+
+
+<!-- GAMBAR -->
+
+<label for="gambar">
+Gambar Kerosakan
+</label>
+
+<input
+    type="file"
+    id="gambar"
+    accept="image/*"
+>
+
+<small
+style="
+display:block;
+margin-top:8px;
+color:#777;
+"
+>
+Format gambar: JPG, JPEG, PNG. Maksimum 10MB.
+</small>
+
+
+<!-- BUTTON -->
+
+<button type="submit">
+
+📤 Hantar Aduan
+
+</button>
+
+</form>
+
+</div>
+
 
 <footer>
 
-    © 2026 Jabatan Mineral dan Geosains Malaysia, Sabah
+© 2026 Jabatan Mineral dan Geosains Malaysia, Sabah
 
 </footer>
-
 
 
 <script>
 
 /* =====================================================
-   SISTEM ADUAN JMG SABAH
-   VERSI SEMENTARA - TANPA GOOGLE SHEET
-   DATA DISIMPAN DALAM LOCAL STORAGE
+   FIREBASE CONFIGURATION
    ===================================================== */
 
-const STORAGE_KEY = "JMG_ADUAN_SABAH";
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyAQmAhXDBfk2W05iMG4xIZQ6HYKrFKIZXg",
+
+    authDomain:
+    "sistem-aduan-jmg-sabah.firebaseapp.com",
+
+    projectId:
+    "sistem-aduan-jmg-sabah",
+
+    storageBucket:
+    "sistem-aduan-jmg-sabah.firebasestorage.app",
+
+    messagingSenderId:
+    "396264308079",
+
+    appId:
+    "1:396264308079:web:f478c52097bd1fa592fc9a",
+
+    measurementId:
+    "G-4K74PF0M7S"
+
+};
+
+
+/* =====================================================
+   INITIALIZE FIREBASE
+   ===================================================== */
+
+firebase.initializeApp(firebaseConfig);
+
+const db =
+    firebase.firestore();
+
+const auth =
+    firebase.auth();
 
 
 /* =====================================================
@@ -474,164 +495,154 @@ document.getElementById("tarikh").value =
     new Date().toISOString().split("T")[0];
 
 
+/* =====================================================
+   LOGIN ANONYMOUS
+   ===================================================== */
+
+auth.signInAnonymously()
+
+.then(function(){
+
+    console.log(
+        "Firebase Anonymous Login berjaya."
+    );
+
+})
+
+.catch(function(error){
+
+    console.error(
+        "Firebase Authentication Error:",
+        error
+    );
+
+});
+
 
 /* =====================================================
-   BORANG HANTAR ADUAN
+   BORANG
    ===================================================== */
 
 document
 .getElementById("aduanForm")
-.addEventListener("submit", function(event) {
+.addEventListener(
+    "submit",
+    function(event){
 
-    event.preventDefault();
-
-
-    const button =
-        document.querySelector("#aduanForm button");
+        event.preventDefault();
 
 
-    const nama =
-        document.getElementById("nama")
-        .value
-        .trim();
+        const button =
+            document.querySelector(
+                "#aduanForm button"
+            );
 
 
-    const jawatan =
-        document.getElementById("jawatan")
-        .value
-        .trim();
+        /* DATA */
+
+        const nama =
+            document
+            .getElementById("nama")
+            .value
+            .trim();
 
 
-    const bahagian =
-        document.getElementById("bahagian")
-        .value
-        .trim();
+        const jawatan =
+            document
+            .getElementById("jawatan")
+            .value
+            .trim();
 
 
-    const blok =
-        document.getElementById("blok")
-        .value
-        .trim();
+        const bahagian =
+            document
+            .getElementById("bahagian")
+            .value
+            .trim();
 
 
-    const tingkat =
-        document.getElementById("tingkat")
-        .value
-        .trim();
+        const blok =
+            document
+            .getElementById("blok")
+            .value
+            .trim();
 
 
-    const lokasi =
-        document.getElementById("lokasi")
-        .value
-        .trim();
+        const tingkat =
+            document
+            .getElementById("tingkat")
+            .value
+            .trim();
 
 
-    const jenis =
-        document.getElementById("jenis")
-        .value;
+        const lokasi =
+            document
+            .getElementById("lokasi")
+            .value
+            .trim();
 
 
-    const penerangan =
-        document.getElementById("penerangan")
-        .value
-        .trim();
+        const jenis =
+            document
+            .getElementById("jenis")
+            .value;
 
 
-    const cadangan =
-        document.getElementById("cadangan")
-        .value
-        .trim();
+        const penerangan =
+            document
+            .getElementById("penerangan")
+            .value
+            .trim();
 
 
-    const tarikh =
-        document.getElementById("tarikh")
-        .value;
+        const cadangan =
+            document
+            .getElementById("cadangan")
+            .value
+            .trim();
 
 
-    const gambarInput =
-        document.getElementById("gambar");
+        const tarikh =
+            document
+            .getElementById("tarikh")
+            .value;
 
 
-
-    button.disabled = true;
-
-    button.innerText =
-        "⏳ Menyimpan Aduan...";
+        const gambarInput =
+            document
+            .getElementById("gambar");
 
 
+        button.disabled = true;
 
-    /* =================================================
-       FUNGSI SIMPAN
-       ================================================= */
-
-    function simpanAduan(gambarBase64) {
-
-        try {
+        button.innerText =
+            "⏳ Menghantar Aduan...";
 
 
-            let semuaAduan =
-                JSON.parse(
-                    localStorage.getItem(
-                        STORAGE_KEY
-                    ) || "[]"
+        /* =================================================
+           SIMPAN
+           ================================================= */
+
+        function simpanAduan(
+            gambarBase64
+        ){
+
+            if(!auth.currentUser){
+
+                alert(
+                    "❌ Sambungan Firebase belum bersedia.\n\n" +
+                    "Sila cuba sekali lagi."
                 );
 
+                button.disabled = false;
 
-            if (!Array.isArray(semuaAduan)) {
+                button.innerText =
+                    "📤 Hantar Aduan";
 
-                semuaAduan = [];
+                return;
 
             }
 
-
-
-            /* =========================================
-               JANA NO ADUAN
-               ========================================= */
-
-            let nombor = 1;
-
-
-            semuaAduan.forEach(function(item) {
-
-                const match =
-                    String(
-                        item.noAduan || ""
-                    )
-                    .match(/(\d+)$/);
-
-
-                if (match) {
-
-                    const n =
-                        parseInt(
-                            match[1],
-                            10
-                        );
-
-
-                    if (n >= nombor) {
-
-                        nombor = n + 1;
-
-                    }
-
-                }
-
-            });
-
-
-
-            const noAduan =
-                "FAC-" +
-                String(nombor)
-                .padStart(4, "0");
-
-
-
-            /* =========================================
-               TARIKH DAN MASA
-               ========================================= */
 
             const sekarang =
                 new Date();
@@ -641,21 +652,43 @@ document
                 sekarang.toLocaleTimeString(
                     "ms-MY",
                     {
-                        hour: "2-digit",
-                        minute: "2-digit"
+                        hour:"2-digit",
+                        minute:"2-digit",
+                        second:"2-digit"
                     }
                 );
 
 
+            /*
+             * NO ADUAN
+             */
 
-            /* =========================================
-               DATA ADUAN
-               ========================================= */
+            const noAduan =
+                "FAC-" +
+                sekarang.getFullYear() +
+                String(
+                    sekarang.getMonth()+1
+                ).padStart(2,"0") +
+                String(
+                    sekarang.getDate()
+                ).padStart(2,"0") +
+                "-" +
+                String(
+                    sekarang.getHours()
+                ).padStart(2,"0") +
+                String(
+                    sekarang.getMinutes()
+                ).padStart(2,"0") +
+                String(
+                    sekarang.getSeconds()
+                ).padStart(2,"0");
+
+
+            /*
+             * DATA ADUAN
+             */
 
             const aduan = {
-
-                id:
-                    Date.now(),
 
                 noAduan:
                     noAduan,
@@ -708,219 +741,196 @@ document
                 catatanPPT:
                     "",
 
+                uid:
+                    auth.currentUser.uid,
+
                 timestamp:
-                    Date.now()
+                    firebase
+                    .firestore
+                    .FieldValue
+                    .serverTimestamp()
 
             };
 
 
+            /*
+             * SIMPAN KE FIRESTORE
+             */
 
-            /* =========================================
-               MASUKKAN ADUAN
-               ========================================= */
+            db
+            .collection("aduan")
+            .add(aduan)
 
-            semuaAduan.push(aduan);
+            .then(function(docRef){
 
-
-
-            /* =========================================
-               SIMPAN LOCAL STORAGE
-               ========================================= */
-
-            localStorage.setItem(
-                STORAGE_KEY,
-                JSON.stringify(
-                    semuaAduan
-                )
-            );
+                console.log(
+                    "Aduan berjaya disimpan:",
+                    docRef.id
+                );
 
 
+                paparBerjaya(
+                    noAduan
+                );
 
-            console.log(
-                "ADUAN BERJAYA DISIMPAN:",
-                aduan
-            );
+            })
 
+            .catch(function(error){
 
-
-            console.log(
-                "JUMLAH ADUAN:",
-                semuaAduan.length
-            );
-
-
-
-            /* =========================================
-               PAPAR BERJAYA
-               ========================================= */
-
-            paparBerjaya(
-                noAduan
-            );
-
-        }
-
-        catch(error) {
-
-            console.error(
-                "RALAT SIMPAN:",
-                error
-            );
+                console.error(
+                    "Firestore Error:",
+                    error
+                );
 
 
-            alert(
-                "❌ Aduan gagal disimpan.\n\n" +
-                "Jika ada gambar, cuba gambar yang lebih kecil."
-            );
+                alert(
+                    "❌ Aduan gagal dihantar.\n\n" +
+                    "Ralat: " +
+                    error.message
+                );
 
 
-            button.disabled = false;
+                button.disabled =
+                    false;
 
+                button.innerText =
+                    "📤 Hantar Aduan";
 
-            button.innerText =
-                "📤 Hantar Aduan";
-
-        }
-
-    }
-
-
-
-    /* =================================================
-       JIKA ADA GAMBAR
-       ================================================= */
-
-    if (
-        gambarInput.files &&
-        gambarInput.files.length > 0
-    ) {
-
-
-        const file =
-            gambarInput.files[0];
-
-
-
-        /* Maksimum 10MB */
-
-        if (
-            file.size >
-            10 * 1024 * 1024
-        ) {
-
-            alert(
-                "❌ Saiz gambar terlalu besar.\n\n" +
-                "Sila pilih gambar kurang daripada 10MB."
-            );
-
-
-            button.disabled = false;
-
-
-            button.innerText =
-                "📤 Hantar Aduan";
-
-
-            return;
+            });
 
         }
 
 
+        /* =================================================
+           GAMBAR
+           ================================================= */
 
-        compressImage(file)
+        if(
+            gambarInput.files &&
+            gambarInput.files.length > 0
+        ){
 
-        .then(function(gambarBase64) {
+            const file =
+                gambarInput.files[0];
 
-            simpanAduan(
+
+            /*
+             * CHECK 10MB
+             */
+
+            if(
+                file.size >
+                10 * 1024 * 1024
+            ){
+
+                alert(
+                    "❌ Saiz gambar terlalu besar.\n\n" +
+                    "Sila pilih gambar kurang daripada 10MB."
+                );
+
+
+                button.disabled =
+                    false;
+
+                button.innerText =
+                    "📤 Hantar Aduan";
+
+                return;
+
+            }
+
+
+            compressImage(file)
+
+            .then(function(
                 gambarBase64
-            );
+            ){
 
-        })
+                simpanAduan(
+                    gambarBase64
+                );
 
-        .catch(function(error) {
+            })
 
-            console.error(
-                error
-            );
+            .catch(function(error){
 
+                console.error(
+                    error
+                );
 
-            alert(
-                "❌ Gambar tidak dapat diproses."
-            );
+                alert(
+                    "❌ Gambar tidak dapat diproses."
+                );
 
+                button.disabled =
+                    false;
 
-            button.disabled = false;
+                button.innerText =
+                    "📤 Hantar Aduan";
 
+            });
 
-            button.innerText =
-                "📤 Hantar Aduan";
+        }
 
-        });
+        else{
+
+            /*
+             * TIADA GAMBAR
+             */
+
+            simpanAduan("");
+
+        }
 
     }
-
-    else {
-
-        /* TIADA GAMBAR */
-
-        simpanAduan("");
-
-    }
-
-});
-
+);
 
 
 /* =====================================================
    COMPRESS GAMBAR
    ===================================================== */
 
-function compressImage(file) {
+function compressImage(file){
 
     return new Promise(
-        function(resolve, reject) {
-
+        function(resolve,reject){
 
             const reader =
                 new FileReader();
 
 
-
             reader.onload =
-                function(event) {
-
+                function(event){
 
                     const img =
                         new Image();
 
 
-
                     img.onload =
-                        function() {
-
-
-                            const maxWidth =
-                                900;
-
-
-                            const maxHeight =
-                                900;
-
+                        function(){
 
                             let width =
                                 img.width;
-
 
                             let height =
                                 img.height;
 
 
+                            /*
+                             * KECILKAN GAMBAR
+                             */
 
-                            if (
+                            const maxWidth =
+                                500;
+
+                            const maxHeight =
+                                500;
+
+
+                            if(
                                 width > maxWidth ||
                                 height > maxHeight
-                            ) {
-
+                            ){
 
                                 const ratio =
                                     Math.min(
@@ -943,7 +953,6 @@ function compressImage(file) {
                             }
 
 
-
                             const canvas =
                                 document.createElement(
                                     "canvas"
@@ -953,17 +962,14 @@ function compressImage(file) {
                             canvas.width =
                                 width;
 
-
                             canvas.height =
                                 height;
-
 
 
                             const ctx =
                                 canvas.getContext(
                                     "2d"
                                 );
-
 
 
                             ctx.drawImage(
@@ -975,13 +981,48 @@ function compressImage(file) {
                             );
 
 
+                            /*
+                             * QUALITY RENDAH
+                             * SUPAYA FIRESTORE TIDAK
+                             * TERLALU BESAR
+                             */
 
                             const gambar =
                                 canvas.toDataURL(
                                     "image/jpeg",
-                                    0.65
+                                    0.40
                                 );
 
+
+                            /*
+                             * SEMAK SAIZ BASE64
+                             */
+
+                            const anggaranBytes =
+                                Math.ceil(
+                                    (gambar.length * 3) / 4
+                                );
+
+
+                            /*
+                             * FIRESTORE DOCUMENT
+                             * ADA HAD SAIZ
+                             */
+
+                            if(
+                                anggaranBytes >
+                                700000
+                            ){
+
+                                reject(
+                                    new Error(
+                                        "Gambar masih terlalu besar."
+                                    )
+                                );
+
+                                return;
+
+                            }
 
 
                             resolve(
@@ -991,9 +1032,8 @@ function compressImage(file) {
                         };
 
 
-
                     img.onerror =
-                        function() {
+                        function(){
 
                             reject(
                                 new Error(
@@ -1004,16 +1044,14 @@ function compressImage(file) {
                         };
 
 
-
                     img.src =
                         event.target.result;
 
                 };
 
 
-
             reader.onerror =
-                function() {
+                function(){
 
                     reject(
                         new Error(
@@ -1024,10 +1062,7 @@ function compressImage(file) {
                 };
 
 
-
-            reader.readAsDataURL(
-                file
-            );
+            reader.readAsDataURL(file);
 
         }
     );
@@ -1035,13 +1070,13 @@ function compressImage(file) {
 }
 
 
-
 /* =====================================================
    PAPAR BERJAYA
    ===================================================== */
 
-function paparBerjaya(noAduan) {
-
+function paparBerjaya(
+    noAduan
+){
 
     document
     .querySelector(".container")
@@ -1054,7 +1089,6 @@ function paparBerjaya(noAduan) {
             "
         >
 
-
             <div
                 style="
                     font-size:65px;
@@ -1063,7 +1097,6 @@ function paparBerjaya(noAduan) {
             >
                 ✅
             </div>
-
 
 
             <h2
@@ -1076,7 +1109,6 @@ function paparBerjaya(noAduan) {
             </h2>
 
 
-
             <p
                 style="
                     color:#666;
@@ -1087,7 +1119,6 @@ function paparBerjaya(noAduan) {
                 Aduan kerosakan anda telah berjaya
                 direkodkan dalam sistem.
             </p>
-
 
 
             <div
@@ -1124,7 +1155,6 @@ function paparBerjaya(noAduan) {
             </div>
 
 
-
             <p
                 style="
                     color:#777;
@@ -1138,7 +1168,6 @@ function paparBerjaya(noAduan) {
             </p>
 
 
-
             <div
                 style="
                     display:flex;
@@ -1147,7 +1176,6 @@ function paparBerjaya(noAduan) {
                     flex-wrap:wrap;
                 "
             >
-
 
                 <button
                     type="button"
@@ -1160,7 +1188,6 @@ function paparBerjaya(noAduan) {
                 </button>
 
 
-
                 <button
                     type="button"
                     class="success-button new-button"
@@ -1171,9 +1198,7 @@ function paparBerjaya(noAduan) {
                     ↩️ Buat Aduan Baharu
                 </button>
 
-
             </div>
-
 
         </div>
 
