@@ -45,8 +45,8 @@ body{
     background:
     linear-gradient(
         135deg,
-        #f3f7f4,
-        #e1ebe5
+        #f3f8ff,
+        #e6f0fb
     );
 
     color:#1f2937;
@@ -144,7 +144,7 @@ header{
 
     font-size:38px;
 
-    color:#14532d;
+    color:#0f3f73;
 
     margin-bottom:15px;
 
@@ -232,7 +232,7 @@ header{
 
     margin-bottom:12px;
 
-    color:#14532d;
+    color:#0f3f73;
 
 }
 
@@ -256,7 +256,7 @@ button{
 
     border:none;
 
-    background:#176b3a;
+    background:#176fb5;
 
     color:white;
 
@@ -275,7 +275,7 @@ button{
 
 button:hover{
 
-    background:#0f4d29;
+    background:#0d568f;
 
 }
 
@@ -332,10 +332,10 @@ button:disabled{
 
 .login-form input:focus{
 
-    border-color:#176b3a;
+    border-color:#176fb5;
 
     box-shadow:
-    0 0 0 2px rgba(23,107,58,0.12);
+    0 0 0 2px rgba(23,111,181,0.12);
 
 }
 
@@ -396,7 +396,7 @@ footer{
 
     text-align:center;
 
-    background:#14532d;
+    background:#0f4f86;
 
     color:white;
 
@@ -749,7 +749,6 @@ const PPT_EMAIL_DIBENARKAN =
     "ermanelasmkn22@jmg.gov.my";
 
 
-
 /* =====================================================
    BUKA LOGIN
    ===================================================== */
@@ -771,7 +770,6 @@ function bukaLogin(){
     .focus();
 
 }
-
 
 
 /* =====================================================
@@ -807,7 +805,6 @@ function batalLogin(){
 }
 
 
-
 /* =====================================================
    LOGIN PPT
    ===================================================== */
@@ -835,7 +832,6 @@ function loginPPT(){
     const message =
         document
         .getElementById("loginMessage");
-
 
 
     /* -----------------------------------------------
@@ -875,7 +871,6 @@ function loginPPT(){
     }
 
 
-
     /* -----------------------------------------------
        LOCK BUTTON
        ----------------------------------------------- */
@@ -893,23 +888,17 @@ function loginPPT(){
         "Sila tunggu...";
 
 
-
     /* =================================================
-       PENTING:
-       LOGIN TIDAK DISIMPAN SECARA PERSISTENT
+       FIREBASE LOGIN
        ================================================= */
 
     auth
+
     .setPersistence(
         firebase.auth.Auth.Persistence.SESSION
     )
 
     .then(function(){
-
-
-        /* ---------------------------------------------
-           FIREBASE LOGIN
-           --------------------------------------------- */
 
         return auth
         .signInWithEmailAndPassword(
@@ -936,10 +925,6 @@ function loginPPT(){
             "✅ Login berjaya. Membuka Portal PPT...";
 
 
-        /* ---------------------------------------------
-           MASUK PORTAL PPT
-           --------------------------------------------- */
-
         setTimeout(function(){
 
             window.location.href =
@@ -962,10 +947,6 @@ function loginPPT(){
         message.className =
             "login-message error";
 
-
-        /* ---------------------------------------------
-           ERROR MESSAGE
-           --------------------------------------------- */
 
         if(
             error.code ===
