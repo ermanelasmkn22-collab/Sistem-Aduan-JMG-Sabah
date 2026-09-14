@@ -3431,38 +3431,100 @@ document
 paparkanTarikh();
 
 
+/* =====================================================
+   KESELAMATAN PORTAL PPT
+   Hanya akaun PPT yang dibenarkan boleh masuk
+   ===================================================== */
+
+const PPT_EMAIL_DIBENARKAN =
+    "ermanelasmkn22@jmg.gov.my";
+
+
+/*
+   SESSION:
+   Login kekal semasa berpindah dari index.html
+   ke ppt.html dalam sesi/tab yang sama.
+   Tidak digunakan sebagai login kekal.
+*/
+
 auth
-.signInAnonymously()
-
-.then(
-    function(){
-
-        console.log(
-            "✅ PPT berjaya login Firebase Anonymous."
-        );
-
-
-        mulaDengarAduan();
-
-    }
+.setPersistence(
+    firebase.auth.Auth.Persistence.SESSION
 )
 
-.catch(
-    function(error){
+.then(function(){
 
-        console.error(
-            "Firebase Auth Error:",
-            error
-        );
+    auth.onAuthStateChanged(
+        function(user){
 
+            if(!user){
 
-        alert(
-            "❌ Tidak dapat sambung ke Firebase.\n\n" +
-            error.message
-        );
+                alert(
+                    "🔒 Akses Portal PPT memerlukan login."
+                );
 
-    }
-);
+                window.location.replace(
+                    "index.html"
+                );
+
+                return;
+
+            }
+
+            if(
+                !user.email ||
+                user.email.toLowerCase() !==
+                PPT_EMAIL_DIBENARKAN.toLowerCase()
+            ){
+
+                console.warn(
+                    "Akses PPT ditolak:",
+                    user.email
+                );
+
+                auth
+                .signOut()
+                .finally(function(){
+
+                    alert(
+                        "❌ Akaun ini tidak mempunyai akses ke Portal PPT."
+                    );
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                });
+
+                return;
+
+            }
+
+            console.log(
+                "✅ PPT berjaya login:",
+                user.email
+            );
+
+            mulaDengarAduan();
+
+        }
+    );
+
+})
+
+.catch(function(error){
+
+    console.error(
+        "Firebase Auth Error:",
+        error
+    );
+
+    alert(
+        "❌ Tidak dapat sambung ke Firebase.\n\n" +
+        error.message
+    );
+
+});
 
 </script>
 
