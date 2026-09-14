@@ -707,7 +707,7 @@ Sistem Aduan Kerosakan Fasiliti
 const firebaseConfig = {
 
     apiKey:
-    "AIzaSyAQmAhXDBfk2W05iMG4xIZQ6HYKrFKIXg",
+    "AIzaSyAQmAhXDBfk2W05iMG4xIZQ6HYKrFKIZXg",
 
     authDomain:
     "sistem-aduan-jmg-sabah.firebaseapp.com",
@@ -739,6 +739,14 @@ firebase.initializeApp(firebaseConfig);
 
 const auth =
     firebase.auth();
+
+
+/* =====================================================
+   AKAUN PPT YANG DIBENARKAN
+   ===================================================== */
+
+const PPT_EMAIL_DIBENARKAN =
+    "ermanelasmkn22@jmg.gov.my";
 
 
 
@@ -847,6 +855,26 @@ function loginPPT(){
     }
 
 
+    /* -----------------------------------------------
+       SEMAK AKAUN PPT
+       ----------------------------------------------- */
+
+    if(
+        email.toLowerCase() !==
+        PPT_EMAIL_DIBENARKAN.toLowerCase()
+    ){
+
+        message.className =
+            "login-message error";
+
+        message.innerText =
+            "❌ Akaun ini tidak mempunyai akses PPT.";
+
+        return;
+
+    }
+
+
 
     /* -----------------------------------------------
        LOCK BUTTON
@@ -873,7 +901,7 @@ function loginPPT(){
 
     auth
     .setPersistence(
-        firebase.auth.Auth.Persistence.NONE
+        firebase.auth.Auth.Persistence.SESSION
     )
 
     .then(function(){
