@@ -14,24 +14,46 @@
 
 <style>
 
+/* =====================================================
+   RESET
+   ===================================================== */
+
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
 }
 
+
+/* =====================================================
+   BODY
+   ===================================================== */
+
 body{
     font-family:Arial,sans-serif;
-    background:linear-gradient(135deg,#f3f7f4,#e1ebe5);
+
+    background:linear-gradient(
+        135deg,
+        #f3f8ff,
+        #e6f0fb
+    );
+
     color:#333;
 }
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
 
 header{
     background:white;
     padding:20px 8%;
+
     display:flex;
     align-items:center;
     gap:20px;
+
     box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
 
@@ -51,17 +73,31 @@ h1{
     margin-top:5px;
 }
 
+
+/* =====================================================
+   CONTAINER
+   ===================================================== */
+
 .container{
     max-width:800px;
     margin:50px auto;
     padding:30px;
+
     background:white;
+
     border-radius:15px;
-    box-shadow:0 5px 20px rgba(0,0,0,.1);
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.1);
 }
 
+
+/* =====================================================
+   TAJUK
+   ===================================================== */
+
 h2{
-    color:#1f5d3a;
+    color:#0f4f86;
     margin-bottom:10px;
 }
 
@@ -71,20 +107,66 @@ h2{
     line-height:1.6;
 }
 
+
+/* =====================================================
+   BUTANG KEMBALI
+   ===================================================== */
+
+.back-button{
+    display:inline-block;
+
+    margin-bottom:20px;
+
+    padding:10px 18px;
+
+    background:#176fb5;
+
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    transition:.3s;
+}
+
+.back-button:hover{
+    background:#0d568f;
+}
+
+
+/* =====================================================
+   LABEL
+   ===================================================== */
+
 label{
     display:block;
     margin-top:18px;
     margin-bottom:8px;
+
     font-weight:bold;
 }
+
+
+/* =====================================================
+   INPUT
+   ===================================================== */
 
 input,
 select,
 textarea{
     width:100%;
+
     padding:12px;
+
     border:1px solid #ccc;
+
     border-radius:8px;
+
     font-size:15px;
 }
 
@@ -92,8 +174,11 @@ input:focus,
 select:focus,
 textarea:focus{
     outline:none;
-    border-color:#1f5d3a;
-    box-shadow:0 0 0 2px rgba(31,93,58,.1);
+
+    border-color:#176fb5;
+
+    box-shadow:
+        0 0 0 2px rgba(23,111,181,.12);
 }
 
 textarea{
@@ -106,21 +191,37 @@ input[type=file]{
     cursor:pointer;
 }
 
+
+/* =====================================================
+   BUTTON
+   ===================================================== */
+
 button{
     width:100%;
+
     margin-top:30px;
+
     padding:14px;
-    background:#1f5d3a;
+
+    background:#176fb5;
+
     color:white;
+
     border:none;
+
     border-radius:8px;
+
     font-size:16px;
+
     font-weight:bold;
+
     cursor:pointer;
+
+    transition:.3s;
 }
 
 button:hover{
-    background:#17482d;
+    background:#0d568f;
 }
 
 button:disabled{
@@ -128,33 +229,70 @@ button:disabled{
     cursor:not-allowed;
 }
 
+
+/* =====================================================
+   REQUIRED
+   ===================================================== */
+
 .required{
     color:red;
 }
 
+
+/* =====================================================
+   INFO BOX
+   ===================================================== */
+
 .info-box{
-    background:#f0f7f3;
-    border-left:4px solid #1f5d3a;
+    background:#eef6fd;
+
+    border-left:4px solid #176fb5;
+
     padding:15px;
+
     margin-bottom:25px;
+
     border-radius:6px;
+
     color:#555;
+
     line-height:1.5;
 }
 
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
 footer{
     text-align:center;
+
     padding:25px;
+
     color:#777;
+
     font-size:14px;
 }
 
+
+/* =====================================================
+   SUCCESS PAGE BUTTON
+   ===================================================== */
+
 .success-button{
     width:auto;
+
     min-width:220px;
+
     margin-top:0;
+
     padding:13px 20px;
 }
+
+
+/* =====================================================
+   NEW BUTTON
+   ===================================================== */
 
 .new-button{
     background:#555;
@@ -164,11 +302,48 @@ footer{
     background:#333;
 }
 
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media(max-width:750px){
+
+    header{
+        padding:15px 5%;
+    }
+
+    .container{
+        width:92%;
+        margin:30px auto;
+        padding:22px;
+    }
+
+    h1{
+        font-size:20px;
+    }
+
+    .jmg-logo{
+        width:60px;
+        height:60px;
+    }
+
+    .success-button{
+        width:100%;
+    }
+}
+
 </style>
+
 </head>
 
 
 <body>
+
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
 
 <header>
 
@@ -193,18 +368,43 @@ Sabah
 </header>
 
 
+
+<!-- =====================================================
+     BORANG
+     ===================================================== -->
+
 <div class="container">
+
+
+<!-- KEMBALI KE HALAMAN UTAMA -->
+
+<a
+    href="index.html"
+    class="back-button"
+>
+    🏠 Kembali ke Halaman Utama
+</a>
+
+
 
 <h2>
 📋 Borang Aduan Kerosakan Fasiliti
 </h2>
 
+
 <p class="description">
+
 Sila lengkapkan maklumat di bawah untuk membuat aduan
 kerosakan fasiliti di Jabatan Mineral dan Geosains Malaysia,
 Sabah.
+
 </p>
 
+
+
+<!-- =====================================================
+     MAKLUMAN
+     ===================================================== -->
 
 <div class="info-box">
 
@@ -217,13 +417,19 @@ memudahkan pihak PPT membuat tindakan susulan.
 </div>
 
 
+
 <form id="aduanForm">
 
 
-<!-- NAMA -->
+<!-- =====================================================
+     NAMA
+     ===================================================== -->
 
 <label for="nama">
-Nama Pelapor <span class="required">*</span>
+
+Nama Pelapor
+<span class="required">*</span>
+
 </label>
 
 <input
@@ -234,10 +440,16 @@ Nama Pelapor <span class="required">*</span>
 >
 
 
-<!-- JAWATAN -->
+
+<!-- =====================================================
+     JAWATAN
+     ===================================================== -->
 
 <label for="jawatan">
-Jawatan <span class="required">*</span>
+
+Jawatan
+<span class="required">*</span>
+
 </label>
 
 <input
@@ -248,10 +460,16 @@ Jawatan <span class="required">*</span>
 >
 
 
-<!-- BAHAGIAN -->
+
+<!-- =====================================================
+     BAHAGIAN
+     ===================================================== -->
 
 <label for="bahagian">
-Bahagian / Unit <span class="required">*</span>
+
+Bahagian / Unit
+<span class="required">*</span>
+
 </label>
 
 <input
@@ -262,10 +480,15 @@ Bahagian / Unit <span class="required">*</span>
 >
 
 
-<!-- BLOK -->
+
+<!-- =====================================================
+     BLOK
+     ===================================================== -->
 
 <label for="blok">
+
 Blok
+
 </label>
 
 <input
@@ -275,10 +498,15 @@ Blok
 >
 
 
-<!-- TINGKAT -->
+
+<!-- =====================================================
+     TINGKAT
+     ===================================================== -->
 
 <label for="tingkat">
+
 Tingkat / Aras
+
 </label>
 
 <input
@@ -288,10 +516,16 @@ Tingkat / Aras
 >
 
 
-<!-- LOKASI -->
+
+<!-- =====================================================
+     LOKASI
+     ===================================================== -->
 
 <label for="lokasi">
-Lokasi Kerosakan <span class="required">*</span>
+
+Lokasi Kerosakan
+<span class="required">*</span>
+
 </label>
 
 <input
@@ -302,10 +536,16 @@ Lokasi Kerosakan <span class="required">*</span>
 >
 
 
-<!-- JENIS -->
+
+<!-- =====================================================
+     JENIS KEROSAKAN
+     ===================================================== -->
 
 <label for="jenis">
-Jenis Kerosakan <span class="required">*</span>
+
+Jenis Kerosakan
+<span class="required">*</span>
+
 </label>
 
 <select id="jenis" required>
@@ -361,10 +601,16 @@ Lain-lain
 </select>
 
 
-<!-- PENERANGAN -->
+
+<!-- =====================================================
+     PENERANGAN
+     ===================================================== -->
 
 <label for="penerangan">
-Penerangan Kerosakan <span class="required">*</span>
+
+Penerangan Kerosakan
+<span class="required">*</span>
+
 </label>
 
 <textarea
@@ -374,10 +620,15 @@ Penerangan Kerosakan <span class="required">*</span>
 ></textarea>
 
 
-<!-- CADANGAN -->
+
+<!-- =====================================================
+     CADANGAN
+     ===================================================== -->
 
 <label for="cadangan">
+
 Cadangan / Keperluan Tindakan
+
 </label>
 
 <textarea
@@ -386,10 +637,16 @@ Cadangan / Keperluan Tindakan
 ></textarea>
 
 
-<!-- TARIKH -->
+
+<!-- =====================================================
+     TARIKH
+     ===================================================== -->
 
 <label for="tarikh">
-Tarikh Aduan <span class="required">*</span>
+
+Tarikh Aduan
+<span class="required">*</span>
+
 </label>
 
 <input
@@ -399,10 +656,15 @@ Tarikh Aduan <span class="required">*</span>
 >
 
 
-<!-- GAMBAR -->
+
+<!-- =====================================================
+     GAMBAR
+     ===================================================== -->
 
 <label for="gambar">
+
 Gambar Kerosakan
+
 </label>
 
 <input
@@ -418,11 +680,16 @@ margin-top:8px;
 color:#777;
 "
 >
+
 Format gambar: JPG, JPEG, PNG. Maksimum 10MB.
+
 </small>
 
 
-<!-- BUTTON -->
+
+<!-- =====================================================
+     HANTAR
+     ===================================================== -->
 
 <button type="submit">
 
@@ -430,16 +697,23 @@ Format gambar: JPG, JPEG, PNG. Maksimum 10MB.
 
 </button>
 
+
 </form>
 
 </div>
 
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
 
 <footer>
 
 © 2026 Jabatan Mineral dan Geosains Malaysia, Sabah
 
 </footer>
+
 
 
 <script>
@@ -472,13 +746,16 @@ const firebaseConfig = {
     "G-4K74PF0M7S"
 
 };
-    
-// =====================================================
-// GOOGLE APPS SCRIPT - EMAIL NOTIFICATION PPT
-// =====================================================
+
+
+/* =====================================================
+   GOOGLE APPS SCRIPT
+   EMAIL NOTIFICATION PPT
+   ===================================================== */
 
 const EMAIL_NOTIFICATION_URL =
-  "https://script.google.com/macros/s/AKfycbxw022kEz834IL8nD9Gsbct_IKzgRAAdSwSfla_uW2ndYN3Bx0OqgQG33Kftb-uzBkI/exec";
+"https://script.google.com/macros/s/AKfycbxw022kEz834IL8nD9Gsbct_IKzgRAAdSwSfla_uW2ndYN3Bx0OqgQG33Kftb-uzBkI/exec";
+
 
 /* =====================================================
    INITIALIZE FIREBASE
@@ -493,12 +770,14 @@ const auth =
     firebase.auth();
 
 
+
 /* =====================================================
    TARIKH AUTOMATIK
    ===================================================== */
 
 document.getElementById("tarikh").value =
     new Date().toISOString().split("T")[0];
+
 
 
 /* =====================================================
@@ -525,6 +804,7 @@ auth.signInAnonymously()
 });
 
 
+
 /* =====================================================
    BORANG
    ===================================================== */
@@ -544,7 +824,9 @@ document
             );
 
 
-        /* DATA */
+        /* =================================================
+           DATA
+           ================================================= */
 
         const nama =
             document
@@ -625,224 +907,249 @@ document
             "⏳ Menghantar Aduan...";
 
 
+
         /* =================================================
-           SIMPAN
+           SIMPAN ADUAN
            ================================================= */
 
         function simpanAduan(gambarBase64){
 
-    if(!auth.currentUser){
+            if(!auth.currentUser){
 
-        alert(
-            "❌ Sambungan Firebase belum bersedia.\n\n" +
-            "Sila cuba sekali lagi."
-        );
+                alert(
+                    "❌ Sambungan Firebase belum bersedia.\n\n" +
+                    "Sila cuba sekali lagi."
+                );
 
-        button.disabled = false;
+                button.disabled = false;
 
-        button.innerText = "📤 Hantar Aduan";
+                button.innerText =
+                    "📤 Hantar Aduan";
 
-        return;
-    }
-
-
-    const sekarang = new Date();
-
-
-    const masa =
-        sekarang.toLocaleTimeString(
-            "ms-MY",
-            {
-                hour:"2-digit",
-                minute:"2-digit",
-                second:"2-digit"
+                return;
             }
-        );
 
 
-    /*
-     * NO ADUAN
-     */
+            const sekarang =
+                new Date();
 
-    const noAduan =
-        "FAC-" +
-        sekarang.getFullYear() +
-        String(sekarang.getMonth()+1).padStart(2,"0") +
-        String(sekarang.getDate()).padStart(2,"0") +
-        "-" +
-        String(sekarang.getHours()).padStart(2,"0") +
-        String(sekarang.getMinutes()).padStart(2,"0") +
-        String(sekarang.getSeconds()).padStart(2,"0");
 
+            const masa =
+                sekarang.toLocaleTimeString(
+                    "ms-MY",
+                    {
+                        hour:"2-digit",
+                        minute:"2-digit",
+                        second:"2-digit"
+                    }
+                );
 
-    /*
-     * DATA ADUAN
-     */
 
-    const aduan = {
+            /* =================================================
+               NO ADUAN
+               ================================================= */
 
-        noAduan: noAduan,
+            const noAduan =
+                "FAC-" +
 
-        tarikh: tarikh,
+                sekarang.getFullYear() +
 
-        masa: masa,
+                String(
+                    sekarang.getMonth()+1
+                ).padStart(2,"0") +
 
-        nama: nama,
+                String(
+                    sekarang.getDate()
+                ).padStart(2,"0") +
 
-        jawatan: jawatan,
+                "-" +
 
-        bahagian: bahagian,
+                String(
+                    sekarang.getHours()
+                ).padStart(2,"0") +
 
-        blok: blok,
+                String(
+                    sekarang.getMinutes()
+                ).padStart(2,"0") +
 
-        tingkat: tingkat,
+                String(
+                    sekarang.getSeconds()
+                ).padStart(2,"0");
 
-        lokasi: lokasi,
 
-        jenis: jenis,
+            /* =================================================
+               DATA ADUAN
+               ================================================= */
 
-        jenisKerosakan: jenis,
+            const aduan = {
 
-        penerangan: penerangan,
+                noAduan:noAduan,
 
-        cadangan: cadangan,
+                tarikh:tarikh,
 
-        gambar: gambarBase64 || "",
+                masa:masa,
 
-        status: "Baharu",
+                nama:nama,
 
-        catatan: "",
+                jawatan:jawatan,
 
-        catatanPPT: "",
+                bahagian:bahagian,
 
-        uid: auth.currentUser.uid,
+                blok:blok,
 
-        timestamp:
-            firebase
-            .firestore
-            .FieldValue
-            .serverTimestamp()
+                tingkat:tingkat,
 
-    };
+                lokasi:lokasi,
 
+                jenis:jenis,
 
-    /*
-     * SIMPAN KE FIRESTORE
-     */
+                jenisKerosakan:jenis,
 
-    db
-    .collection("aduan")
-    .add(aduan)
+                penerangan:penerangan,
 
-    .then(function(docRef){
+                cadangan:cadangan,
 
-        console.log(
-            "Aduan berjaya disimpan:",
-            docRef.id
-        );
+                gambar:gambarBase64 || "",
 
+                status:"Baharu",
 
-        /*
-         * ==========================================
-         * HANTAR EMAIL NOTIFICATION KEPADA PPT
-         * ==========================================
-         */
+                catatan:"",
 
-        const emailData = {
+                catatanPPT:"",
 
-            noAduan: noAduan,
+                uid:auth.currentUser.uid,
 
-            tarikh: tarikh,
+                timestamp:
+                    firebase
+                    .firestore
+                    .FieldValue
+                    .serverTimestamp()
 
-            masa: masa,
+            };
 
-            nama: nama,
 
-            jawatan: jawatan,
+            /* =================================================
+               SIMPAN KE FIRESTORE
+               ================================================= */
 
-            bahagian: bahagian,
+            db
+            .collection("aduan")
+            .add(aduan)
 
-            blok: blok,
+            .then(function(docRef){
 
-            tingkat: tingkat,
+                console.log(
+                    "Aduan berjaya disimpan:",
+                    docRef.id
+                );
 
-            lokasi: lokasi,
 
-            jenis: jenis,
+                /* =================================================
+                   EMAIL NOTIFICATION PPT
+                   ================================================= */
 
-            penerangan: penerangan,
+                const emailData = {
 
-            cadangan: cadangan
+                    noAduan:noAduan,
 
-        };
+                    tarikh:tarikh,
 
+                    masa:masa,
 
-        fetch(
-            EMAIL_NOTIFICATION_URL,
-            {
-                method: "POST",
+                    nama:nama,
 
-                mode: "no-cors",
+                    jawatan:jawatan,
 
-                headers: {
-                    "Content-Type":
-                        "text/plain;charset=UTF-8"
-                },
+                    bahagian:bahagian,
 
-                body:
-                    JSON.stringify(emailData)
-            }
-        )
-        .then(function(){
+                    blok:blok,
 
-            console.log(
-                "Notification email telah dihantar ke Apps Script."
-            );
+                    tingkat:tingkat,
 
-        })
-        .catch(function(error){
+                    lokasi:lokasi,
 
-            console.error(
-                "Email notification error:",
-                error
-            );
+                    jenis:jenis,
 
-        });
+                    penerangan:penerangan,
 
+                    cadangan:cadangan
 
-        /*
-         * PAPAR HALAMAN BERJAYA
-         */
+                };
 
-        paparBerjaya(
-            noAduan
-        );
 
-    })
+                fetch(
+                    EMAIL_NOTIFICATION_URL,
+                    {
 
-    .catch(function(error){
+                        method:"POST",
 
-        console.error(
-            "Firestore Error:",
-            error
-        );
+                        mode:"no-cors",
 
+                        headers:{
+                            "Content-Type":
+                                "text/plain;charset=UTF-8"
+                        },
 
-        alert(
-            "❌ Aduan gagal dihantar.\n\n" +
-            "Ralat: " +
-            error.message
-        );
+                        body:
+                            JSON.stringify(emailData)
 
+                    }
+                )
 
-        button.disabled = false;
+                .then(function(){
 
-        button.innerText =
-            "📤 Hantar Aduan";
+                    console.log(
+                        "Notification email telah dihantar ke Apps Script."
+                    );
 
-    });
+                })
 
-}
+                .catch(function(error){
+
+                    console.error(
+                        "Email notification error:",
+                        error
+                    );
+
+                });
+
+
+                /* =================================================
+                   PAPAR BERJAYA
+                   ================================================= */
+
+                paparBerjaya(
+                    noAduan
+                );
+
+            })
+
+            .catch(function(error){
+
+                console.error(
+                    "Firestore Error:",
+                    error
+                );
+
+
+                alert(
+                    "❌ Aduan gagal dihantar.\n\n" +
+                    "Ralat: " +
+                    error.message
+                );
+
+
+                button.disabled = false;
+
+                button.innerText =
+                    "📤 Hantar Aduan";
+
+            });
+
+        }
+
+
+
         /* =================================================
            GAMBAR
            ================================================= */
@@ -856,9 +1163,9 @@ document
                 gambarInput.files[0];
 
 
-            /*
-             * CHECK 10MB
-             */
+            /* =================================================
+               CHECK 10MB
+               ================================================= */
 
             if(
                 file.size >
@@ -871,8 +1178,7 @@ document
                 );
 
 
-                button.disabled =
-                    false;
+                button.disabled = false;
 
                 button.innerText =
                     "📤 Hantar Aduan";
@@ -884,9 +1190,7 @@ document
 
             compressImage(file)
 
-            .then(function(
-                gambarBase64
-            ){
+            .then(function(gambarBase64){
 
                 simpanAduan(
                     gambarBase64
@@ -904,8 +1208,7 @@ document
                     "❌ Gambar tidak dapat diproses."
                 );
 
-                button.disabled =
-                    false;
+                button.disabled = false;
 
                 button.innerText =
                     "📤 Hantar Aduan";
@@ -916,9 +1219,9 @@ document
 
         else{
 
-            /*
-             * TIADA GAMBAR
-             */
+            /* =================================================
+               TIADA GAMBAR
+               ================================================= */
 
             simpanAduan("");
 
@@ -926,6 +1229,7 @@ document
 
     }
 );
+
 
 
 /* =====================================================
@@ -958,9 +1262,9 @@ function compressImage(file){
                                 img.height;
 
 
-                            /*
-                             * KECILKAN GAMBAR
-                             */
+                            /* =================================================
+                               KECILKAN GAMBAR
+                               ================================================= */
 
                             const maxWidth =
                                 500;
@@ -1023,11 +1327,9 @@ function compressImage(file){
                             );
 
 
-                            /*
-                             * QUALITY RENDAH
-                             * SUPAYA FIRESTORE TIDAK
-                             * TERLALU BESAR
-                             */
+                            /* =================================================
+                               QUALITY
+                               ================================================= */
 
                             const gambar =
                                 canvas.toDataURL(
@@ -1036,9 +1338,9 @@ function compressImage(file){
                                 );
 
 
-                            /*
-                             * SEMAK SAIZ BASE64
-                             */
+                            /* =================================================
+                               SEMAK SAIZ BASE64
+                               ================================================= */
 
                             const anggaranBytes =
                                 Math.ceil(
@@ -1046,10 +1348,9 @@ function compressImage(file){
                                 );
 
 
-                            /*
-                             * FIRESTORE DOCUMENT
-                             * ADA HAD SAIZ
-                             */
+                            /* =================================================
+                               HAD FIRESTORE
+                               ================================================= */
 
                             if(
                                 anggaranBytes >
@@ -1112,13 +1413,12 @@ function compressImage(file){
 }
 
 
+
 /* =====================================================
    PAPAR BERJAYA
    ===================================================== */
 
-function paparBerjaya(
-    noAduan
-){
+function paparBerjaya(noAduan){
 
     document
     .querySelector(".container")
@@ -1143,7 +1443,7 @@ function paparBerjaya(
 
             <h2
                 style="
-                    color:#1f5d3a;
+                    color:#0f4f86;
                     margin-bottom:15px;
                 "
             >
@@ -1165,7 +1465,7 @@ function paparBerjaya(
 
             <div
                 style="
-                    background:#f0f7f3;
+                    background:#eef6fd;
                     border-radius:10px;
                     padding:20px;
                     margin:20px auto 30px;
@@ -1186,7 +1486,7 @@ function paparBerjaya(
 
                 <div
                     style="
-                        color:#1f5d3a;
+                        color:#0f4f86;
                         font-size:30px;
                         font-weight:bold;
                     "
